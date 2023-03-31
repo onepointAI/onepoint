@@ -1,61 +1,70 @@
-import { app, BrowserWindow, ipcMain, globalShortcut } from 'electron'
+import { app, BrowserWindow, ipcMain, clipboard, globalShortcut } from 'electron'
 const clipboardWatcher = require('electron-clipboard-watcher')
-// const nodeAbi = require('node-abi')
-// const mouseEvents = require("global-mouse-events");
-// const robot = require('@jitsi/robotjs');
-// const mouse = require("osx-mouse")()
-// import mouseEvents from 'osx-mouse';
-// import mouseHooks from "mouse-hooks"
-
-// var robot = require("robotjs");;
 // const {
 //   mouse
 // } = require("@nut-tree/nut-js");
-// const {
-//   preloadLanguages,
-//   Language,
-//   LanguageModelType,
-//   configure,
-// } = require("@nut-tree/plugin-ocr");
 
-let mainWindow: BrowserWindow | null
-
+let win: BrowserWindow | null
+let copyFromElectron: boolean = false
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string
 declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string
 
-console.info(process.versions);
-
+// console.info(process.versions)
 // console.info(nodeAbi.getApi());
 // const assetsPath =
 //   process.env.NODE_ENV === 'production'
 //     ? process.resourcesPath
 //     : app.getAppPath()
 
-
 function createWindow () {
-  mainWindow = new BrowserWindow({
-    // icon: path.join(assetsPath, 'assets', 'icon.png'),
-    width: 1100,
-    height: 700,
-    backgroundColor: '#191622',
+  win = new BrowserWindow({
+    height: 600,
+    useContentSize: true,
+    resizable: true,
+    width: 800,
+    frame: false,
+    title: "拉比克",
+    show: true,
+    skipTaskbar: true,
     webPreferences: {
-      nodeIntegration: false,
+      webSecurity: false,      
+      backgroundThrottling: false,
       contextIsolation: true,
+      webviewTag: true,
+      nodeIntegration: true,
       preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY
-    },
-    frame: false
+      // enableRemoteModule: true,
+      // preload: path.join(__static, "preload.js")
+    }
   })
-
-  mainWindow.webContents.openDevTools({
-    mode:'bottom'
+  if(process.env.NODE_ENV !== 'production') {
+    win.webContents.openDevTools({
+      mode:'bottom'
+    })
+  }  
+  win.loadURL(MAIN_WINDOW_WEBPACK_ENTRY)
+  win.on('closed', () => {
+    win = null
+  })
+  win.on("blur", () => {
+    setWindowVisile(false)
   });
-
-  mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY)
-
-  mainWindow.on('closed', () => {
-    mainWindow = null
-  })
 }
+
+const setWindowVisile = (visible ?: boolean) => {
+  if(visible) {
+    win?.hide()
+    win?.blur()
+    return 
+  } 
+  // win?.setAlwaysOnTop(true)
+  win?.setVisibleOnAllWorkspaces(true, { 
+    visibleOnFullScreen: true 
+  })
+  win?.focus()
+  win?.show()
+}
+
 
 async function registerListeners () {
   /**
@@ -63,93 +72,28 @@ async function registerListeners () {
    */
   ipcMain.on('message', (_, message) => {
     console.log(message)
-  })  
-
-  // const position = await mouse.getPosition();
-  // console.log('== position ==>', position);
-  // clipboard.writeText('Example string', 'selection')
-  // console.log(clipboard.readText())
-
-
-  // mouseEvents.on("mousedown", (event: any) => {
-  //   console.log(event); // { x: 2962, y: 483, button: 1 }
-  // });
-
-  // globalShortcut.register('CommandOrControl+c', () => {
-  //   console.log('Electron loves global shortcuts!')
-  //   // const text = clipboard.readText()
-  //   // console.log('剪切板内容:', clipboard.readText())
-    
-  // })
-
+  })
+  
   clipboardWatcher({
     // (optional) delay in ms between polls
     watchDelay: 1000,
   
     // handler for when image data is copied into the clipboard
     onImageChange () {  },
-  
+
     // handler for when text data is copied into the clipboard
     onTextChange (text: string) {
-      console.log('text changed:', text);
+      if(!copyFromElectron) {
+        console.log('text changed:', text)
+        setWindowVisile(true)
+      }      
     }
   })
 
-  // robot.mouseClick((mouseEvt: any) => {
-  //   console.log('mouse click ===>', mouseEvt);
-  // })
-
-  // robot.mouseToggle("up", "left");
-
-  // robot.keyTap("c", "control");
-  // move, left-down, left-up, left-drag, right-up, right-down and right-drag
-  // const mouseTrack = mouseEvents();
-  // // 按下去的 time
-  // let down_time = 0;
-
-  // // 是否弹起
-  // let isPress = false;
-  // let i = 0;
-  // mouse.on('move', () => {
-  //   console.log('move===>', i++)
-  // })
-
-  // mouse.on('right-drag', () => {
-  //   console.log('right-drag===>', i++)
-  // })
-
-  // // 监听右击
-  // mouseTrack.on('right-down', () => {
-  //     isPress = true;
-  //     down_time = Date.now();
-  //     // 长按 500ms 后触发
-  //     // setTimeout(async () => {
-  //     //   if (isPress) {
-  //     //     // 获取选中内容
-  //     //     // const copyResult = await getSelectedText();
-  //     //     console.log('右键选中了')
-  //     // }, 500 )
-
-  //     console.log('right-down....');
-  //     setTimeout(() => {
-  //       if (isPress) {
-  //         console.log('右键选中了')
-  //       }
-  //     }, 500)
-  // })
-  // mouseTrack.on('right-up', () => {
-  //   console.log('right up....');
-  //     isPress = false;
-  // });
-  // mouseHooks.on("mouse-up", data => {
-  //   console.log("mouse-up!!!")
-  //   console.log(data.x, data.y, data.button);
-  // });
-
-  // mouseHooks.on("mouse-down", data => {
-  //   console.log("mouse-down!!!")
-  //   console.log(data.x, data.y, data.button);
-  // });
+  globalShortcut.register('CommandOrControl+k', () => {
+    const show = win?.isVisible() && win.isFocused();
+    setWindowVisile(!show)
+  })
 }
 
 app.on('ready', createWindow)

@@ -21,4 +21,5 @@ export const api = {
   }
 }
 
+console.log('preload bridge!')
 contextBridge.exposeInMainWorld('Main', api)
