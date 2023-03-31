@@ -55,13 +55,10 @@ const bounceInDown = keyframes`
 
 export const Container = styled.div`
   background-color: "#FFF",
+  width: 800px;
   height: 100vh;
-  padding: 25px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
+  flex-direction: "column",
+  justify-content: "center",
   button {
     margin-top: 24px;
   }

@@ -23,8 +23,8 @@ function createWindow () {
     resizable: true,
     width: 800,
     frame: false,
-    title: "拉比克",
     show: true,
+    transparent: true,
     skipTaskbar: true,
     webPreferences: {
       webSecurity: false,      
@@ -37,8 +37,8 @@ function createWindow () {
       // preload: path.join(__static, "preload.js")
     }
   })
-  if(process.env.NODE_ENV !== 'production') {
-    win.webContents.openDevTools({
+  if(process.env.NODE_ENV !== 'production' && false) {
+    win?.webContents.openDevTools({
       mode:'bottom'
     })
   }  
@@ -52,7 +52,7 @@ function createWindow () {
 }
 
 const setWindowVisile = (visible ?: boolean) => {
-  if(visible) {
+  if(!visible) {
     win?.hide()
     win?.blur()
     return 
@@ -71,12 +71,12 @@ async function registerListeners () {
    * This comes from bridge integration, check bridge.ts
    */
   ipcMain.on('message', (_, message) => {
-    console.log(message)
+    console.log(message)    
   })
   
   clipboardWatcher({
     // (optional) delay in ms between polls
-    watchDelay: 1000,
+    watchDelay: 200,
   
     // handler for when image data is copied into the clipboard
     onImageChange () {  },
@@ -86,13 +86,15 @@ async function registerListeners () {
       if(!copyFromElectron) {
         console.log('text changed:', text)
         setWindowVisile(true)
-      }      
+      }
+      win?.webContents.send('copyText', text);
     }
   })
 
-  globalShortcut.register('CommandOrControl+k', () => {
-    const show = win?.isVisible() && win.isFocused();
-    setWindowVisile(!show)
+  globalShortcut.register('CommandOrControl+k', () => {    
+    const visible = win?.isVisible() && win.isFocused();
+    console.log('window visible ==>', visible);
+    setWindowVisile(!visible)
   })
 }
 
