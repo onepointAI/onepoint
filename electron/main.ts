@@ -9,12 +9,24 @@ import {
 
 require('./server')
 
-const clipboardWatcher = require('electron-clipboard-watcher')
+const applescript = require('applescript');
 
-let win: BrowserWindow | null
-let copyFromElectron: boolean = false
+
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string
 declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string
+
+const clipboardWatcher = require('electron-clipboard-watcher')
+let win: BrowserWindow | null
+let copyFromElectron: boolean = false
+let lastApp: string
+
+export const setCopyStateSource = (fromElectron: boolean) => {
+  copyFromElectron = fromElectron
+}
+
+export const getLastApp = () => {
+  return lastApp
+}
 
 const setWindowVisile = (visible ?: boolean) => {
   if(!visible) {
@@ -53,10 +65,10 @@ function createWindow () {
     }
   })
   if(process.env.NODE_ENV !== 'production') {
-    win?.webContents.openDevTools({
-      mode:'bottom'
-    })
-  }  
+    // win?.webContents.openDevTools({
+    //   mode:'bottom'
+    // })
+  } 
   win.loadURL(MAIN_WINDOW_WEBPACK_ENTRY)
   win.on('closed', () => {
     win = null
@@ -68,6 +80,42 @@ function createWindow () {
 }
 
 async function registerListeners () {
+
+
+  // Very basic AppleScript command. Returns the song name of each
+  // currently selected track in iTunes as an 'Array' of 'String's.
+  // const script = `tell application "System Events" 
+  //   set activeApp to name of second application process whose frontmost is true 
+  // end tell
+  // `;
+
+  // TODO: 系统级复制粘贴  // exec err Error: 31:67: execution error: “System Events”遇到一个错误：“osascript”不允许发送按键。 (1002)
+  // const script = `tell application "System Events"
+  //   key code 9 using {command down}
+  // end tell
+  // `
+
+  // const script = `tell application "System Events" to get the name of every process whose background only is false`
+  // const script = 'tell application "iTunes" to get name of selection';
+
+  // const script = `
+  // set frontmostAppName to name of 1st process whose frontmost is true
+  // `
+  // const script = `
+  // tell application "Visual Studio Code"
+  //   activate
+  // end tell  
+  // `
+
+  // applescript.execString(script, (err: any, rtn: any) => {
+  //   if (err) {
+  //     // Something went wrong!
+  //     console.log('exec err',err)
+  //   }
+  //   console.log('exec success', rtn)
+  // });
+  
+  
   ipcMain.on('message', (_, message) => {
     console.log(message)    
   })
@@ -82,10 +130,14 @@ async function registerListeners () {
     onImageChange () {  },
     // handler for when text data is copied into the clipboard
     onTextChange (text: string) {
-      // if(!copyFromElectron) {
-      //   console.log('text changed:', text)
-      //   setWindowVisile(true)
-      // }
+      console.log('text changed:', text)
+      if(copyFromElectron) {
+        console.log('来自chat内容拷贝')
+        setCopyStateSource(false)   
+        return 
+      }
+      // TODO: 粘贴板内容变化弹窗，感觉没必要保留，会对用户体验造成非常大的影响
+      // setWindowVisile(true)
       win?.webContents.send('clipboard_change', text);
     }
   })
@@ -93,7 +145,34 @@ async function registerListeners () {
   globalShortcut.register('CommandOrControl+k', () => {    
     const visible = win?.isVisible() && win.isFocused();
     console.log('window visible ==>', visible);
-    setWindowVisile(!visible)
+
+    // 保存当前执行的程序名
+    if(!visible) {
+      // set frontApp to name of first application process whose frontmost is true
+      const script = `
+      tell application "System Events"
+        set frontmostAppName to displayed name of first application process whose frontmost is true        
+      end tell`
+      
+      applescript.execString(script, (err: any, rtn: any) => {
+        if (err) {
+          // Something went wrong!
+          console.log('exec err',err)
+          setWindowVisile(true)
+          return
+        }
+        console.log('last app ==>', lastApp)
+        lastApp = rtn
+
+        setWindowVisile(true)        
+      });
+
+      
+
+      
+      return 
+    }
+    setWindowVisile(false)
   })
 }
 

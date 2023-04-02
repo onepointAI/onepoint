@@ -1,25 +1,60 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Select, Input, Avatar, Divider } from 'antd'
+import { Select, Input, Avatar, Divider, List, Skeleton } from 'antd'
 import axios from 'axios'
 import ReactMarkdown from 'react-markdown'
 import { GlobalStyle } from './styles/GlobalStyle'
+// import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+
+const logo = 'https://i.postimg.cc/tTJ3yHM9/pointer.png'
+interface PresetType {
+  logo: string
+  title: string
+  loading: boolean
+}
 
 const { TextArea } = Input
+const presetMap = {
+  Translate: '请翻译以下内容：',
+  Casual: '',
+  Summarize: '请总结以下内容：',
+  Prettier: '请优化以下代码：',
+  Analyze: '请分析以下内容的含义：',
+}
 
 export function App() {
   const [question, setQuestion] = useState<string>()
-  const [response, setResponse] = useState<string>("")
+  const [response, setResponse] = useState<string>('')
+  const [preset, setPreset] = useState<string>('Casual')
   const [inputDisabled, setInputDisabled] = useState<boolean>(false)
   const [inputVisible] = useState<boolean>(true)
   const [respVisible, setRespVisible] = useState<boolean>(false)
+  const [presetVisible, setPresetVisible] = useState<boolean>(false)
+  const [historyVisible, setHistoryVisible] = useState<boolean>(false)
+  const [presetList, setPresetList] = useState<PresetType[]>([
+    {
+      logo,
+      title: 'Translator',
+      loading: false,
+    },
+    {
+      logo,
+      title: 'CodeMaster',
+      loading: false,
+    },
+    {
+      logo,
+      title: 'Analyzer',
+      loading: false,
+    },
+  ])
   useRef<HTMLTextAreaElement>(null)
 
   useEffect(() => {
-    // window.addEventListener('mousemove', event => {
-    //   let flag = event.target === document.documentElement
-    //   // @ts-ignore
-    //   window.Main.setWinMouseIgnore(flag)
-    // })
+    window.addEventListener('mousemove', event => {
+      let flag = event.target === document.documentElement
+      // @ts-ignore
+      window.Main.setWinMouseIgnore(flag)
+    })
 
     window.Main.on('clipboard_change', (text: string) => {
       setQuestion(text)
@@ -30,7 +65,9 @@ export function App() {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const val = e.target.value
-    if(!val) {
+    setPresetVisible(val === '/')
+    setHistoryVisible(val ===  '/h')
+    if (!val) {
       setRespVisible(false)
     }
     setQuestion(val)
@@ -40,30 +77,45 @@ export function App() {
     if (!question) return
     setInputDisabled(true)
     await axios
-    .post(`http://127.0.0.1:4000/ask`, {
-      question: question
-    })
-    .then(response => {
-      console.log('result ==>', response.data)
-      const { code, result } = response.data
-      if(code === 0) {
-        const { message, finish_reason, index } = result[0]
-        const { role, content } = message
-        setResponse(content)
-        setRespVisible(true)
+      .post(`http://127.0.0.1:4000/ask`, {
+        // TODO
+        // @ts-ignore
+        question: presetMap[preset] + question,
+      })
+      .then(response => {
+        console.log('result ==>', response.data)
+        const { code, result } = response.data
+        if (code === 0) {
+          const { message, finish_reason, index } = result[0]
+          const { role, content } = message
+          setResponse(content)
+          setRespVisible(true)
+        } else {
+          setResponse(JSON.stringify(response))
+          setRespVisible(true)
+        }
+      })
+      .catch(error => {
+        console.log(error)
+      })
+      .finally(() => {
+        setInputDisabled(false)
+      })
+  }
+
+  const getPresetOpts = () => {
+    return Object.keys(presetMap).map(key => {
+      return {
+        value: key,
+        label: key,
       }
     })
-    .catch(error => {
-      console.log(error)
-    })
-    .finally(() => {
-      setInputDisabled(false)
-    })    
   }
 
   return (
     <>
       <GlobalStyle />
+      {/* {contextHolder} */}
       <div style={styles.container}>
         {/* @ts-ignore */}
         <div style={styles.inputWrap}>
@@ -91,34 +143,113 @@ export function App() {
             />
           )}
           <Select
-            defaultValue="Casual Chat"
+            defaultValue={preset}
             style={{ width: 150 }}
             bordered={false}
-            options={[
-              { value: 'Casual Chat', label: 'Casual Chat' },
-              { value: 'Translation', label: 'Translate' },
-              { value: 'Summarize', label: 'Summarize' },
-              { value: 'Analyze', label: 'Analyze' },
-            ]}
+            options={getPresetOpts()}
+            onChange={(text: string) => setPreset(text)}
           />
-          {/* <Button type="dashed" onClick={askQuestion}>
-            send
-          </Button> */}
         </div>
-        {
-          respVisible ? (
-            <>
-              <Divider style={{ margin: 0 }}/>
-              {/* @ts-ignore */}        
-              <div style={styles.answerRegion}>
-                <div style={styles.botAvatar}><Avatar size={50} shape="square" src={"https://i.postimg.cc/tTJ3yHM9/pointer.png"} /></div>
-                <div> 
-                <ReactMarkdown>{response}</ReactMarkdown>
-                </div>
+        {respVisible ? (
+          <>
+            <Divider style={{ margin: 0 }} />
+            {/* @ts-ignore */}
+            <div style={styles.answerRegion}>
+              <div style={styles.botAvatar}>
+                <Avatar size={50} shape="square" src={logo} />
               </div>
-            </>
+              <div>
+                <ReactMarkdown>{response}</ReactMarkdown>
+              </div>
+            </div>
+          </>
+        ) : null}
+        {presetVisible ? (
+          <>
+            <Divider style={{ margin: 0 }} />
+            {/* @ts-ignore */}
+            <div style={styles.searchRegion}>
+              <List
+                className="demo-loadmore-list"
+                // loading={initLoading}
+                itemLayout="horizontal"
+                // loadMore={loadMore}
+                dataSource={presetList}
+                renderItem={item => (
+                  <List.Item
+                    className="ant-list-item"
+                    actions={[
+                      <a
+                        key="list-loadmore-edit"
+                        style={{ marginRight: padding }}
+                      >
+                        Edit
+                      </a>,
+                    ]}
+                  >
+                    <Skeleton
+                      avatar
+                      title={false}
+                      loading={item.loading}
+                      active
+                    >
+                      <List.Item.Meta                        
+                        style={{ paddingLeft: padding }}
+                        avatar={<Avatar src={item.logo} />}
+                        title={<a href="https://ant.design">{item.title}</a>}
+                        description="Ant Design, a design language for background applications, is refined by Ant UED Team"
+                      />
+                    </Skeleton>
+                  </List.Item>
+                )}
+              />
+            </div>
+          </>
+        ) : null}
+        {
+          historyVisible ? (
+            <>
+            <Divider style={{ margin: 0 }} />
+            {/* @ts-ignore */}
+            <div style={styles.searchRegion}>
+              <List
+                className="demo-loadmore-list"
+                // loading={initLoading}
+                itemLayout="horizontal"
+                // loadMore={loadMore}
+                dataSource={presetList}
+                renderItem={item => (
+                  <List.Item
+                    className="ant-list-item"
+                    actions={[
+                      <a
+                        key="list-loadmore-edit"
+                        style={{ marginRight: padding }}
+                      >
+                        Show
+                      </a>,
+                    ]}
+                  >
+                    <Skeleton
+                      avatar
+                      title={false}
+                      loading={item.loading}
+                      active
+                    >
+                      <List.Item.Meta                        
+                        style={{ paddingLeft: padding }}
+                        avatar={<Avatar src={item.logo} />}
+                        title={<a href="https://ant.design">{item.title}</a>}
+                        description="Ant Design, a design language for background applications, is refined by Ant UED Team"
+                      />
+                    </Skeleton>
+                  </List.Item>
+                )}
+              />
+            </div>
+          </>
           ) : null
-        }        
+        }
       </div>
     </>
   )
@@ -134,7 +265,6 @@ const styles = {
     borderWidth: 1,
     borderColor: '#FFF',
     overflow: 'hidden',
-    
   },
   inputWrap: {
     display: 'flex',
@@ -146,10 +276,10 @@ const styles = {
     alignItems: 'center',
     padding,
   },
-  answerRegion: {    
+  answerRegion: {
     display: 'flex',
     flexDirection: 'row',
-    backgroundColor: "#F8F8F8",
+    backgroundColor: '#F8F8F8',
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
     padding,
@@ -157,5 +287,19 @@ const styles = {
   botAvatar: {
     width: 50,
     marginRight: 10,
-  }
+  },
+  searchRegion: {
+    // display: 'flex',
+    // flexDirection: 'row',
+  },
+  selectItem: {
+    backgroundColor: '#F8F8F8',
+    height: 60,
+    padding,
+  },
+  searchItem: {
+    backgroundColor: '#FFF',
+    height: 60,
+    padding,
+  },
 }

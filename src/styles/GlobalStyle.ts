@@ -12,4 +12,8 @@ export const GlobalStyle = createGlobalStyle`
     font-size: 16px;
     background-color: rgba(0,0,0,0);
   }
+
+  .ant-list-item:hover {
+    background-color: #F3F3F3;
+  }
 `
