@@ -5,17 +5,15 @@ import {
   clipboard, 
   globalShortcut 
 } from 'electron'
-// import { chat } from './chat'
 
-require('./server')
-
+import { setupStoreHandlers } from './store'
+const clipboardWatcher = require('electron-clipboard-watcher')
 const applescript = require('applescript');
-
+require('./server')
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string
 declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string
 
-const clipboardWatcher = require('electron-clipboard-watcher')
 let win: BrowserWindow | null
 let copyFromElectron: boolean = false
 let lastApp: string
@@ -77,6 +75,7 @@ function createWindow () {
     setWindowVisile(false)
   });
   // win.setIgnoreMouseEvents(true, { forward: true })
+  setupStoreHandlers()
 }
 
 async function registerListeners () {
@@ -166,12 +165,8 @@ async function registerListeners () {
 
         setWindowVisile(true)        
       });
-
-      
-
-      
       return 
-    }
+    }    
     setWindowVisile(false)
   })
 }

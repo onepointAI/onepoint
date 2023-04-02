@@ -55,6 +55,7 @@
     "@typescript-eslint/parser": "4.27.0",
     "@vercel/webpack-asset-relocator-loader": "^1.7.3",
     "@zeit/webpack-asset-relocator-loader": "^0.8.0",
+    "ajv": "^7",
     "ajv-formats": "^2.1.1",
     "antd": "^5.3.3",
     "babel-loader": "8.2.2",

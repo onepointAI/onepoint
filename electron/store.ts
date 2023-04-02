@@ -1,31 +1,18 @@
-// const Store = require('electron-store')
+import { IpcMainInvokeEvent, ipcMain } from 'electron'
+import Store from 'electron-store'
 
-// const store = new Store({
-//   schema: {
-//     shortcut: {
-//       type: 'string',
-//       default: 'q',
-//     },
-//     shortcut_prefix: {
-//       type: 'string',
-//       default: os.platform() === 'darwin' ? 'option' : 'alt',
-//     },
-//     model: {
-//       type: 'string',
-//       default: 'gpt-3.5-turbo-0301',
-//     },
-//     keep_in_background: {
-//       type: 'boolean',
-//       default: true,
-//     },
+const store = new Store()
 
-//     auto_start: {
-//       type: 'boolean',
-//       default: false,
-//     },
-//     api_domain: {
-//       type: 'string',
-//       default: '',
-//     },
-//   },
-// })
+export function setupStoreHandlers() {
+  console.log('=== setUpSotreHandleer ===>')
+  ipcMain.handle(
+    'setStore',
+    async function (
+      event: IpcMainInvokeEvent,
+      { key, blob }: { key: string; blob: any }
+    ) {
+      console.log('==== set ===>', key, blob)
+      store.set(key, blob)
+    }
+  )
+}

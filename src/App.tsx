@@ -3,6 +3,7 @@ import { Select, Input, Avatar, Divider, List, Skeleton } from 'antd'
 import axios from 'axios'
 import ReactMarkdown from 'react-markdown'
 import { GlobalStyle } from './styles/GlobalStyle'
+import { Setting } from './features/Setting'
 // import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
 const logo = 'https://i.postimg.cc/tTJ3yHM9/pointer.png'
@@ -50,11 +51,12 @@ export function App() {
   useRef<HTMLTextAreaElement>(null)
 
   useEffect(() => {
-    window.addEventListener('mousemove', event => {
-      let flag = event.target === document.documentElement
-      // @ts-ignore
-      window.Main.setWinMouseIgnore(flag)
-    })
+    // TODO
+    // window.addEventListener('mousemove', event => {
+    //   let flag = event.target === document.documentElement
+    //   // @ts-ignore
+    //   window.Main.setWinMouseIgnore(flag)
+    // })
 
     window.Main.on('clipboard_change', (text: string) => {
       setQuestion(text)
@@ -250,6 +252,7 @@ export function App() {
           </>
           ) : null
         }
+        <Setting />
       </div>
     </>
   )
