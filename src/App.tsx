@@ -31,6 +31,7 @@ export function App() {
   const [respVisible, setRespVisible] = useState<boolean>(false)
   const [presetVisible, setPresetVisible] = useState<boolean>(false)
   const [historyVisible, setHistoryVisible] = useState<boolean>(false)
+  const [settingVisible, setSettingVisible] = useState<boolean>(false)
   const [presetList, setPresetList] = useState<PresetType[]>([
     {
       logo,
@@ -69,6 +70,7 @@ export function App() {
     const val = e.target.value
     setPresetVisible(val === '/')
     setHistoryVisible(val ===  '/h')
+    setSettingVisible(val === '/s')
     if (!val) {
       setRespVisible(false)
     }
@@ -252,7 +254,9 @@ export function App() {
           </>
           ) : null
         }
-        <Setting />
+        {
+          settingVisible ? <Setting /> : null
+        }        
       </div>
     </>
   )
