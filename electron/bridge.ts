@@ -13,7 +13,9 @@ export const api = {
   setStore: (key: string, blob: any) => {
     ipcRenderer.invoke('setStore', { key, blob })
   },
-
+  attemptChange: (changes: string) => {
+    ipcRenderer.invoke('attemptChange', changes)
+  },
   /**
    * Provide an easier way to listen to events
    */

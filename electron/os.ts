@@ -13,9 +13,21 @@ function runAppleScript(script: string) {
   })
 }
 
-export function getSelection(appName: string) {
+// TODO: 这种方法在vscode上哪怕没有选中也会复制一行
+export function getSelection() {  
   const script = `
-    tell application "${appName}" to get selection of document <doc index>
+    tell application "System Events" to keystroke "c" using {command down}
+    delay 0.1
+    set selectedText to the clipboard
+  `
+  return runAppleScript(script)
+}
+
+export function applySelection() {  
+  const script = `
+    tell application "System Events" to keystroke "v" using {command down}
+    delay 1
+    set selectedText to the clipboard
   `
   return runAppleScript(script)
 }

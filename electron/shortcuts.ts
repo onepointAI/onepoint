@@ -19,13 +19,17 @@ export function listen(win: BrowserWindow | null) {
         const app = (await getRecentApp()) as string
         Logger.log('appName', app)
         Singleton.getInstance().setRecentApp(app)
-        const selection = await getSelection(app)
-        Logger.log('selectionTxt', selection)
+        // 每次获取完后需要清空一下剪切板，否则判断会有问题
+        const selection = await getSelection()
+        Logger.log('selectionTxt', selection)        
+        win?.webContents.send('selection_change', selection)
         setWindowVisile({
           win,
           visible: true,
         })
+        clipboard.writeText('')
       } catch (e) {
+        Logger.error(e)
         setWindowVisile({
           win,
           visible: true,

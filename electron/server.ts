@@ -2,7 +2,7 @@ import { clipboard } from 'electron'
 import compression from 'compression'
 import Store from 'electron-store'
 import express from 'express'
-import { activeApp } from './os'
+import { activeApp, applySelection } from './os'
 import { Singleton } from "./global"
 
 const { Configuration, OpenAIApi } = require("openai")
@@ -69,9 +69,33 @@ app.post('/ask', async function (req: any, res: any) {
       code: 0,
       result: result
     })
+  } catch(e) {
+    res.send({
+      code: -1,
+      result: e
+    })
+  }  
+})
+
+app.post('/apply', async function(req: any, res: any) {
+  await activeApp(Singleton.getInstance().getRecentApp())
+    const result = await applySelection()
+    res.send({
+      code: 0,
+      result
+    })
+})
+
+app.post('/test', async function (req: any, res: any) {
+  try {
+    clipboard.writeText('test resp text')    
     try {
-      const result = await activeApp(Singleton.getInstance().getRecentApp())
-    } catch(e) {}    
+      await activeApp(Singleton.getInstance().getRecentApp())
+      const result = await applySelection()
+      console.log('cmd + v success:', result)
+    } catch(e) {
+      console.error('cmd + v error:', e)
+    }    
   } catch(e) {
     res.send({
       code: -1,

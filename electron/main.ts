@@ -12,24 +12,7 @@ require('./server')
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string
 declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string
-
 let win: BrowserWindow | null
-let copyFromElectron: boolean = false
-let lastApp: string
-
-// TODO: setter & getter need to improve
-export const setCopyStateSource = (fromElectron: boolean) => {
-  copyFromElectron = fromElectron
-}
-export const getCopyState = () => {
-  return copyFromElectron
-}
-export const getLastApp = () => {
-  return lastApp
-}
-export const setLastApp = (app: string) => {
-  lastApp = app
-}
 
 function createWindow () {
   win = new BrowserWindow({    

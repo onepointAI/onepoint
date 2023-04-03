@@ -15,5 +15,6 @@ export const GlobalStyle = createGlobalStyle`
 
   .ant-list-item:hover {
     background-color: #F3F3F3;
+    cursor: pointer;
   }
 `
