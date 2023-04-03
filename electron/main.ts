@@ -1,14 +1,13 @@
 import { 
   app, 
   BrowserWindow, 
-  ipcMain, 
-  clipboard, 
-  globalShortcut 
+  ipcMain,
 } from 'electron'
-
 import { setupStoreHandlers } from './store'
-const clipboardWatcher = require('electron-clipboard-watcher')
-const applescript = require('applescript');
+import { Logger } from './util'
+import { setWindowVisile } from './window'
+import { listen as setupShortcutHandlers } from './shortcuts'
+import { listen as setupClipboardHandlers } from './clipboard'
 require('./server')
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string
@@ -18,26 +17,18 @@ let win: BrowserWindow | null
 let copyFromElectron: boolean = false
 let lastApp: string
 
+// TODO: setter & getter need to improve
 export const setCopyStateSource = (fromElectron: boolean) => {
   copyFromElectron = fromElectron
 }
-
+export const getCopyState = () => {
+  return copyFromElectron
+}
 export const getLastApp = () => {
   return lastApp
 }
-
-const setWindowVisile = (visible ?: boolean) => {
-  if(!visible) {
-    win?.hide()
-    win?.blur()
-    return 
-  } 
-  // win?.setAlwaysOnTop(true)
-  win?.setVisibleOnAllWorkspaces(true, { 
-    visibleOnFullScreen: true 
-  })
-  win?.focus()
-  win?.show()
+export const setLastApp = (app: string) => {
+  lastApp = app
 }
 
 function createWindow () {
@@ -72,108 +63,29 @@ function createWindow () {
     win = null
   })
   win.on("blur", () => {
-    setWindowVisile(false)
+    setWindowVisile({
+      win, 
+      visible: false
+    })
   });
-  // win.setIgnoreMouseEvents(true, { forward: true })
-  setupStoreHandlers()
+  registerListeners()  
 }
 
-async function registerListeners () {
-
-
-  // Very basic AppleScript command. Returns the song name of each
-  // currently selected track in iTunes as an 'Array' of 'String's.
-  // const script = `tell application "System Events" 
-  //   set activeApp to name of second application process whose frontmost is true 
-  // end tell
-  // `;
-
-  // TODO: 系统级复制粘贴  // exec err Error: 31:67: execution error: “System Events”遇到一个错误：“osascript”不允许发送按键。 (1002)
-  // const script = `tell application "System Events"
-  //   key code 9 using {command down}
-  // end tell
-  // `
-
-  // const script = `tell application "System Events" to get the name of every process whose background only is false`
-  // const script = 'tell application "iTunes" to get name of selection';
-
-  // const script = `
-  // set frontmostAppName to name of 1st process whose frontmost is true
-  // `
-  // const script = `
-  // tell application "Visual Studio Code"
-  //   activate
-  // end tell  
-  // `
-
-  // applescript.execString(script, (err: any, rtn: any) => {
-  //   if (err) {
-  //     // Something went wrong!
-  //     console.log('exec err',err)
-  //   }
-  //   console.log('exec success', rtn)
-  // });
-  
-  
+async function registerListeners () {  
   ipcMain.on('message', (_, message) => {
-    console.log(message)    
+    Logger.log(message)    
   })
   ipcMain.on('win_ignore_mouse', (_, ignore) => {
     win?.setIgnoreMouseEvents(ignore, { forward: true })
-  })
-  
-  clipboardWatcher({
-    // (optional) delay in ms between polls
-    watchDelay: 200,
-    // handler for when image data is copied into the clipboard
-    onImageChange () {  },
-    // handler for when text data is copied into the clipboard
-    onTextChange (text: string) {
-      console.log('text changed:', text)
-      if(copyFromElectron) {
-        console.log('来自chat内容拷贝')
-        setCopyStateSource(false)   
-        return 
-      }
-      // TODO: 粘贴板内容变化弹窗，感觉没必要保留，会对用户体验造成非常大的影响
-      // setWindowVisile(true)
-      win?.webContents.send('clipboard_change', text);
-    }
-  })
-
-  globalShortcut.register('CommandOrControl+k', () => {    
-    const visible = win?.isVisible() && win.isFocused();
-    console.log('window visible ==>', visible);
-
-    // 保存当前执行的程序名
-    if(!visible) {
-      // set frontApp to name of first application process whose frontmost is true
-      const script = `
-      tell application "System Events"
-        set frontmostAppName to displayed name of first application process whose frontmost is true        
-      end tell`
-      
-      applescript.execString(script, (err: any, rtn: any) => {
-        if (err) {
-          // Something went wrong!
-          console.log('exec err',err)
-          setWindowVisile(true)
-          return
-        }
-        console.log('last app ==>', lastApp)
-        lastApp = rtn
-
-        setWindowVisile(true)        
-      });
-      return 
-    }    
-    setWindowVisile(false)
-  })
+  })  
+  setupClipboardHandlers(win)
+  setupShortcutHandlers(win)
+  setupStoreHandlers()
 }
 
 app.on('ready', createWindow)
   .whenReady()
-  .then(registerListeners)
+  .then()
   .catch(e => console.error(e))
 
 app.on('window-all-closed', () => {
