@@ -48,3 +48,17 @@ export function activeApp(app: string) {
     `
   return runAppleScript(script)    
 }
+
+export function getBrowserContnet() {
+  const script = `
+  tell application "Google Chrome"
+    tell window 1
+      tell active tab
+        execute javascript "document.body.textContent"
+      end tell
+    end tell
+    
+  end tell
+  `
+  return runAppleScript(script)  
+}

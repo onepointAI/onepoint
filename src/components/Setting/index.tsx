@@ -1,21 +1,16 @@
-import React, { useEffect, useState } from 'react'
-import { LockOutlined, UserOutlined } from '@ant-design/icons'
+import { useEffect, useState } from 'react'
 import { Button, Form, Input, Select, Divider } from 'antd'
-// import axios from 'axios'
-// import ReactMarkdown from 'react-markdown'
-// import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { LockOutlined } from '@ant-design/icons'
 
-const logo = 'https://i.postimg.cc/tTJ3yHM9/pointer.png'
-interface PresetType {
-  logo: string
-  title: string
-  loading: boolean
-}
+import { useAppDispatch, useAppSelector } from '../../app/hooks'
 
 const storeSuffix = '_apikey'
 export function Setting() {
+  
   const [form] = Form.useForm()
   const [, forceUpdate] = useState({})
+  const settingState = useAppSelector((state) => state.setting)
+  // const dispatch = useAppDispatch()
 
   // To disable submit button at the beginning.
   useEffect(() => {
@@ -29,7 +24,7 @@ export function Setting() {
     window.Main.setStore(values.model + storeSuffix, values.apikey)
   }
 
-  return (
+  return settingState.visible ? (
     <>
       <Divider style={{ margin: 0 }} />
       <div style={styles.wrap}>
@@ -90,7 +85,7 @@ export function Setting() {
         </Form>
       </div>
     </>
-  )
+  ) : null
 }
 
 const styles = {

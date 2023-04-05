@@ -22,7 +22,10 @@ export function listen(win: BrowserWindow | null) {
         // 每次获取完后需要清空一下剪切板，否则判断会有问题
         const selection = await getSelection()
         Logger.log('selectionTxt', selection)        
-        win?.webContents.send('selection_change', selection)
+        win?.webContents.send('selection_change', {
+          txt: selection,
+          app
+        })
         setWindowVisile({
           win,
           visible: true,

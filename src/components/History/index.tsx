@@ -9,24 +9,24 @@ interface PresetType {
 
 const padding = 15
 
-interface PresetType {
-  logo: string
-  title: string
-  loading: boolean
-}
+// interface PresetType {
+//   logo: string
+//   title: string
+//   loading: boolean
+// }
 
 interface Props {
-  presetList: PresetType[]
+  // presetList: PresetType[]
 }
 
 export function History(props: Props) {
-  const { presetList } = props
+  // const { presetList } = props
   return (
     <>
       <Divider style={{ margin: 0 }} />
       {/* @ts-ignore */}
       <div style={styles.searchRegion}>
-        <List
+        {/* <List
           className="demo-loadmore-list"
           // loading={initLoading}
           itemLayout="horizontal"
@@ -51,7 +51,7 @@ export function History(props: Props) {
               </Skeleton>
             </List.Item>
           )}
-        />
+        /> */}
       </div>
     </>
   )

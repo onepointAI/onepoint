@@ -2,9 +2,10 @@ import { clipboard } from 'electron'
 import compression from 'compression'
 import Store from 'electron-store'
 import express from 'express'
-import { activeApp, applySelection } from './os'
+import { activeApp, applySelection, getBrowserContnet } from './os'
 import { Singleton } from "./global"
 
+const h2p = require('html2plaintext')
 const { Configuration, OpenAIApi } = require("openai")
 const store = new Store()
 const apiKey = store.get('ChatGPT_apikey')
@@ -51,6 +52,8 @@ const configuration = new Configuration({
   basePath: "https://closeai.deno.dev/v1",
 });
 
+console.log('apikey=>', apiKey)
+
 const openai = new OpenAIApi(configuration);
 const app = express()
 const port = 4000
@@ -59,6 +62,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.post('/ask', async function (req: any, res: any) {
   try {
+    // stream workaround: https://github.com/openai/openai-node/issues/18#issuecomment-1369996933
     const completion = await openai.createChatCompletion(generatePayload(req.body.question))
     console.log(completion.data.choices)
     const result = completion.data.choices
@@ -90,11 +94,24 @@ app.post('/test', async function (req: any, res: any) {
   try {
     clipboard.writeText('test resp text')    
     try {
-      await activeApp(Singleton.getInstance().getRecentApp())
-      const result = await applySelection()
-      console.log('cmd + v success:', result)
+      // await activeApp(Singleton.getInstance().getRecentApp())
+      const content = await getBrowserContnet()
+      const plainText = h2p(content)
+      console.log('getBrowserContnet:', plainText)
+
+      const completion = await openai.createChatCompletion(generatePayload("请帮我总结一下这篇内容:" + plainText))
+      console.log(completion.data.choices)
+      const result = completion.data.choices
+      const respContent = result[0]['message']['content']
+      clipboard.writeText(respContent)
+      Singleton.getInstance().setCopyStateSource(true)
+      res.send({
+        code: 0,
+        result: result
+      })
+
     } catch(e) {
-      console.error('cmd + v error:', e)
+      console.error('getBrowserContnet:', e)
     }    
   } catch(e) {
     res.send({
