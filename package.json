@@ -22,7 +22,7 @@
   "lint-staged": {
     "*.{js,ts,jsx,tsx}": [
       "prettier --write",
-      "eslint --cache --fix",
+      "npm run format-check",
       "git add"
     ]
   },
