@@ -40,7 +40,7 @@ export function ChatPanel() {
 
   const atemptChange = () => {
     // @ts-ignore
-    // 删除markdown语法标识
+    // del markdown syntax token
     window.Main.attemptChange(chatState.resp.replace(/^`{3}[^\n]+|`{3}$/g, ''))
   }
 
@@ -76,7 +76,6 @@ export function ChatPanel() {
             </span>
             ?
           </span>
-          {/* 立即发问 */}
           <Button
             type="text"
             ghost
@@ -86,7 +85,7 @@ export function ChatPanel() {
           >
             Yes
           </Button>
-          {/* TODO：清空selection的值 */}
+          {/* TODO：clear the selections */}
           <Button type="text" ghost onClick={() => cancelRequest()}>
             No
           </Button>
