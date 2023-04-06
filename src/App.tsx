@@ -21,7 +21,6 @@ import {
 } from './features/preset/presetSlice'
 import { setVisible as setSettingVisible } from './features/setting/settingSlice'
 import { setSelection } from './features/clipboard/clipboardSlice'
-import { loadingGif } from './app/images'
 
 const { TextArea } = Input
 export function App() {
@@ -137,8 +136,6 @@ export function App() {
               size={'large'}
             />
           )}
-          {/* @ts-ignore */}
-          { chatState.inputDiabled ? <img style={styles.loading} src={loadingGif} /> : null}          
           <Logo />
         </div>
         <ChatPanel />
@@ -169,10 +166,5 @@ const styles = {
     justifyContent: 'space-between',
     alignItems: 'center',
     padding,
-  },
-  loading: {
-    position: 'absolute',
-    right: 100,
-    height: 70
   }
 }
