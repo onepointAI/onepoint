@@ -5,7 +5,7 @@ export const api = {
    * Emit events
    */
   setWinMouseIgnore: (ignore: boolean) => {
-    ipcRenderer.send('win_ignore_mouse', ignore)
+    ipcRenderer.send('winIgnoreMouse', ignore)
   },
   sendMessage: (message: string) => {
     ipcRenderer.send('message', message)

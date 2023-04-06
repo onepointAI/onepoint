@@ -24,7 +24,7 @@ export function listen(win: BrowserWindow | null) {
           win,
           visible: true,
         })
-        clipboard.writeText('')
+        // clipboard.writeText('')
       } catch (e) {
         Logger.error(e)
         setWindowVisile({

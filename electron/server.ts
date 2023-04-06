@@ -7,9 +7,8 @@ import { Singleton } from './global'
 
 const h2p = require('html2plaintext')
 const { Configuration, OpenAIApi } = require('openai')
-
 const store = new Store()
-const apiKey = store.get('ChatGPT_apikey')
+
 
 function generatePayload(content: string) {
   // const apiKey = store.get('api_key');
@@ -48,21 +47,38 @@ function generatePayload(content: string) {
   }
 }
 
-const configuration = new Configuration({
-  apiKey,
-  basePath: 'https://closeai.deno.dev/v1',
-})
+let openai = null as any
+function getAiInstance() {
+  if (openai) {
+    return openai
+  }
+  const apiKey = store.get('ChatGPT_apikey') as string
+  if (apiKey) {
+    return new OpenAIApi(new Configuration({
+      apiKey,
+      basePath: 'https://closeai.deno.dev/v1',
+    }))
+  }
+  return null
+}
 
-const openai = new OpenAIApi(configuration)
 const app = express()
 const port = 4000
 app.use(compression())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+
 app.post('/ask', async (req: any, res: any) => {
+  if (!getAiInstance()) {
+    res.send({
+      code: -1,
+      result: 'openkey not set!',
+    })
+    return
+  }
   try {
     // stream workaround: https://github.com/openai/openai-node/issues/18#issuecomment-1369996933
-    const completion = await openai.createChatCompletion(
+    const completion = await getAiInstance().createChatCompletion(
       generatePayload(req.body.question)
     )
     console.log(completion.data.choices)
@@ -93,6 +109,13 @@ app.post('/apply', async (req: any, res: any) => {
 
 app.post('/test', async (req: any, res: any) => {
   try {
+    if (!getAiInstance()) {
+      res.send({
+        code: -1,
+        result: 'openkey not set!',
+      })
+      return
+    }
     clipboard.writeText('test resp text')
     try {
       // await activeApp(Singleton.getInstance().getRecentApp())
@@ -100,7 +123,7 @@ app.post('/test', async (req: any, res: any) => {
       const plainText = h2p(content)
       console.log('getBrowserContnet:', plainText)
 
-      const completion = await openai.createChatCompletion(
+      const completion = await getAiInstance().createChatCompletion(
         generatePayload(`请帮我总结一下这篇内容:${plainText}`)
       )
       console.log(completion.data.choices)

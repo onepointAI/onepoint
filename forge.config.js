@@ -1,7 +1,7 @@
 module.exports = {
   packagerConfig: {
-    name: 'Electron starter',
-    executableName: 'electron-starter',
+    name: 'onepoint',
+    executableName: 'onepoint',
     icon: 'assets/icon',
     extraResource: ['assets'],
   },
@@ -9,6 +9,8 @@ module.exports = {
     {
       name: '@electron-forge/plugin-webpack',
       config: {
+        devContentSecurityPolicy:
+          "default-src * 'unsafe-inline' 'unsafe-eval'; script-src * 'unsafe-inline' 'unsafe-eval'; connect-src * 'unsafe-inline'; img-src * data: blob: file: 'unsafe-inline'; frame-src *; style-src * 'unsafe-inline';",
         mainConfig: './webpack/main.webpack.js',
         renderer: {
           config: './webpack/renderer.webpack.js',
@@ -29,9 +31,7 @@ module.exports = {
   makers: [
     {
       name: '@electron-forge/maker-squirrel',
-      config: {
-        name: 'Electron Starter',
-      },
+      config: {},
     },
     {
       name: '@electron-forge/maker-zip',

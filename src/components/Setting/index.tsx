@@ -17,8 +17,6 @@ export function Setting() {
   }, [])
 
   const onFinish = (values: any) => {
-    console.log('Finish:', values)
-
     // @ts-ignore
     window.Main.setStore(values.model + storeSuffix, values.apikey)
   }
@@ -71,11 +69,11 @@ export function Setting() {
               <Button
                 type="primary"
                 htmlType="submit"
-                disabled={
-                  !form.isFieldsTouched(true) ||
-                  !!form.getFieldsError().filter(({ errors }) => errors.length)
-                    .length
-                }
+                // disabled={
+                //   !form.isFieldsTouched(true) ||
+                //   !!form.getFieldsError().filter(({ errors }) => errors.length)
+                //     .length
+                // }
               >
                 Save
               </Button>

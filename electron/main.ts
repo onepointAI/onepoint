@@ -1,6 +1,7 @@
 import { app, BrowserWindow, ipcMain } from 'electron'
 import { setupStoreHandlers } from './store'
 import { Logger } from './util'
+import initLog from './log'
 import { setWindowVisile } from './window'
 import { listen as setupShortcutHandlers } from './shortcuts'
 import { listen as setupClipboardHandlers } from './clipboard'
@@ -9,6 +10,7 @@ require('./server')
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string
 declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string
+const userLog = initLog()
 let win: BrowserWindow | null
 
 function createWindow() {
@@ -33,7 +35,8 @@ function createWindow() {
       // preload: path.join(__static, "preload.js")
     },
   })
-  if (process.env.NODE_ENV !== 'production') {
+
+  if (!app.isPackaged) {
     win?.webContents.openDevTools({
       mode: 'bottom',
     })
@@ -55,7 +58,7 @@ async function registerListeners() {
   ipcMain.on('message', (_, message) => {
     Logger.log(message)
   })
-  ipcMain.on('win_ignore_mouse', (_, ignore) => {
+  ipcMain.on('winIgnoreMouse', (_, ignore) => {
     win?.setIgnoreMouseEvents(ignore, { forward: true })
   })
   setupClipboardHandlers(win)
@@ -70,9 +73,9 @@ app
   .catch(e => console.error(e))
 
 app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
-    app.quit()
-  }
+  // if (process.platform !== 'darwin') {
+  app.quit()
+  // }
 })
 
 app.on('activate', () => {
