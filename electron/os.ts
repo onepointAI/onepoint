@@ -1,16 +1,15 @@
-
-const applescript = require('applescript');
+const applescript = require('applescript')
 
 function runAppleScript(script: string) {
   return new Promise((resolve, reject) => {
     applescript.execString(script, (err: any, rtn: any) => {
       if (err) {
-        reject(err);
-        return;
+        reject(err)
+        return
       }
-      resolve(rtn);
-    });
-  });
+      resolve(rtn)
+    })
+  })
 }
 
 // TODO: 这种方法在vscode上哪怕没有选中也会复制一行
@@ -19,8 +18,8 @@ export function getSelection() {
     tell application "System Events" to keystroke "c" using {command down}
     delay 0.1
     set selectedText to the clipboard
-  `;
-  return runAppleScript(script);
+  `
+  return runAppleScript(script)
 }
 
 export function applySelection() {
@@ -28,16 +27,16 @@ export function applySelection() {
     tell application "System Events" to keystroke "v" using {command down}
     delay 1
     set selectedText to the clipboard
-  `;
-  return runAppleScript(script);
+  `
+  return runAppleScript(script)
 }
 
 export function getRecentApp() {
   const script = `
   tell application "System Events"
     set frontmostAppName to displayed name of first application process whose frontmost is true        
-  end tell`;
-  return runAppleScript(script);
+  end tell`
+  return runAppleScript(script)
 }
 
 export function activeApp(app: string) {
@@ -45,8 +44,8 @@ export function activeApp(app: string) {
     tell application "${app}"
       activate
     end tell  
-    `;
-  return runAppleScript(script);
+    `
+  return runAppleScript(script)
 }
 
 export function getBrowserContnet() {
@@ -59,6 +58,6 @@ export function getBrowserContnet() {
     end tell
     
   end tell
-  `;
-  return runAppleScript(script);
+  `
+  return runAppleScript(script)
 }

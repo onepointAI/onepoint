@@ -1,15 +1,15 @@
-import { clipboard } from 'electron';
-import compression from 'compression';
-import Store from 'electron-store';
-import express from 'express';
-import { activeApp, applySelection, getBrowserContnet } from './os';
-import { Singleton } from './global';
+import { clipboard } from 'electron'
+import compression from 'compression'
+import Store from 'electron-store'
+import express from 'express'
+import { activeApp, applySelection, getBrowserContnet } from './os'
+import { Singleton } from './global'
 
-const h2p = require('html2plaintext');
-const { Configuration, OpenAIApi } = require('openai');
+const h2p = require('html2plaintext')
+const { Configuration, OpenAIApi } = require('openai')
 
-const store = new Store();
-const apiKey = store.get('ChatGPT_apikey');
+const store = new Store()
+const apiKey = store.get('ChatGPT_apikey')
 
 function generatePayload(content: string) {
   // const apiKey = store.get('api_key');
@@ -45,80 +45,84 @@ function generatePayload(content: string) {
     // 数值介于-2.0和2.0之间。正值将根据到目前为止新token是否出现在文本中来惩罚新token，从而增加模型谈论新主题的可能性。
     // 详见 《ChatGPT模型中的惩罚机制》
     presence_penalty: 1,
-  };
+  }
 }
 
 const configuration = new Configuration({
   apiKey,
   basePath: 'https://closeai.deno.dev/v1',
-});
+})
 
-const openai = new OpenAIApi(configuration);
-const app = express();
-const port = 4000;
-app.use(compression());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+const openai = new OpenAIApi(configuration)
+const app = express()
+const port = 4000
+app.use(compression())
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
 app.post('/ask', async (req: any, res: any) => {
   try {
     // stream workaround: https://github.com/openai/openai-node/issues/18#issuecomment-1369996933
-    const completion = await openai.createChatCompletion(generatePayload(req.body.question));
-    console.log(completion.data.choices);
-    const result = completion.data.choices;
-    const respContent = result[0].message.content;
-    clipboard.writeText(respContent);
-    Singleton.getInstance().setCopyStateSource(true);
+    const completion = await openai.createChatCompletion(
+      generatePayload(req.body.question)
+    )
+    console.log(completion.data.choices)
+    const result = completion.data.choices
+    const respContent = result[0].message.content
+    clipboard.writeText(respContent)
+    Singleton.getInstance().setCopyStateSource(true)
     res.send({
       code: 0,
       result,
-    });
+    })
   } catch (e) {
     res.send({
       code: -1,
       result: e,
-    });
+    })
   }
-});
+})
 
 app.post('/apply', async (req: any, res: any) => {
-  await activeApp(Singleton.getInstance().getRecentApp());
-  const result = await applySelection();
+  await activeApp(Singleton.getInstance().getRecentApp())
+  const result = await applySelection()
   res.send({
     code: 0,
     result,
-  });
-});
+  })
+})
 
 app.post('/test', async (req: any, res: any) => {
   try {
-    clipboard.writeText('test resp text');
+    clipboard.writeText('test resp text')
     try {
       // await activeApp(Singleton.getInstance().getRecentApp())
-      const content = await getBrowserContnet();
-      const plainText = h2p(content);
-      console.log('getBrowserContnet:', plainText);
+      const content = await getBrowserContnet()
+      const plainText = h2p(content)
+      console.log('getBrowserContnet:', plainText)
 
-      const completion = await openai.createChatCompletion(generatePayload(`请帮我总结一下这篇内容:${plainText}`));
-      console.log(completion.data.choices);
-      const result = completion.data.choices;
-      const respContent = result[0].message.content;
-      clipboard.writeText(respContent);
-      Singleton.getInstance().setCopyStateSource(true);
+      const completion = await openai.createChatCompletion(
+        generatePayload(`请帮我总结一下这篇内容:${plainText}`)
+      )
+      console.log(completion.data.choices)
+      const result = completion.data.choices
+      const respContent = result[0].message.content
+      clipboard.writeText(respContent)
+      Singleton.getInstance().setCopyStateSource(true)
       res.send({
         code: 0,
         result,
-      });
+      })
     } catch (e) {
-      console.error('getBrowserContnet:', e);
+      console.error('getBrowserContnet:', e)
     }
   } catch (e) {
     res.send({
       code: -1,
       result: e,
-    });
+    })
   }
-});
+})
 
 app.listen(port, async () => {
-  console.log(`onepoint listening on port ${port}!`);
-});
+  console.log(`onepoint listening on port ${port}!`)
+})

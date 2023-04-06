@@ -1,9 +1,7 @@
-import React from 'react';
-import {
-  Avatar, List, Skeleton, Divider,
-} from 'antd';
-import { useAppSelector, useAppDispatch } from '../../app/hooks';
-import { setListVisible as setPresetListVisible } from '../../features/preset/presetSlice';
+import React from 'react'
+import { Avatar, List, Skeleton, Divider } from 'antd'
+import { useAppSelector, useAppDispatch } from '../../app/hooks'
+import { setListVisible as setPresetListVisible } from '../../features/preset/presetSlice'
 
 export interface PresetType {
   logo: string
@@ -16,11 +14,11 @@ interface Props {
   onPresetChange: () => unknown
 }
 
-const padding = 15;
+const padding = 15
 export function Preset(props: Props) {
-  const { onPresetChange } = props;
-  const presetState = useAppSelector((state) => state.preset);
-  const dispatch = useAppDispatch();
+  const { onPresetChange } = props
+  const presetState = useAppSelector(state => state.preset)
+  const dispatch = useAppDispatch()
 
   return presetState.listVisible ? (
     <>
@@ -33,17 +31,20 @@ export function Preset(props: Props) {
           itemLayout="horizontal"
           // loadMore={loadMore}
           dataSource={presetState.builtInPlugins}
-          renderItem={(item) => (
+          renderItem={item => (
             <List.Item
               className="ant-list-item"
               actions={[
-                <a key="list-loadmore-edit" style={{ marginRight: padding, color: '#a6a6a6' }}>
+                <a
+                  key="list-loadmore-edit"
+                  style={{ marginRight: padding, color: '#a6a6a6' }}
+                >
                   Edit
                 </a>,
               ]}
               onClick={() => {
-                onPresetChange(item.title);
-                dispatch(setPresetListVisible(false));
+                onPresetChange(item.title)
+                dispatch(setPresetListVisible(false))
               }}
             >
               <Skeleton avatar title={false} loading={item.loading} active>
@@ -59,7 +60,7 @@ export function Preset(props: Props) {
         />
       </div>
     </>
-  ) : null;
+  ) : null
 }
 
 const styles = {
@@ -67,4 +68,4 @@ const styles = {
     // display: 'flex',
     // flexDirection: 'row',
   },
-};
+}

@@ -1,11 +1,10 @@
-import { chat, translate, code, post,
-} from './images';
+import { chat, translate, code, post } from './images'
 
-export const Casual = 'Casual';
-export const Translate = 'Translate';
-export const Summarize = 'Summarize';
-export const Prettier = 'Prettier';
-export const Analyze = 'Analyze';
+export const Casual = 'Casual'
+export const Translate = 'Translate'
+export const Summarize = 'Summarize'
+export const Prettier = 'Prettier'
+export const Analyze = 'Analyze'
 
 export const BuiltInPlugins = [
   {
@@ -35,4 +34,4 @@ export const BuiltInPlugins = [
     loading: false,
     inputDisable: true,
   },
-];
+]

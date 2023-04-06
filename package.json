@@ -11,7 +11,9 @@
     "make": "electron-forge make",
     "release": "electron-forge publish",
     "lint": "eslint . --ext js,ts",
-    "fix": "eslint --ext .ts,.tsx --fix .",
+    "lint-fix": "eslint --ext .ts,.tsx --fix .",
+    "format": "prettier --write .",
+    "format-check": "prettier --check .",
     "test": "jest",
     "rebuild": "./node_modules/.bin/electron-rebuild"
   },

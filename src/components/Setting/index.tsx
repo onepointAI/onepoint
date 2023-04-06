@@ -1,29 +1,27 @@
-import { useEffect, useState } from 'react';
-import {
-  Button, Form, Input, Select, Divider,
-} from 'antd';
-import { LockOutlined } from '@ant-design/icons';
+import { useEffect, useState } from 'react'
+import { Button, Form, Input, Select, Divider } from 'antd'
+import { LockOutlined } from '@ant-design/icons'
 
-import { useAppSelector } from '../../app/hooks';
+import { useAppSelector } from '../../app/hooks'
 
-const storeSuffix = '_apikey';
+const storeSuffix = '_apikey'
 export function Setting() {
-  const [form] = Form.useForm();
-  const [, forceUpdate] = useState({});
-  const settingState = useAppSelector((state) => state.setting);
+  const [form] = Form.useForm()
+  const [, forceUpdate] = useState({})
+  const settingState = useAppSelector(state => state.setting)
   // const dispatch = useAppDispatch()
 
   // To disable submit button at the beginning.
   useEffect(() => {
-    forceUpdate({});
-  }, []);
+    forceUpdate({})
+  }, [])
 
   const onFinish = (values: any) => {
-    console.log('Finish:', values);
+    console.log('Finish:', values)
 
     // @ts-ignore
-    window.Main.setStore(values.model + storeSuffix, values.apikey);
-  };
+    window.Main.setStore(values.model + storeSuffix, values.apikey)
+  }
 
   return settingState.visible ? (
     <>
@@ -45,9 +43,11 @@ export function Setting() {
               showSearch
               placeholder="ai model"
               optionFilterProp="children"
-              filterOption={(input, option) => (option?.label ?? '')
-                .toLowerCase()
-                .includes(input.toLowerCase())}
+              filterOption={(input, option) =>
+                (option?.label ?? '')
+                  .toLowerCase()
+                  .includes(input.toLowerCase())
+              }
               options={[
                 {
                   value: 'ChatGPT',
@@ -72,8 +72,8 @@ export function Setting() {
                 type="primary"
                 htmlType="submit"
                 disabled={
-                  !form.isFieldsTouched(true)
-                  || !!form.getFieldsError().filter(({ errors }) => errors.length)
+                  !form.isFieldsTouched(true) ||
+                  !!form.getFieldsError().filter(({ errors }) => errors.length)
                     .length
                 }
               >
@@ -84,7 +84,7 @@ export function Setting() {
         </Form>
       </div>
     </>
-  ) : null;
+  ) : null
 }
 
 const styles = {
@@ -94,4 +94,4 @@ const styles = {
     paddingTop: 30,
     paddingBottom: 40,
   },
-};
+}
