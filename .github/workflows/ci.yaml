@@ -41,7 +41,7 @@ jobs:
 
       - name: Check formatting
         if: ${{ matrix.os != 'windows-latest' }}
-        run: yan format-check
+        run: yarn format-check
 
       # - name: Package
       #   run: npm run package
