@@ -21,6 +21,7 @@ import {
 } from './features/preset/presetSlice'
 import { setVisible as setSettingVisible } from './features/setting/settingSlice'
 import { setSelection } from './features/clipboard/clipboardSlice'
+import { loadingGif } from './app/images'
 
 const { TextArea } = Input
 export function App() {
@@ -34,10 +35,6 @@ export function App() {
   useRef<HTMLTextAreaElement>(null)
 
   useEffect(() => {
-    console.log('selectTxt change=>', clipboardState.selectTxt)
-  }, [clipboardState.selectTxt])
-
-  useEffect(() => {
     window.addEventListener('mousemove', event => {
       // TODO
       // let flag = event.target === document.documentElement
@@ -48,34 +45,37 @@ export function App() {
       setQuestion(text)
     })
 
-    window.Main.on('selection_change', (selection: {txt: string, app: string}) => {
-      const { txt, app } = selection
-      // @ts-ignore
-      dispatch(setSelection({ txt, app}))
-      dispatch(setChatVisible(!!txt && !!app))
-    })
+    window.Main.on(
+      'selection_change',
+      (selection: { txt: string; app: string }) => {
+        const { txt, app } = selection
+        // @ts-ignore
+        dispatch(setSelection({ txt, app }))
+        dispatch(setChatVisible(!!txt && !!app))
+      }
+    )
   }, [])
 
   const onInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const val = e.target.value
-    switch(val) {
+    switch (val) {
       case '/':
         dispatch(setPresetListVisible(true))
         dispatch(setSettingVisible(false))
         dispatch(setChatVisible(false))
-        break;
-      case '/s':  
+        break
+      case '/s':
         dispatch(setPresetListVisible(false))
         dispatch(setSettingVisible(true))
         dispatch(setChatVisible(false))
-        break;
+        break
       default:
         dispatch(setPresetListVisible(false))
         dispatch(setSettingVisible(false))
         dispatch(setChatVisible(false))
-    }    
+    }
     setQuestion(val)
   }
 
@@ -92,12 +92,17 @@ export function App() {
     if (!question) return
     dispatch(setInputDisabled(true))
     dispatch(
-      // @ts-ignore
-      fetchChatResp(`${presetMap[presetState.currentPreset]}${question}`)
+      fetchChatResp({
+        // @ts-ignore
+        question: `${presetMap[presetState.currentPreset]}${question}
+      `,
+      })
     )
-  }  
+  }
 
-  const preset = presetState.builtInPlugins.filter(p => p.title === presetState.currentPreset)
+  const preset = presetState.builtInPlugins.filter(
+    p => p.title === presetState.currentPreset
+  )
   const presetIcon = preset.length > 0 ? preset[0].logo : null
 
   return (
@@ -105,8 +110,10 @@ export function App() {
       <GlobalStyle />
       <div style={styles.container}>
         {/* @ts-ignore */}
-        <div style={styles.inputWrap}>
-          { presetIcon ? <Image width={30} preview={false} src={presetIcon} /> : null }
+        <div style={styles.inputWrap}>          
+          {presetIcon ? (
+            <Image width={30} preview={false} src={presetIcon} />
+          ) : null}
           {inputVisible ? (
             <Input
               placeholder="Enter '/' to process the selection, or directly enter the box to ask questions"
@@ -130,20 +137,13 @@ export function App() {
               size={'large'}
             />
           )}
-          {/* <Select
-            defaultValue={preset}
-            style={{ width: 150 }}
-            bordered={false}
-            options={getPresetOpts()}
-            onChange={(text: string) => setPreset(text)}
-            value={preset}
-          /> */}
+          {/* @ts-ignore */}
+          { chatState.inputDiabled ? <img style={styles.loading} src={loadingGif} /> : null}          
           <Logo />
         </div>
         <ChatPanel />
         <Preset onPresetChange={onPresetChange} />
         <Setting />
-        {/* { historyVisible ? <History /> : null } */}
       </div>
     </>
   )
@@ -160,6 +160,7 @@ const styles = {
     overflow: 'hidden',
   },
   inputWrap: {
+    position: 'relative',
     display: 'flex',
     flexDirection: 'row',
     border: 'none',
@@ -169,4 +170,9 @@ const styles = {
     alignItems: 'center',
     padding,
   },
+  loading: {
+    position: 'absolute',
+    right: 100,
+    height: 70
+  }
 }

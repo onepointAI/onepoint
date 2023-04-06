@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { Divider, Button } from 'antd'
 import { useAppSelector, useAppDispatch } from '../../app/hooks'
 
@@ -6,23 +7,38 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { atomDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
 
 import { fetchChatResp } from '../../features/chat/chatSlice'
-import { presetMap } from '../../features/preset/presetSlice'
+import { presetMap, PresetType } from '../../features/preset/presetSlice'
+import { BuiltInPlugins } from '../../app/constants'
 
 export function ChatPanel() {
   const chatState = useAppSelector(state => state.chat)
   const presetState = useAppSelector(state => state.preset)
-  const clipboardState = useAppSelector(state => state.clipboard)
+  const clipboardState = useAppSelector(state => state.clipboard)    
+  const [showSelection, setShowSelection] = useState<boolean>(false)
+  const [usePlugin, setUsePlugin] = useState<PresetType>()
   const dispatch = useAppDispatch()
 
+  useEffect(() => {
+    // TODO: should use id
+    const plugin = BuiltInPlugins.filter(item => presetState.currentPreset === item.title)[0]
+    setUsePlugin(plugin)
+  }, [presetState.currentPreset])
+
+  useEffect(() => {
+    setShowSelection(!!clipboardState.selectTxt && !!clipboardState.selectApp && !!usePlugin?.inputDisable)
+  },[clipboardState.selectTxt, clipboardState.selectApp, usePlugin?.inputDisable])
+  
   const atemptChange = () => {
     // @ts-ignore
-    window.Main.attemptChange(chatState.resp)
+    // 删除markdown语法标识
+    window.Main.attemptChange(chatState.resp.replace(/^`{3}[^\n]+|`{3}$/g, ''))
   }
 
   const doRequest = (txt: string) => {
     // @ts-ignore
     const qaTpl = presetMap[presetState.currentPreset] as string
     const qa = qaTpl + txt
+    setShowSelection(false)
     dispatch(
       fetchChatResp({
         question: qa,
@@ -30,18 +46,20 @@ export function ChatPanel() {
     )
   }
 
-  const hasSelection = clipboardState.selectTxt && clipboardState.selectApp
-
-  return chatState.visible && (hasSelection || chatState.resp)? (
+  const cancelRequest = () => {
+    setShowSelection(false)
+  }  
+  
+  return chatState.visible && (showSelection || chatState.resp)? (
     <>
       <Divider style={{ margin: 0 }} />
-      {hasSelection ? (
+      {showSelection ? (
         <div style={styles.selectionWrap}>
           <span style={styles.selection}>
-            Sure operate{' '}
-            <span style={styles.selectTxt}>{`${
+            Sure operate the selection
+            {/* <span style={styles.selectTxt}>{`${
               String(clipboardState?.selectTxt)?.substring(0, 50) + '...'
-            }`}</span>{' '}
+            }`}</span>{' '} */}
             in{' '}
             <span
               style={styles.selectApp}
@@ -53,12 +71,13 @@ export function ChatPanel() {
             type="text"
             ghost
             danger
+            style={{ color: "rgb(255, 90, 0)" }}
             onClick={() => doRequest(clipboardState.selectTxt)}
           >
             Yes
           </Button>
           {/* TODO：清空selection的值 */}
-          <Button type="text" ghost>
+          <Button type="text" ghost onClick={() => cancelRequest()}>
             No
           </Button>
         </div>
@@ -91,7 +110,7 @@ export function ChatPanel() {
           {chatState.resp ? (
             <>
               <Divider style={{ margin: '25 0 0 0' }} />
-              <Button type="text" block onClick={atemptChange}>
+              <Button type="text" block onClick={atemptChange} style={{ fontSize: 12, fontWeight: "bold" }}>
                 Attempt Change
               </Button>
             </>
@@ -117,9 +136,11 @@ const styles = {
   },
   selectApp: {
     fontStyle: 'italic',
-    marginLeft: 4,
-    marginRight: 4,
-    color: 'rgb(255, 90, 0)',
+    fontSize: 15,
+    fontWeight: "bold",
+    // marginLeft: 4,
+    // marginRight: 4,
+    // color: 'rgb(255, 90, 0)',
   },
   selectTxt: {
     fontStyle: 'italic',

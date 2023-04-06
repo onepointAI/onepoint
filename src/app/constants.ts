@@ -18,17 +18,20 @@ export const BuiltInPlugins = [
     id: Translate,
     title: Translate,
     loading: false,
+    inputDisable: true,
   },
   {
     logo: code,
     id: Prettier,
     title: Prettier,
     loading: false,
+    inputDisable: true,
   },
   {
     logo: post,
     id: Analyze,
     title: Analyze,
     loading: false,
+    inputDisable: true,
   },
 ]

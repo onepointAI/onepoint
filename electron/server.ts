@@ -52,8 +52,6 @@ const configuration = new Configuration({
   basePath: "https://closeai.deno.dev/v1",
 });
 
-console.log('apikey=>', apiKey)
-
 const openai = new OpenAIApi(configuration);
 const app = express()
 const port = 4000

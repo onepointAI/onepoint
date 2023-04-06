@@ -42,6 +42,7 @@ export const fetchChatResp = createAsyncThunk(
     { dispatch }
   ) => {
     const { question } = args
+    dispatch(setInputDisabled(true))
     await axios
       .post(`http://127.0.0.1:4000/ask`, {
         question,

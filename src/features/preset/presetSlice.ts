@@ -12,15 +12,16 @@ export const presetMap = {
   [Casual]: '',
   [Translate]: '请翻译以下内容：',
   [Summarize]: '请总结以下内容：',
-  [Prettier]: '请直接重构这段代码：',
+  [Prettier]: '请重构这段代码，并返回高亮显示的语法(markdown)，注意不需要辅助说明：',
   [Analyze]: '请分析以下内容的含义：',
 }
 
-interface PresetType {
+export interface PresetType {
   logo: string
   id: string
   title: string
   loading: boolean
+  inputDisable?: boolean
 }
 
 interface PresetModule {
