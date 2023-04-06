@@ -13,8 +13,6 @@ export class Singleton {
   }
 
   public setRecentApp(app: string) {
-    let testdad
-    d24
     Singleton.recentApp = app
   }
 

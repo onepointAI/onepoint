@@ -16,14 +16,13 @@
     "format": "prettier --write .",
     "format-check": "prettier --check .",
     "test": "jest",
-    "prepare": "husky install", 
+    "prepare": "husky install",
     "rebuild": "./node_modules/.bin/electron-rebuild"
   },
   "lint-staged": {
     "*.{js,ts,jsx,tsx}": [
       "prettier --write",
-      "npm run format-check",
-      "git add"
+      "npm run format-check"
     ]
   },
   "keywords": [],
