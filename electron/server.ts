@@ -9,7 +9,6 @@ const h2p = require('html2plaintext')
 const { Configuration, OpenAIApi } = require('openai')
 const store = new Store()
 
-
 function generatePayload(content: string) {
   // const apiKey = store.get('api_key');
   // const payload = generatePayload(
@@ -54,10 +53,12 @@ function getAiInstance() {
   }
   const apiKey = store.get('ChatGPT_apikey') as string
   if (apiKey) {
-    return new OpenAIApi(new Configuration({
-      apiKey,
-      basePath: 'https://closeai.deno.dev/v1',
-    }))
+    return new OpenAIApi(
+      new Configuration({
+        apiKey,
+        basePath: 'https://closeai.deno.dev/v1',
+      })
+    )
   }
   return null
 }
