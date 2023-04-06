@@ -4,7 +4,7 @@ import {
 } from 'antd';
 import { LockOutlined } from '@ant-design/icons';
 
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { useAppSelector } from '../../app/hooks';
 
 const storeSuffix = '_apikey';
 export function Setting() {

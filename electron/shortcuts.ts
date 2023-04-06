@@ -1,7 +1,5 @@
 import {
-  app,
   BrowserWindow,
-  ipcMain,
   clipboard,
   globalShortcut,
 } from 'electron';

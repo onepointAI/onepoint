@@ -1,7 +1,7 @@
 export class Singleton {
   private static instance: Singleton;
 
-  private static copyFromElectron: boolean = false;
+  private static copyFromElectron = false;
 
   private static recentApp: string;
 

@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   Avatar, List, Skeleton, Divider,
 } from 'antd';
@@ -12,7 +13,7 @@ export interface PresetType {
 }
 
 interface Props {
-  onPresetChange: (preset: string) => unknown
+  onPresetChange: () => unknown
 }
 
 const padding = 15;

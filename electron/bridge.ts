@@ -19,7 +19,7 @@ export const api = {
   /**
    * Provide an easier way to listen to events
    */
-  on: (channel: string, callback: Function) => {
+  on: (channel: string, callback: (data: any) => void) => {
     ipcRenderer.on(channel, (_, data) => callback(data));
   },
 };

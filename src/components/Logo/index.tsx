@@ -1,5 +1,5 @@
 import { Image } from 'antd';
-import { brand, searchLogo, logoLoading } from '../../app/images';
+import { searchLogo, logoLoading } from '../../app/images';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 
 import { setVisible as setChatVisible } from '../../features/chat/chatSlice';

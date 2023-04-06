@@ -1,4 +1,3 @@
-import os from 'os';
 
 const applescript = require('applescript');
 

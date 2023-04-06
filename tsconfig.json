@@ -14,5 +14,12 @@
     "outDir": "./dist",
     "strict": true ,
     "esModuleInterop": true,
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      }
+    }
   }
 }

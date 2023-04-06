@@ -1,5 +1,4 @@
-import {
-  logo, chat, translate, code, post,
+import { chat, translate, code, post,
 } from './images';
 
 export const Casual = 'Casual';
