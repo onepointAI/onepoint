@@ -37,11 +37,11 @@ jobs:
       #   run: ./setup.ps1
 
       - name: Install dependencies
-        run: npm ci
+        run: yarn
 
       - name: Check formatting
         if: ${{ matrix.os != 'windows-latest' }}
-        run: npm run format-check
+        run: yan format-check
 
       # - name: Package
       #   run: npm run package
