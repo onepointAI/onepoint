@@ -1,4 +1,4 @@
-import { BrowserWindow, clipboard, globalShortcut } from 'electron'
+import { BrowserWindow, globalShortcut } from 'electron'
 
 import { getSelection, getRecentApp } from './os'
 import { Logger } from './util'

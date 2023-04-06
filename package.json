@@ -21,8 +21,8 @@
   },
   "lint-staged": {
     "*.{js,ts,jsx,tsx}": [
-      "prettier --write",
-      "npm run format-check"
+      "yarn format",
+      "yarn lint"
     ]
   },
   "keywords": [],
@@ -49,6 +49,8 @@
     "@babel/preset-env": "7.14.5",
     "@babel/preset-react": "7.14.5",
     "@babel/preset-typescript": "7.14.5",
+    "@commitlint/cli": "^17.5.1",
+    "@commitlint/config-conventional": "^17.4.4",
     "@electron-forge/cli": "^6.0.4",
     "@electron-forge/maker-deb": "^6.0.4",
     "@electron-forge/maker-rpm": "^6.0.4",
@@ -73,7 +75,9 @@
     "ajv-formats": "^2.1.1",
     "antd": "^5.3.3",
     "babel-loader": "8.2.2",
+    "commitizen": "^4.3.0",
     "cross-env": "7.0.3",
+    "cz-conventional-changelog": "^3.3.0",
     "electron": "^24.0.0",
     "electron-rebuild": "^3.2.9",
     "eslint": "^8.37.0",

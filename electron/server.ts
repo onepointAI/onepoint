@@ -53,12 +53,13 @@ function getAiInstance() {
   }
   const apiKey = store.get('ChatGPT_apikey') as string
   if (apiKey) {
-    return new OpenAIApi(
+    openai = new OpenAIApi(
       new Configuration({
         apiKey,
         basePath: 'https://closeai.deno.dev/v1',
       })
     )
+    return openai
   }
   return null
 }
