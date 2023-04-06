@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 
 export const Container = styled.button`
   height: 42px;
@@ -25,4 +25,4 @@ export const Container = styled.button`
   &:active {
     filter: brightness(0.7);
   }
-`
+`;

@@ -1,4 +1,4 @@
-import styled, { keyframes } from 'styled-components'
+import styled, { keyframes } from 'styled-components';
 
 const rotate = keyframes`
   from {
@@ -7,7 +7,7 @@ const rotate = keyframes`
   to {
     transform: rotate(360deg);
   }
-`
+`;
 
 const scale = keyframes`
   0% {
@@ -19,7 +19,7 @@ const scale = keyframes`
   100% {
     transform: scale(1);
   }
-`
+`;
 
 const bounceInDown = keyframes`
   from,
@@ -51,7 +51,7 @@ const bounceInDown = keyframes`
   to {
     transform: translate3d(0, 0, 0);
   }
-`
+`;
 
 export const Container = styled.div`
   background-color: "#FFF",
@@ -62,19 +62,19 @@ export const Container = styled.div`
   button {
     margin-top: 24px;
   }
-`
+`;
 
 export const Image = styled.img`
   width: 240px;
   animation: ${rotate} 15s linear infinite;
-`
+`;
 
 export const Text = styled.p`
   margin-top: 24px;
   font-size: 18px;
-`
+`;
 
 export const Logo = styled.img`
   width: 100px;
   animation: ${bounceInDown} 2s linear infinite;  
-`
+`;

@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface ClipboardModule {
   selectTxt: string
@@ -13,19 +13,19 @@ interface Selection {
 export const initialState: ClipboardModule = {
   selectTxt: '',
   selectApp: '',
-}
+};
 
 export const clipboardSlice = createSlice({
   name: 'clipboard',
   initialState,
   reducers: {
     setSelection: (state, action: PayloadAction<Selection>) => {
-      const { payload } = action
-      state.selectTxt = payload.txt
-      state.selectApp = payload.app
+      const { payload } = action;
+      state.selectTxt = payload.txt;
+      state.selectApp = payload.app;
     },
   },
-})
+});
 
-export const { setSelection } = clipboardSlice.actions
-export default clipboardSlice.reducer
+export const { setSelection } = clipboardSlice.actions;
+export default clipboardSlice.reducer;

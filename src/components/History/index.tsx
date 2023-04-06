@@ -1,13 +1,15 @@
-import { Avatar, List, Skeleton, Divider } from 'antd'
+import {
+  Avatar, List, Skeleton, Divider,
+} from 'antd';
 
-const logo = 'https://i.postimg.cc/tTJ3yHM9/pointer.png'
+const logo = 'https://i.postimg.cc/tTJ3yHM9/pointer.png';
 interface PresetType {
   logo: string
   title: string
   loading: boolean
 }
 
-const padding = 15
+const padding = 15;
 
 // interface PresetType {
 //   logo: string
@@ -54,7 +56,7 @@ export function History(props: Props) {
         /> */}
       </div>
     </>
-  )
+  );
 }
 
 const styles = {
@@ -62,4 +64,4 @@ const styles = {
     // display: 'flex',
     // flexDirection: 'row',
   },
-}
+};
