@@ -13,6 +13,7 @@ export class Singleton {
   }
 
   public setRecentApp(app: string) {
+    let test
     Singleton.recentApp = app
   }
 
