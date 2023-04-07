@@ -42,6 +42,11 @@ With ChatGPT technology, users can continuously train Onepoint to generate and r
  
 ## 01 Features
 
+<div align=center>
+     <img align="center" src="https://raw.githubusercontent.com/onepointAI/onepoint/main/assets/banner/demo.gif" />
+     <br/>
+</div>
+
 **Basical**
 
 - Provide quick and concise functional access points that act globally and allow for immediate use.
@@ -77,8 +82,10 @@ If you encounter any bugs or have other feature requests, please feel free to su
 Welcome to submit a Pull Request (PR) or provide constructive feedback for us. Let's do something interesting together.
 
 ```
-git clone git@github.com:onepointAI/onepoint.git
-cd onepoint
-yarn
-yarn start
+> git clone git@github.com:onepointAI/onepoint.git
+> cd onepoint
+> yarn
+> yarn start
 ```
+
+# Display GitHub Action Badge [![CI/CD](https://github.com/elbruno/AzureApiBadge/actions/workflows/azure-static-web-apps-victorious-wave-00360790f.yml/badge.svg)](https://github.com/elbruno/AzureApiBadge/actions/workflows/azure-static-web-apps-victorious-wave-00360790f.yml)

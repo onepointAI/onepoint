@@ -25,6 +25,11 @@ Onepoint 是一款基于 Electron 的开源 AI 助手，旨在打造极致的桌
 
 ## 01 功能
 
+<div align=center>
+     <img align="center" src="https://raw.githubusercontent.com/onepointAI/onepoint/main/assets/banner/demo.gif" />
+     <br/>
+</div>
+
 **基础**
 
 - 提供快捷、简约的功能入口，并作用全局，即用即走
@@ -56,8 +61,8 @@ Onepoint 是一款基于 Electron 的开源 AI 助手，旨在打造极致的桌
 欢迎为我们提交 PR，或具有建设性的意见，一起做点有意思的事情
 
 ```
-git clone git@github.com:onepointAI/onepoint.git
-cd onepoint
-yarn
-yarn start
+> git clone git@github.com:onepointAI/onepoint.git
+> cd onepoint
+> yarn
+> yarn start
 ```
