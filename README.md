@@ -27,6 +27,7 @@
   </div>
   <div>
     <img alt="GitHub Actions" src="https://github.com/onepointAI/onepoint/actions/workflows/ci.yaml/badge.svg?branch=main" />
+    <img alt="PR Welcome" src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" />
     <img src="https://img.shields.io/github/license/onepointAI/onepoint?style=flat-square" />
   </div>
    <br/>
@@ -88,3 +89,13 @@ Welcome to submit a Pull Request (PR) or provide constructive feedback for us. L
 > yarn
 > yarn start
 ```
+
+## 04 Vision & Roadmap
+
+In the long term, we hope to develop onepoint into a personalized intelligent assistant tool that extends the capabilities of various editing and reading software. At the same time, we aim to enrich its functionality through scalable plugin mechanisms, making it not only a tool but also an entry point that can help or inspire you in front of your screen.
+
+- High availability: fast and convenient access with good user experience, such as minimal interference, elegant interface and interaction, and high performance.
+- Personalized service: providing users with tuning mechanisms to customize their personal intelligent assistants.
+- Efficient output: not to replace certain tools but to complement and enhance the capabilities of existing editors.
+- Reading assistance: summarizing and organizing reading scenarios to improve the ability and speed of information acquisition.
+- Creative play: providing plugin mechanisms as an entry point to meet various scenarios and providing an NFT ecosystem with a harmonious and friendly technical community atmosphere.
