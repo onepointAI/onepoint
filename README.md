@@ -1,20 +1,40 @@
 # onepoint
 
-<div align= "center">
-     <img align="center" width=200 src="https://raw.githubusercontent.com/onepointAI/onepoint/main/assets/banner/brand_nobg.png" />
-</div>
 
 <p>
      English | <a href="README-CN.md">中文</a>
 </p>
 
-### Onepoint
+<div align= "center">
+     <img align="center" width=300 src="https://raw.githubusercontent.com/onepointAI/onepoint/main/assets/banner/brand_nobg.png" />
+</div>
+
+<div align=center>
+  <br/>
+  <div>
+    <a href="https://github.com/onepointAI/onepoint/releases/latest">
+      <img alt="macOS" src="https://img.shields.io/badge/-macOS-black?style=flat-square&logo=apple&logoColor=white" />
+    </a>
+    <a href="https://github.com/onepointAI/onepoint/releases/latest">
+      <img alt="Windows" src="https://img.shields.io/badge/-Windows-blue?style=flat-square&logo=windows&logoColor=white" />
+    </a>
+    <a href="https://github.com/onepointAI/onepointreleases/latest">
+      <img alt="Linux" src="https://img.shields.io/badge/-Linux-yellow?style=flat-square&logo=linux&logoColor=white" />
+    </a>
+  </div>
+  <div>
+    <img src="https://img.shields.io/github/license/onepointAI/onepoint?style=flat-square" />
+  </div>
+   <br/>
+</div>
 
 Onepoint is an open-source AI assistant based on Electron, designed to create the ultimate desktop productivity tool. Its initial goal was to develop a smart floating window similar to Apple's intelligent assistant that does not take up desktop space or system performance and can be quickly accessed through global hotkeys for user convenience.
 
 With ChatGPT technology, users can continuously train Onepoint to generate and reconstruct content with greater accuracy (onpoint), thereby improving efficiency. Onepoint currently supports various editing scenarios such as VSCode, Pages, Microsoft Word, Email etc., as well as reading scenarios like Safari and Chrome, achieving true full-scene intelligent coverage.
 
-## Features
+ <br/>
+ 
+## 01 Features
 
 **Basical**
 
@@ -36,15 +56,17 @@ With ChatGPT technology, users can continuously train Onepoint to generate and r
 - Account balance inquiry.
 - Multi-language support.
 
-## Getting Started
+ <br/>
+ 
+## 02 Getting Started
 
 Please go to the [official website](https://www.1ptai.com/) to download and try out the tool.
 
 If you encounter any bugs or have other feature requests, please feel free to submit an issue or related PR. You will not only receive our appreciation 👍 but also have the chance to receive a personalized avatar image, which will be gifted to your wallet for free in the form of an [NFT](https://opensea.io/zh-CN/collection/onepointai-collection) (specific rules are still being formulated).
 
-<img align="center" src="https://i.seadn.io/gcs/files/2af14d6872f7132e79ab9372e22e5e1a.png?auto=format&w=3840">
+ <br/>
 
-## Development
+## 03 Development
 
 Welcome to submit a Pull Request (PR) or provide constructive feedback for us. Let's do something interesting together.
 
