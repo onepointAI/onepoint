@@ -1,65 +1,63 @@
 # onepoint
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://user-images.githubusercontent.com/1651790/224081217-86521beb-1b69-4071-b195-f2ce0bb33db7.png">
-  <img alt="NebulaGraph Data Intelligence Suite(ngdi)" src="https://user-images.githubusercontent.com/1651790/224081979-d3aa7867-94a6-4a85-a5d7-603e02360cee.png">
-</picture>
-<p align="center">
-    <br> English | <a href="README-CN.md">中文</a>
+<div align= "center">
+     <img align="center" width=200 src="https://raw.githubusercontent.com/onepointAI/onepoint/main/assets/banner/brand_nobg.png" />
+</div>
+
+<p>
+     English | <a href="README-CN.md">中文</a>
 </p>
 
-![11zon-cropped.png](https://i.postimg.cc/6Qm4wvsw-/logo3.png)
+### Onepoint
 
-![](https://i.postimg.cc/mD9kspNN/11zon-cropped.png)
+Onepoint is an open-source AI assistant based on Electron, designed to create the ultimate desktop productivity tool. Its initial goal was to develop a smart floating window similar to Apple's intelligent assistant that does not take up desktop space or system performance and can be quickly accessed through global hotkeys for user convenience.
 
-## ENV
-
-![](https://i.postimg.cc/pT5hdLxj/logo4.png)
-node v17+
+With ChatGPT technology, users can continuously train Onepoint to generate and reconstruct content with greater accuracy (onpoint), thereby improving efficiency. Onepoint currently supports various editing scenarios such as VSCode, Pages, Microsoft Word, Email etc., as well as reading scenarios like Safari and Chrome, achieving true full-scene intelligent coverage.
 
 ## Features
 
-### basic
+**Basical**
 
-### native invoke
+- Provide quick and concise functional access points that act globally and allow for immediate use.
+- Support one-click code writing and refactoring capabilities for multiple IDEs.
+- Translation and document writing assistant, supporting content summarization and output in various text editing scenarios.
 
-### plugin market
+**Advanced**
 
-### personal prompt
+- Reading assistant supporting content summarization and output on browsers such as Safari and Chrome.
+- Support for third-party device (such as Xiao Ai) voice output.
+- Personalized prompts and custom character presets.
+- Advanced question requesting parameter settings.
 
-## roadmap
+**More**
 
-### basic
+- Plugin market support.
+- Local data storage and export.
+- Account balance inquiry.
+- Multi-language support.
 
-- [x] basic interactive
-- [ ] setting page
+## Getting Started
 
-### plugins
+Please go to the [official website](https://www.1ptai.com/) to download and try out the tool.
 
-- [ ] plugin market
-- [ ] webscratter
-- [ ] xiaoai-tts
+If you encounter any bugs or have other feature requests, please feel free to submit an issue or related PR. You will not only receive our appreciation 👍 but also have the chance to receive a personalized avatar image, which will be gifted to your wallet for free in the form of an [NFT](https://opensea.io/zh-CN/collection/onepointai-collection) (specific rules are still being formulated).
 
-### OS func invoke
+<img align="center" src="https://i.seadn.io/gcs/files/2af14d6872f7132e79ab9372e22e5e1a.png?auto=format&w=3840">
 
-- [x] MacOS
-- [ ] Windows
+## Development
 
-### performance
+Welcome to submit a Pull Request (PR) or provide constructive feedback for us. Let's do something interesting together.
 
-- [ ] stream interactive
-- [ ] vocation save
-- [ ] advanced training
-- [ ] [user experience](https://dribbble.com/shots/21055309--Meet-SetGPT-free-chat-gpt-for-not-only-UI-UX-designers)
-- [ ] Picture, Store and Files
+**Step 1.**
 
-### Others
+```
+git clone git@github.com:onepointAI/onepoint.git
+cd onepoint
+yarn
+```
 
-- [x] Homepage Speed
-- [x] [download and update](https://www.todesktop.com/electron)
-- [x] i18n
-- [x] NFT market
+**Step 2.**
 
-https://www.notion.so/onePoint-c5f9710d98e5446ea02f7b3f11a48dbc
-
-https://i.postimg.cc/0jcDz0VX/logo4-2-removebg-preview.jpg logo design, ai robot, super cute, flat style, 2d, transparent background, simple style
+```
+yarn start
+```
