@@ -1,7 +1,8 @@
 # onepoint
 
-[![1](https://i.328888.xyz/2023/04/07/irjmzv.png '1')](https://i.328888.xyz/2023/04/07/irjmzv.png '1')
-
+<div align= "center">
+     <img align="center" src="https://raw.githubusercontent.com/onepointAI/onepoint/main/assets/banner/banner.02.png" />
+</div>
 <p>
      English | <a href="README-CN.md">中文</a>
 </p>
