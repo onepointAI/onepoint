@@ -7,7 +7,7 @@
 <div align= "center">
      <img align="center" width=300 src="https://raw.githubusercontent.com/onepointAI/onepoint/main/assets/banner/brand01.png" />    
      <p>
-          <p>more than just chat
+          不仅仅是聊天
       </p>
 </div>
 
