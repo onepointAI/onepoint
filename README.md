@@ -6,8 +6,9 @@
 
 <div align= "center">
      <img align="center" width=300 src="https://raw.githubusercontent.com/onepointAI/onepoint/main/assets/banner/brand01.png" />    
+     <p></p>
      <p>
-          <p>more than just chat
+          more than just chat
       </p>
 </div>
 
@@ -34,7 +35,10 @@ Onepoint is an open-source AI assistant based on Electron, designed to create th
 
 With ChatGPT technology, users can continuously train Onepoint to generate and reconstruct content with greater accuracy (onpoint), thereby improving efficiency. Onepoint currently supports various editing scenarios such as VSCode, Pages, Microsoft Word, Email etc., as well as reading scenarios like Safari and Chrome, achieving true full-scene intelligent coverage.
 
- <br/>
+ <div align=center>
+     <img align="center" width=900 src="https://raw.githubusercontent.com/onepointAI/onepoint/main/assets/banner/bar.png" />
+     <br/>
+</div>
  
 ## 01 Features
 

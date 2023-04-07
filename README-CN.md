@@ -6,6 +6,7 @@
 
 <div align= "center">
      <img align="center" width=300 src="https://raw.githubusercontent.com/onepointAI/onepoint/main/assets/banner/brand01.png" />    
+     <p></p>
      <p>
           不仅仅是聊天
       </p>
@@ -17,7 +18,12 @@ Onepoint 是一款基于 Electron 的开源 AI 助手，旨在打造极致的桌
 
 借助 ChatGPT 技术，用户可以通过对 Onepoint 不断调教，使其生成和重构的内容更加精确到位（onpoint），从而帮助用户提高效率。Onepoint 目前可以在各种编辑场景(如 VSCode、Pages、Microsoft Word 和 Email 等)下使用，同时也覆盖了 Safari 和 Chrome 等阅读场景，真正实现了全场景智能覆盖。
 
-## 功能
+<div align=center>
+     <img align="center" width=900 src="https://raw.githubusercontent.com/onepointAI/onepoint/main/assets/banner/bar.png" />
+     <br/>
+</div>
+
+## 01 功能
 
 **基础**
 
@@ -39,13 +45,13 @@ Onepoint 是一款基于 Electron 的开源 AI 助手，旨在打造极致的桌
 - 账号余额查询
 - 多语言支持
 
-## 开始
+## 02 开始
 
 前往 [官网](https://www.1ptai.com/) 下载并试用该工具。
 
 如果你遇到相关 Bug，或者是有其他的功能需求，欢迎提 issue 或相关 PR，除了能得到我们大大的赞 👍 以外，还有机会获得个人定制的 avatar 形象，并通过 [NFT](https://opensea.io/zh-CN/collection/onepointai-collection) 的形式免费赠与到你的钱包（还在制定相关的规则）。
 
-## 开发
+## 03 开发
 
 欢迎为我们提交 PR，或具有建设性的意见，一起做点有意思的事情
 
