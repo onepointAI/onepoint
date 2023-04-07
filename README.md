@@ -88,5 +88,3 @@ Welcome to submit a Pull Request (PR) or provide constructive feedback for us. L
 > yarn
 > yarn start
 ```
-
-# Display GitHub Action Badge [![CI/CD](https://github.com/elbruno/AzureApiBadge/actions/workflows/azure-static-web-apps-victorious-wave-00360790f.yml/badge.svg)](https://github.com/elbruno/AzureApiBadge/actions/workflows/azure-static-web-apps-victorious-wave-00360790f.yml)
