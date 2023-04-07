@@ -26,6 +26,7 @@
     </a>
   </div>
   <div>
+    <img alt="GitHub Actions" src="https://github.com/onepointAI/onepoint/actions/workflows/ci.yaml/badge.svg?branch=main" />
     <img src="https://img.shields.io/github/license/onepointAI/onepoint?style=flat-square" />
   </div>
    <br/>
@@ -44,8 +45,8 @@ With ChatGPT technology, users can continuously train Onepoint to generate and r
 
 <div align=center>
      <img align="center" src="https://raw.githubusercontent.com/onepointAI/onepoint/main/assets/banner/demo.gif" />
-     <br/>
 </div>
+<br/>
 
 **Basical**
 

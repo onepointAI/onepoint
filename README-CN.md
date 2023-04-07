@@ -12,7 +12,25 @@
       </p>
 </div>
 
-### Onepoint
+<div align=center>
+  <br/>
+  <div>
+    <a href="https://github.com/onepointAI/onepoint/releases/latest">
+      <img alt="macOS" src="https://img.shields.io/badge/-macOS-black?style=flat-square&logo=apple&logoColor=white" />
+    </a>
+    <a href="https://github.com/onepointAI/onepoint/releases/latest">
+      <img alt="Windows" src="https://img.shields.io/badge/-Windows-blue?style=flat-square&logo=windows&logoColor=white" />
+    </a>
+    <a href="https://github.com/onepointAI/onepointreleases/latest">
+      <img alt="Linux" src="https://img.shields.io/badge/-Linux-yellow?style=flat-square&logo=linux&logoColor=white" />
+    </a>
+  </div>
+  <div>
+    <img alt="GitHub Actions" src="https://github.com/onepointAI/onepoint/actions/workflows/ci.yaml/badge.svg?branch=main" />
+    <img src="https://img.shields.io/github/license/onepointAI/onepoint?style=flat-square" />
+  </div>
+   <br/>
+</div>
 
 Onepoint 是一款基于 Electron 的开源 AI 助手，旨在打造极致的桌面端效能工具，最初的目标是实现一个类似苹果的智能辅助悬浮窗，在使用时不占用桌面空间和系统性能，并通过快捷键全局呼起，方便用户随时使用。
 
@@ -27,8 +45,8 @@ Onepoint 是一款基于 Electron 的开源 AI 助手，旨在打造极致的桌
 
 <div align=center>
      <img align="center" src="https://raw.githubusercontent.com/onepointAI/onepoint/main/assets/banner/demo.gif" />
-     <br/>
 </div>
+<br/>
 
 **基础**
 
