@@ -21,45 +21,45 @@ node v17+
 
 ### basic
 
-
 ### native invoke
-
 
 ### plugin market
 
-
 ### personal prompt
-
 
 ## roadmap
 
 ### basic
-* [x] basic interactive
-* [ ] setting page
+
+- [x] basic interactive
+- [ ] setting page
 
 ### plugins
-* [ ] plugin market
-* [ ] webscratter
-* [ ] xiaoai-tts
+
+- [ ] plugin market
+- [ ] webscratter
+- [ ] xiaoai-tts
 
 ### OS func invoke
-* [x] MacOS
-* [ ] Windows
+
+- [x] MacOS
+- [ ] Windows
 
 ### performance
-* [ ] stream interactive
-* [ ] vocation save
-* [ ] advanced training
-* [ ] [user experience](https://dribbble.com/shots/21055309--Meet-SetGPT-free-chat-gpt-for-not-only-UI-UX-designers)
-* [ ] Picture, Store and Files
-### Others
-* [x] Homepage Speed
-* [x] [download and update](https://www.todesktop.com/electron)
-* [x] i18n
-* [x] NFT market
 
+- [ ] stream interactive
+- [ ] vocation save
+- [ ] advanced training
+- [ ] [user experience](https://dribbble.com/shots/21055309--Meet-SetGPT-free-chat-gpt-for-not-only-UI-UX-designers)
+- [ ] Picture, Store and Files
+
+### Others
+
+- [x] Homepage Speed
+- [x] [download and update](https://www.todesktop.com/electron)
+- [x] i18n
+- [x] NFT market
 
 https://www.notion.so/onePoint-c5f9710d98e5446ea02f7b3f11a48dbc
-
 
 https://i.postimg.cc/0jcDz0VX/logo4-2-removebg-preview.jpg logo design, ai robot, super cute, flat style, 2d, transparent background, simple style
