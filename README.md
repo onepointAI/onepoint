@@ -1,12 +1,14 @@
 # onepoint
 
-
 <p>
      English | <a href="README-CN.md">中文</a>
 </p>
 
 <div align= "center">
-     <img align="center" width=300 src="https://raw.githubusercontent.com/onepointAI/onepoint/main/assets/banner/brand_nobg.png" />
+     <img align="center" width=300 src="https://raw.githubusercontent.com/onepointAI/onepoint/main/assets/banner/brand01.png" />    
+     <p>
+          <p>more than just chat
+      </p>
 </div>
 
 <div align=center>
@@ -70,16 +72,9 @@ If you encounter any bugs or have other feature requests, please feel free to su
 
 Welcome to submit a Pull Request (PR) or provide constructive feedback for us. Let's do something interesting together.
 
-**Step 1.**
-
 ```
 git clone git@github.com:onepointAI/onepoint.git
 cd onepoint
 yarn
-```
-
-**Step 2.**
-
-```
 yarn start
 ```
