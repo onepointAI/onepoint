@@ -73,7 +73,7 @@ Onepoint 是一款基于 Electron 的开源 AI 助手，旨在打造极致的桌
 
 前往 [官网](https://www.1ptai.com/) 下载并试用该工具。
 
-如果你遇到相关 Bug，或者是有其他的功能需求，欢迎提 issue 或相关 PR，除了能得到我们大大的赞 👍 以外，还有机会获得个人定制的 avatar 形象，并通过 [NFT](https://opensea.io/zh-CN/collection/onepointai-collection) 的形式免费赠与到你的钱包（还在制定相关的规则）。
+如果你遇到相关 Bug，或者是有其他的功能需求，欢迎提 issue 或相关 PR，除了能得到我们大大的赞 👍 以外，还有机会获得个人定制的 avatar 形象，并通过 [NFT](https://opensea.io/zh-CN/collection/onepointai-collection) 的形式免费赠与到你的钱包（详情参见[贡献者须知 - 开发者激励](https://github.com/onepointAI/onepoint/issues/4) ）。
 
 ## 03 开发
 

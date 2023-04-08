@@ -35,7 +35,7 @@
 
 Onepoint is an open-source AI assistant based on Electron, designed to create the ultimate desktop productivity tool. Its initial goal was to develop a smart floating window similar to Apple's intelligent assistant that does not take up desktop space or system performance and can be quickly accessed through global hotkeys for user convenience.
 
-With ChatGPT technology, users can continuously train Onepoint to generate and reconstruct content with greater accuracy (onpoint), thereby improving efficiency. Onepoint currently supports various editing scenarios such as VSCode, Pages, Microsoft Word, Email etc., as well as reading scenarios like Safari and Chrome, achieving true full-scene intelligent coverage.
+With ChatGPT technology, users can continuously train onepoint to generate and reconstruct content with greater accuracy (onpoint), thereby improving efficiency. Onepoint currently supports various editing scenarios such as VSCode, Pages, Microsoft Word, Email etc, as well as reading scenarios like Safari and Chrome, achieving true full-scene intelligent coverage.
 
  <div align=center>
      <img align="center" width=900 src="https://raw.githubusercontent.com/onepointAI/onepoint/main/assets/banner/bar.png" />
@@ -75,7 +75,7 @@ With ChatGPT technology, users can continuously train Onepoint to generate and r
 
 Please go to the [official website](https://www.1ptai.com/) to download and try out the tool.
 
-If you encounter any bugs or have other feature requests, please feel free to submit an issue or related PR. You will not only receive our appreciation 👍 but also have the chance to receive a personalized avatar image, which will be gifted to your wallet for free in the form of an [NFT](https://opensea.io/zh-CN/collection/onepointai-collection) (specific rules are still being formulated).
+If you encounter any bugs or have other feature requests, please feel free to submit an issue or related PR. You will not only receive our appreciation 👍 but also have the chance to receive a personalized avatar image, which will be gifted to your wallet for free in the form of an [NFT](https://opensea.io/zh-CN/collection/onepointai-collection) (Detail in [README of contributors](https://github.com/onepointAI/onepoint/issues/5)).
 
  <br/>
 
