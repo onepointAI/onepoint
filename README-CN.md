@@ -95,3 +95,13 @@ Onepoint 是一款基于 Electron 的开源 AI 助手，旨在打造极致的桌
 - 高效输出：不是为了替代某某，而是作为原有编辑器的能力补充与增强
 - 阅读护航：总结归纳阅读场景，提高获取信息的能力与速度
 - 创意玩法：作为入口提供插件机制满足各类场景，提供 NFT 生态与和谐友好的技术社区氛围
+
+## 贡献者
+
+<a href="https://github.com/onepointAI/onepoint/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=onepointAI/onepoint" />
+</a>
+
+## License
+
+[MIT License](./LICENSE)
