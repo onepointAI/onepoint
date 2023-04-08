@@ -1,5 +1,5 @@
-import axios from 'axios'
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
+import { baseApiHost } from '../../app/api'
 
 interface ChatModule {
   resp: string
@@ -43,30 +43,35 @@ export const fetchChatResp = createAsyncThunk(
   ) => {
     const { question } = args
     dispatch(setInputDisabled(true))
-    await axios
-      .post('http://127.0.0.1:4000/ask', {
+    const response = await fetch(`${baseApiHost}/ask`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
         question,
-      })
-      .then(response => {
-        const { code, result } = response.data
-        if (code === 0) {
-          const { message } = result[0]
-          const { content } = message
-          dispatch(saveResp(content))
-          dispatch(saveResp(content))
-          dispatch(setVisible(true))
-        } else {
-          dispatch(saveResp(JSON.stringify(response)))
-          dispatch(setVisible(true))
-        }
-      })
-      .catch(error => {
-        dispatch(saveResp(error.message))
+      }),
+    })
+
+    const reader = response.body
+      ?.pipeThrough(new TextDecoderStream())
+      .getReader()
+
+    let str = ''
+    let shown = false
+    while (true) {
+      if (!reader) break
+      const { value, done } = await reader.read()
+      if (done) break
+      if (!shown) {
         dispatch(setVisible(true))
-      })
-      .finally(() => {
-        dispatch(setInputDisabled(false))
-      })
+        shown = true
+      }
+      str += value
+      console.log('resp:', str)
+      dispatch(saveResp(str))
+    }
+    dispatch(setInputDisabled(false))
   }
 )
 export default chatSlice.reducer

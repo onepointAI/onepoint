@@ -37,9 +37,9 @@ function createWindow() {
   })
 
   if (!app.isPackaged) {
-    // win?.webContents.openDevTools({
-    //   mode: 'bottom',
-    // })
+    win?.webContents.openDevTools({
+      mode: 'bottom',
+    })
   }
   win.loadURL(MAIN_WINDOW_WEBPACK_ENTRY)
   win.on('closed', () => {

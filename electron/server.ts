@@ -4,6 +4,7 @@ import Store from 'electron-store'
 import express from 'express'
 import { activeApp, applySelection, getBrowserContnet } from './os'
 import { Singleton } from './global'
+import { Logger } from './util'
 
 const h2p = require('html2plaintext')
 const { Configuration, OpenAIApi } = require('openai')
@@ -43,6 +44,7 @@ function generatePayload(content: string) {
     // 数值介于-2.0和2.0之间。正值将根据到目前为止新token是否出现在文本中来惩罚新token，从而增加模型谈论新主题的可能性。
     // 详见 《ChatGPT模型中的惩罚机制》
     presence_penalty: 1,
+    stream: true,
   }
 }
 
@@ -51,11 +53,15 @@ function getAiInstance() {
   if (openai) {
     return openai
   }
+
   const apiKey = store.get('ChatGPT_apikey') as string
+  Logger.log('store apikey', apiKey)
+
   if (apiKey) {
     openai = new OpenAIApi(
       new Configuration({
         apiKey,
+        // basePath: 'https://openai.geekr.cool/v1'
         basePath: 'https://closeai.deno.dev/v1',
       })
     )
@@ -71,32 +77,53 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 app.post('/ask', async (req: any, res: any) => {
+  Logger.log('ask question', req.body.question)
+  res.setHeader('Content-type', 'application/octet-stream')
+
   if (!getAiInstance()) {
-    res.send({
-      code: -1,
-      result: 'openkey not set!',
-    })
+    res.write('please save your openkey first')
     return
   }
+
   try {
-    // stream workaround: https://github.com/openai/openai-node/issues/18#issuecomment-1369996933
-    const completion = await getAiInstance().createChatCompletion(
-      generatePayload(req.body.question)
+    const response = await getAiInstance().createChatCompletion(
+      generatePayload(req.body.question),
+      { responseType: 'stream' }
     )
-    console.log(completion.data.choices)
-    const result = completion.data.choices
-    const respContent = result[0].message.content
-    clipboard.writeText(respContent)
-    Singleton.getInstance().setCopyStateSource(true)
-    res.send({
-      code: 0,
-      result,
+
+    const stream = response.data
+    stream.on('data', (chunk: Buffer) => {
+      const payloads = chunk.toString().split('\n\n')
+      for (const payload of payloads) {
+        if (payload.includes('[DONE]')) return
+        if (payload.startsWith('data:')) {
+          const data = payload.replace(/(\n)?^data:\s*/g, '')
+          try {
+            const delta = JSON.parse(data.trim())
+            const resp = delta.choices[0].delta?.content
+            res.write(resp || '')
+            Logger.log('chunk resp', resp)
+          } catch (error) {
+            const errmsg = `Error with JSON.parse and ${payload}.\n${error}`
+            Logger.log(errmsg)
+            res.write(errmsg)
+            res.end()
+          }
+        }
+      }
+    })
+
+    stream.on('end', () => {
+      Logger.log('Stream done')
+      res.end()
+    })
+    stream.on('error', (e: Error) => {
+      Logger.error(e)
+      res.write(e.message)
+      res.end()
     })
   } catch (e) {
-    res.send({
-      code: -1,
-      result: e,
-    })
+    res.write(e)
   }
 })
 
@@ -123,12 +150,12 @@ app.post('/test', async (req: any, res: any) => {
       // await activeApp(Singleton.getInstance().getRecentApp())
       const content = await getBrowserContnet()
       const plainText = h2p(content)
-      console.log('getBrowserContnet:', plainText)
+      Logger.log('getBrowserContnet:', plainText)
 
       const completion = await getAiInstance().createChatCompletion(
         generatePayload(`请帮我总结一下这篇内容:${plainText}`)
       )
-      console.log(completion.data.choices)
+      Logger.log(completion.data.choices)
       const result = completion.data.choices
       const respContent = result[0].message.content
       clipboard.writeText(respContent)
@@ -138,7 +165,7 @@ app.post('/test', async (req: any, res: any) => {
         result,
       })
     } catch (e) {
-      console.error('getBrowserContnet:', e)
+      Logger.error('getBrowserContnet:', e)
     }
   } catch (e) {
     res.send({
@@ -149,5 +176,5 @@ app.post('/test', async (req: any, res: any) => {
 })
 
 app.listen(port, async () => {
-  console.log(`onepoint listening on port ${port}!`)
+  Logger.log(`onepoint listening on port ${port}!`)
 })
