@@ -94,11 +94,11 @@ Welcome to submit a Pull Request (PR) or provide constructive feedback for us. L
 
 In the long term, we hope to develop onepoint into a personalized intelligent assistant tool that extends the capabilities of various editing and reading software. At the same time, we aim to enrich its functionality through scalable plugin mechanisms, making it not only a tool but also an entry point that can help or inspire you in front of your screen.
 
-- High availability, fast access with good user experience, elegant interface and interaction, and high performance.
-- Personalized service, providing users with tuning mechanisms to customize their personal intelligent assistants.
-- Efficient output, not to replace certain tools but to complement and enhance the capabilities of existing editors.
-- Reading assistance, summarizing and organizing reading scenarios to improve the speed of information acquisition.
-- Creative play, providing plugin mechanisms as an entry point to meet various scenarios and providing an NFT ecosystem with a harmonious technical community atmosphere.
+- 🚗 High availability, fast access with good user experience, elegant interface and interaction, and high performance.
+- 🤖️ Personalized service, providing users with tuning mechanisms to customize their personal intelligent assistants.
+- 🔧 Efficient output, not to replace certain tools but to complement and enhance the capabilities of existing editors.
+- 📖 Reading assistance, summarizing and organizing reading scenarios to improve the speed of information acquisition.
+- 🎈 Creative play, providing plugin mechanisms as an entry point to meet various scenarios and providing an NFT ecosystem with a harmonious technical community atmosphere.
 
 ## Contributors
 
