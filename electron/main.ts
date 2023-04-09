@@ -71,7 +71,7 @@ async function registerListeners() {
 app
   .on('ready', initWindow)
   .whenReady()
-  .then(initTray)
+  .then(() => win && initTray(win))
   .catch(e => {
     console.error(e)
     userLog.error(e)

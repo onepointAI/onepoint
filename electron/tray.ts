@@ -1,7 +1,8 @@
-import { Tray, Menu, shell, dialog } from 'electron'
+import { Tray, Menu, shell, dialog, BrowserWindow } from 'electron'
+import { setWindowVisile } from './window'
 import { config } from './shortcuts'
 
-export default () => {
+export default (win: BrowserWindow) => {
   const tray = new Tray('assets/icon/icon24.png')
   const contextMenu = Menu.buildFromTemplate([
     {
@@ -13,8 +14,26 @@ export default () => {
       },
     },
     { type: 'separator' },
-    { label: 'Display Window', accelerator: config.shortCut.showAndHidden },
-    { label: 'Settings' },
+    {
+      label: 'Display Window',
+      accelerator: config.shortCut.showAndHidden,
+      click: () => {
+        setWindowVisile({
+          win,
+          visible: true,
+        })
+      },
+    },
+    {
+      label: 'Settings',
+      click: () => {
+        win?.webContents.send('setting_show')
+        setWindowVisile({
+          win,
+          visible: true,
+        })
+      },
+    },
     { type: 'separator' },
     {
       label: 'About',
@@ -28,6 +47,6 @@ export default () => {
       },
     },
   ])
-  tray.setToolTip('This is my application.')
+  tray.setToolTip('onepoint | more than just chat')
   tray.setContextMenu(contextMenu)
 }

@@ -53,7 +53,15 @@ export function App() {
         dispatch(setChatVisible(!!txt && !!app))
       }
     )
+
+    window.Main.on('setting_show', () => showSetting())
   }, [])
+
+  const showSetting = () => {
+    dispatch(setPresetListVisible(false))
+    dispatch(setSettingVisible(true))
+    dispatch(setChatVisible(false))
+  }
 
   const onInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -66,9 +74,7 @@ export function App() {
         dispatch(setChatVisible(false))
         break
       case '/s':
-        dispatch(setPresetListVisible(false))
-        dispatch(setSettingVisible(true))
-        dispatch(setChatVisible(false))
+        showSetting()
         break
       default:
         dispatch(setPresetListVisible(false))

@@ -11,7 +11,7 @@ export interface PresetType {
 }
 
 interface Props {
-  onPresetChange: () => unknown
+  onPresetChange: (preset: string) => void
 }
 
 const padding = 15
