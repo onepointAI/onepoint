@@ -1,13 +1,35 @@
 import { useEffect, useState } from 'react'
-import { Button, Form, Input, Select, Divider } from 'antd'
-import { LockOutlined } from '@ant-design/icons'
+import {
+  Button,
+  Form,
+  Input,
+  Tabs,
+  Select,
+  Divider,
+  ConfigProvider,
+  Alert,
+} from 'antd'
+import {
+  SettingFilled,
+  UserOutlined,
+  LockOutlined,
+  UsbOutlined,
+  MacCommandOutlined,
+} from '@ant-design/icons'
 
 import { useAppSelector } from '../../app/hooks'
 
 const storeSuffix = '_apikey'
+
+function TabWrap(props: any) {
+  return <div style={styles.tabWrap}>{props.children}</div>
+}
+
 export function Setting() {
   const [form] = Form.useForm()
   const [, forceUpdate] = useState({})
+  const [saved, setSaved] = useState<boolean>(false)
+  const [saveSuc, setSaveSuc] = useState<boolean>(false)
   const settingState = useAppSelector(state => state.setting)
   // const dispatch = useAppDispatch()
 
@@ -17,22 +39,19 @@ export function Setting() {
   }, [])
 
   const onFinish = (values: any) => {
+    setSaved(true)
+    setSaveSuc(true)
     // @ts-ignore
     window.Main.setStore(values.model + storeSuffix, values.apikey)
   }
 
-  return settingState.visible ? (
-    <>
-      <Divider style={{ margin: 0 }} />
-      <div style={styles.wrap}>
-        <Form
-          form={form}
-          name="horizontal_login"
-          layout="inline"
-          onFinish={onFinish}
-        >
+  const renderSetting = () => {
+    return (
+      <TabWrap>
+        <Form form={form} name="apiKey" layout="vertical" onFinish={onFinish}>
           <Form.Item
             name="model"
+            label="AI Model"
             rules={[
               { required: true, message: 'Please select your ai model!' },
             ]}
@@ -56,6 +75,7 @@ export function Setting() {
           </Form.Item>
           <Form.Item
             name="apikey"
+            label="APIKEY"
             rules={[{ required: true, message: 'Please input your apikey!' }]}
           >
             <Input
@@ -66,22 +86,80 @@ export function Setting() {
           </Form.Item>
           <Form.Item shouldUpdate>
             {() => (
-              <Button
-                type="primary"
-                htmlType="submit"
-                // disabled={
-                //   !form.isFieldsTouched(true) ||
-                //   !!form.getFieldsError().filter(({ errors }) => errors.length)
-                //     .length
-                // }
-              >
+              <Button type="primary" htmlType="submit" disabled={saved}>
                 Save
               </Button>
             )}
           </Form.Item>
         </Form>
+        {saveSuc ? (
+          <Alert message="Save Success" type="success" showIcon />
+        ) : null}
+        {/* <Alert message="Save Error" type="error" showIcon /> */}
+      </TabWrap>
+    )
+  }
+
+  return settingState.visible ? (
+    <ConfigProvider
+      theme={{
+        token: {
+          colorPrimary: 'rgb(23, 10, 89)',
+        },
+      }}
+    >
+      <Divider style={{ margin: 0 }} />
+      <div style={styles.wrap}>
+        <Tabs
+          defaultActiveKey="1"
+          items={[
+            {
+              label: (
+                <span>
+                  <SettingFilled />
+                  Setting
+                </span>
+              ),
+              key: '1',
+              children: renderSetting(),
+            },
+            {
+              label: (
+                <span>
+                  <UserOutlined />
+                  Account
+                </span>
+              ),
+              key: '2',
+              children: 'Tab 2',
+              disabled: true,
+            },
+            {
+              label: (
+                <span>
+                  <MacCommandOutlined />
+                  Prompts
+                </span>
+              ),
+              key: '3',
+              children: 'Tab 3',
+              disabled: true,
+            },
+            {
+              label: (
+                <span>
+                  <UsbOutlined />
+                  Plugins
+                </span>
+              ),
+              key: '4',
+              children: 'Tab 3',
+              disabled: true,
+            },
+          ]}
+        />
       </div>
-    </>
+    </ConfigProvider>
   ) : null
 }
 
@@ -89,7 +167,10 @@ const styles = {
   wrap: {
     backgroundColor: '#F8F8F8',
     padding: 15,
-    paddingTop: 30,
+    // paddingTop: 30,
     paddingBottom: 40,
+  },
+  tabWrap: {
+    paddingTop: 10,
   },
 }

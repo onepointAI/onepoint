@@ -18,3 +18,5 @@ export const GlobalStyle = createGlobalStyle`
     cursor: pointer;
   }
 `
+
+// highlightColor: rgb(10, 11, 60)

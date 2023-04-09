@@ -2,7 +2,7 @@ module.exports = {
   packagerConfig: {
     name: 'onepoint',
     executableName: 'onepoint',
-    icon: 'assets/icon',
+    icon: 'assets/icon/icon.icns',
     extraResource: ['assets'],
   },
   plugins: [
@@ -39,7 +39,11 @@ module.exports = {
     },
     {
       name: '@electron-forge/maker-deb',
-      config: {},
+      config: {
+        options: {
+          icon: 'assets/icon/icon.png',
+        },
+      },
     },
     {
       name: '@electron-forge/maker-rpm',

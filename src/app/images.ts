@@ -10,4 +10,6 @@ export const translate = 'https://i.328888.xyz/2023/04/05/i8SNkw.png'
 export const loadingGif =
   'https://superstorefinder.net/support/wp-content/uploads/2018/01/elastic.gif'
 export const searchLogo = 'https://i.328888.xyz/2023/04/06/iI8ySQ.png'
+export const searchLogov2 = 'https://i.328888.xyz/2023/04/09/ic2Y8N.png'
 export const logoLoading = 'http://superstorefinder.net/img/ripple-loader.svg'
+export const logoSpin = 'https://i.328888.xyz/2023/04/09/icbeld.gif'

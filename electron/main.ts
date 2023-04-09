@@ -52,6 +52,7 @@ function initWindow() {
       visible: false,
     })
   })
+  app.dock.hide()
   registerListeners()
 }
 
