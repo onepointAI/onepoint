@@ -5,8 +5,14 @@ import { Logger } from './util'
 import { setWindowVisile } from './window'
 import { Singleton } from './global'
 
+export const config = {
+  shortCut: {
+    showAndHidden: 'CommandOrControl+k',
+  },
+}
+
 export function listen(win: BrowserWindow | null) {
-  globalShortcut.register('CommandOrControl+k', async () => {
+  globalShortcut.register(config.shortCut.showAndHidden, async () => {
     const visible = win?.isVisible() && win.isFocused()
     if (!visible) {
       try {

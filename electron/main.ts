@@ -5,6 +5,7 @@ import initLog from './log'
 import { setWindowVisile } from './window'
 import { listen as setupShortcutHandlers } from './shortcuts'
 import { listen as setupClipboardHandlers } from './clipboard'
+import initTray from './tray'
 
 require('./server')
 
@@ -13,7 +14,7 @@ declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string
 const userLog = initLog()
 let win: BrowserWindow | null
 
-function createWindow() {
+function initWindow() {
   win = new BrowserWindow({
     // useContentSize: true,
     resizable: false,
@@ -67,10 +68,13 @@ async function registerListeners() {
 }
 
 app
-  .on('ready', createWindow)
+  .on('ready', initWindow)
   .whenReady()
-  .then()
-  .catch(e => console.error(e))
+  .then(initTray)
+  .catch(e => {
+    console.error(e)
+    userLog.error(e)
+  })
 
 app.on('window-all-closed', () => {
   // if (process.platform !== 'darwin') {
@@ -80,6 +84,6 @@ app.on('window-all-closed', () => {
 
 app.on('activate', () => {
   if (BrowserWindow.getAllWindows().length === 0) {
-    createWindow()
+    initWindow()
   }
 })

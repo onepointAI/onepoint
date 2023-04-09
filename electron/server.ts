@@ -79,18 +79,15 @@ app.use(express.urlencoded({ extended: true }))
 app.post('/ask', async (req: any, res: any) => {
   Logger.log('ask question', req.body.question)
   res.setHeader('Content-type', 'application/octet-stream')
-
   if (!getAiInstance()) {
     res.write('please save your openkey first')
     return
   }
-
   try {
     const response = await getAiInstance().createChatCompletion(
       generatePayload(req.body.question),
       { responseType: 'stream' }
     )
-
     const stream = response.data
     stream.on('data', (chunk: Buffer) => {
       const payloads = chunk.toString().split('\n\n')
@@ -112,7 +109,6 @@ app.post('/ask', async (req: any, res: any) => {
         }
       }
     })
-
     stream.on('end', () => {
       Logger.log('Stream done')
       res.end()
