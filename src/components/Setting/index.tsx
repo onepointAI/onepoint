@@ -95,7 +95,6 @@ export function Setting() {
         {saveSuc ? (
           <Alert message="Save Success" type="success" showIcon />
         ) : null}
-        {/* <Alert message="Save Error" type="error" showIcon /> */}
       </TabWrap>
     )
   }

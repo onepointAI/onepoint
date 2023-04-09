@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Divider, Button } from 'antd'
+import { Divider, Button, Alert } from 'antd'
 
 import ReactMarkdown from 'react-markdown'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
@@ -60,9 +60,13 @@ export function ChatPanel() {
     setShowSelection(false)
   }
 
-  return chatState.visible && (showSelection || chatState.resp) ? (
+  return chatState.visible &&
+    (showSelection || chatState.resp || chatState.respErr) ? (
     <>
       <Divider style={{ margin: 0 }} />
+      {chatState.respErr ? (
+        <Alert message={chatState.respErrMsg} type="warning" showIcon />
+      ) : null}
       {showSelection ? (
         <div style={styles.selectionWrap}>
           <span style={styles.selection}>

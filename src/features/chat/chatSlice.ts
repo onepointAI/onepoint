@@ -1,16 +1,21 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
 import { baseApiHost } from '../../app/api'
+import { timeoutPromise } from '../../utils/fetch'
 
 interface ChatModule {
   resp: string
   visible: boolean
   inputDiabled: boolean
+  respErr: boolean
+  respErrMsg: string
 }
 
 export const initialState: ChatModule = {
   resp: '',
-  visible: true,
+  visible: false,
   inputDiabled: false,
+  respErr: false,
+  respErrMsg: '',
 }
 
 export const chatSlice = createSlice({
@@ -29,10 +34,24 @@ export const chatSlice = createSlice({
       const { payload } = action
       state.inputDiabled = payload
     },
+    setRespErr: (state, action: PayloadAction<boolean>) => {
+      const { payload } = action
+      state.respErr = payload
+    },
+    setRespErrMsg: (state, action: PayloadAction<string>) => {
+      const { payload } = action
+      state.respErrMsg = payload
+    },
   },
 })
 
-export const { saveResp, setVisible, setInputDisabled } = chatSlice.actions
+export const {
+  saveResp,
+  setVisible,
+  setInputDisabled,
+  setRespErr,
+  setRespErrMsg,
+} = chatSlice.actions
 export const fetchChatResp = createAsyncThunk(
   'chat/fetchChatResp',
   async (
@@ -43,35 +62,55 @@ export const fetchChatResp = createAsyncThunk(
   ) => {
     const { question } = args
     dispatch(setInputDisabled(true))
-    const response = await fetch(`${baseApiHost}/ask`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        question,
-      }),
-    })
+    dispatch(setRespErr(false))
 
-    const reader = response.body
-      ?.pipeThrough(new TextDecoderStream())
-      .getReader()
+    const request = async () => {
+      const response = await fetch(`${baseApiHost}/ask`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          question,
+        }),
+      })
 
-    let str = ''
-    let shown = false
-    while (true) {
-      if (!reader) break
-      const { value, done } = await reader.read()
-      if (done) break
-      if (!shown) {
-        dispatch(setVisible(true))
-        shown = true
+      const reader = response.body
+        ?.pipeThrough(new TextDecoderStream())
+        .getReader()
+
+      let str = ''
+      let shown = false
+      while (true) {
+        if (!reader) break
+        const { value, done } = await reader.read()
+        if (done) break
+        if (!shown) {
+          dispatch(setVisible(true))
+          shown = true
+        }
+        str += value
+        console.log('resp:', str)
+        dispatch(saveResp(str))
       }
-      str += value
-      console.log('resp:', str)
-      dispatch(saveResp(str))
     }
-    dispatch(setInputDisabled(false))
+
+    Promise.race([
+      timeoutPromise(
+        5000,
+        'Network congestion, check whether you have set up a proxy'
+      ),
+      request(),
+    ])
+      .then()
+      .catch(e => {
+        dispatch(setVisible(true))
+        dispatch(setRespErr(true))
+        dispatch(setRespErrMsg(e.message))
+      })
+      .finally(() => {
+        dispatch(setInputDisabled(false))
+      })
   }
 )
 export default chatSlice.reducer
