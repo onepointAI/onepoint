@@ -16,7 +16,7 @@ import {
   UsbOutlined,
   MacCommandOutlined,
 } from '@ant-design/icons'
-
+import Account from './Account'
 import { useAppSelector } from '../../app/hooks'
 
 const storeSuffix = '_apikey'
@@ -130,8 +130,7 @@ export function Setting() {
                 </span>
               ),
               key: '2',
-              children: 'Tab 2',
-              disabled: true,
+              children: Account,
             },
             {
               label: (

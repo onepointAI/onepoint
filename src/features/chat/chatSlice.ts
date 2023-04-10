@@ -63,7 +63,6 @@ export const fetchChatResp = createAsyncThunk(
     const { question } = args
     dispatch(setInputDisabled(true))
     dispatch(setRespErr(false))
-
     const request = async () => {
       const response = await fetch(`${baseApiHost}/ask`, {
         method: 'POST',

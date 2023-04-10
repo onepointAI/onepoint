@@ -2,6 +2,7 @@ import { clipboard } from 'electron'
 import compression from 'compression'
 import Store from 'electron-store'
 import express from 'express'
+import { BalanceResponse } from './types'
 import { activeApp, applySelection, getBrowserContnet } from './os'
 import { Singleton } from './global'
 import { Logger } from './util'
@@ -167,6 +168,34 @@ app.post('/test', async (req: any, res: any) => {
     res.send({
       code: -1,
       result: e,
+    })
+  }
+})
+
+app.post('/bill', async (req: any, res: any) => {
+  const { start_date, end_date } = req.body
+  const apiHost = `https://closeai.deno.dev`
+  const apiKey = store.get('ChatGPT_apikey') as string
+  const response = await fetch(
+    `${apiHost}/v1/dashboard/billing/usage?start_date=${start_date}&end_date=${end_date}`,
+    {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${apiKey}`,
+      },
+    }
+  )
+  try {
+    const usageData = (await response.json()) as BalanceResponse
+    res.end({
+      code: 0,
+      result: usageData,
+    })
+  } catch (e) {
+    res.end({
+      code: -1,
+      result: e.message,
     })
   }
 })
