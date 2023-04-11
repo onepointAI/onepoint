@@ -11,6 +11,8 @@ import {
   setVisible as setChatVisible,
   setInputDisabled,
   fetchChatResp,
+  setCurPrompt,
+  saveResp,
 } from './features/chat/chatSlice'
 import {
   setListVisible as setPresetListVisible,
@@ -20,17 +22,22 @@ import {
 import { setVisible as setSettingVisible } from './features/setting/settingSlice'
 import { setSelection } from './features/clipboard/clipboardSlice'
 
-const { TextArea } = Input
 export function App() {
-  const [question, setQuestion] = useState<string>()
-  const [inputVisible] = useState<boolean>(true)
+  // const { TextArea } = Input
+  // const [inputVisible] = useState<boolean>(true)
   // const [selection] = useState<string>('')
+  const [prompt, setPrompt] = useState<string>('')
   const chatState = useAppSelector(state => state.chat)
   const presetState = useAppSelector(state => state.preset)
   const clipboardState = useAppSelector(state => state.clipboard)
   const [messageApi, contextHolder] = message.useMessage()
   const dispatch = useAppDispatch()
   useRef<HTMLTextAreaElement>(null)
+
+  const preset = presetState.builtInPlugins.filter(
+    p => p.title === presetState.currentPreset
+  )
+  const presetIcon = preset.length > 0 ? preset[0].logo : null
 
   useEffect(() => {
     window.addEventListener('mousemove', event => {
@@ -40,7 +47,7 @@ export function App() {
       // window.Main.setWinMouseIgnore(flag)
     })
     window.Main.on('clipboard_change', (text: string) => {
-      setQuestion(text)
+      setPrompt(text)
     })
 
     window.Main.on(
@@ -80,7 +87,7 @@ export function App() {
         dispatch(setSettingVisible(false))
         dispatch(setChatVisible(false))
     }
-    setQuestion(val)
+    setPrompt(val)
   }
 
   const onPresetChange = (preset: string) => {
@@ -92,14 +99,16 @@ export function App() {
     // }
   }
 
-  const search = async (newQuestion?: string) => {
-    if (!question) return
+  const search = async () => {
+    if (!prompt) return
     dispatch(setInputDisabled(true))
+    dispatch(setCurPrompt(prompt))
+    dispatch(saveResp(''))
     dispatch(
       fetchChatResp({
         // @ts-ignore
-        question: `${presetMap[presetState.currentPreset]}${question}
-      `,
+        prompt: `${presetMap[presetState.currentPreset]}${prompt}`,
+        preset: presetState.currentPreset,
       })
     )
   }
@@ -114,11 +123,6 @@ export function App() {
     })
   }
 
-  const preset = presetState.builtInPlugins.filter(
-    p => p.title === presetState.currentPreset
-  )
-  const presetIcon = preset.length > 0 ? preset[0].logo : null
-
   return (
     <>
       <GlobalStyle />
@@ -129,29 +133,17 @@ export function App() {
           {presetIcon ? (
             <Image width={30} preview={false} src={presetIcon} />
           ) : null}
-          {inputVisible ? (
-            <Input
-              placeholder="Enter '/' to process the selection, or directly enter the box to ask questions"
-              allowClear
-              onChange={onInputChange}
-              bordered={false}
-              style={{ height: 40, resize: 'none' }}
-              value={question}
-              size="large"
-              onPressEnter={() => search()}
-              disabled={chatState.inputDiabled}
-            />
-          ) : (
-            <TextArea
-              placeholder="Enter '/' to process the selection, or directly enter the box to ask questions"
-              allowClear
-              onChange={onInputChange}
-              bordered={false}
-              style={{ height: 40, resize: 'none' }}
-              value={question}
-              size="large"
-            />
-          )}
+          <Input
+            placeholder="Enter '/' to process the selection, or directly enter the box to ask questions"
+            allowClear
+            onChange={onInputChange}
+            bordered={false}
+            style={{ height: 40, resize: 'none' }}
+            value={prompt}
+            size="large"
+            onPressEnter={() => search()}
+            disabled={chatState.inputDiabled}
+          />
           <Logo />
         </div>
         <ChatPanel />

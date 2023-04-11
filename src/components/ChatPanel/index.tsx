@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { Divider, Button, Alert } from 'antd'
 
 import ReactMarkdown from 'react-markdown'
@@ -10,14 +10,43 @@ import { useAppSelector, useAppDispatch } from '../../app/hooks'
 import { BuiltInPlugins } from '../../app/constants'
 import { fetchChatResp } from '../../features/chat/chatSlice'
 import { presetMap, PresetType } from '../../features/preset/presetSlice'
+import { ChatContent } from '../../../electron/client/store'
+import { StoreKey } from '../../app/constants'
 
 export function ChatPanel() {
   const chatState = useAppSelector(state => state.chat)
   const presetState = useAppSelector(state => state.preset)
+  const settingState = useAppSelector(state => state.setting)
   const clipboardState = useAppSelector(state => state.clipboard)
+  const [minimal, setMinimal] = useState<boolean>(true)
+  const [chatList, setChatList] = useState<ChatContent[]>([])
   const [showSelection, setShowSelection] = useState<boolean>(false)
   const [usePlugin, setUsePlugin] = useState<PresetType>()
+  const contentWrapRef = useRef<HTMLDivElement>(null)
   const dispatch = useAppDispatch()
+
+  const fetchChatList = async () => {
+    const list = await window.Main.getChatList(presetState.currentPreset)
+    setChatList(list)
+  }
+
+  const fetchMinimal = async () => {
+    const minimal = await window.Main.getSettings(StoreKey.Set_SimpleMode)
+    setMinimal(minimal || false)
+  }
+
+  useEffect(() => {
+    if (!chatState.isGenerating && contentWrapRef) {
+      setTimeout(() => {
+        console.log('scrollToBottom >>>>>>', contentWrapRef.current) // not effect
+        contentWrapRef.current?.scrollIntoView({ behavior: 'smooth' })
+      }, 200)
+    }
+  }, [chatState.isGenerating])
+
+  useEffect(() => {
+    fetchMinimal()
+  }, [settingState.minimal])
 
   useEffect(() => {
     // TODO: should use id
@@ -25,7 +54,8 @@ export function ChatPanel() {
       item => presetState.currentPreset === item.title
     )[0]
     setUsePlugin(plugin)
-  }, [presetState.currentPreset])
+    fetchChatList()
+  }, [presetState.currentPreset, prompt])
 
   useEffect(() => {
     setShowSelection(
@@ -39,8 +69,8 @@ export function ChatPanel() {
     usePlugin?.inputDisable,
   ])
 
-  const atemptChange = () => {
-    window.Main.attemptChange(chatState.resp.replace(/^`{3}[^\n]+|`{3}$/g, ''))
+  const atemptChange = (resp: string) => {
+    window.Main.attemptChange(resp.replace(/^`{3}[^\n]+|`{3}$/g, ''))
   }
 
   const doRequest = (txt: string) => {
@@ -50,7 +80,8 @@ export function ChatPanel() {
     setShowSelection(false)
     dispatch(
       fetchChatResp({
-        question: qa,
+        prompt: qa,
+        preset: presetState.currentPreset,
       })
     )
   }
@@ -59,7 +90,7 @@ export function ChatPanel() {
     setShowSelection(false)
   }
 
-  const showCopy = () => {
+  const showCopyFromEditor = () => {
     return showSelection ? (
       <div style={styles.selectWrap}>
         <span style={styles.selection}>
@@ -83,16 +114,16 @@ export function ChatPanel() {
     ) : null
   }
 
-  // const showPrompt = (prompt: string) => {
-  //   return <div style={styles.requestWrap}>➜ {prompt}</div>
-  // }
+  const showPrompt = (prompt: string, history?: boolean) => {
+    return <div style={styles.requestWrap}>➜ {prompt}</div>
+  }
 
-  const showSingleReply = () => {
+  const showReply = (response: string, history?: boolean) => {
     return (
       <div style={styles.replyWrap}>
         <div style={styles.mdWrap}>
           <ReactMarkdown
-            children={chatState.resp}
+            children={response}
             components={{
               code({ node, inline, className, children, ...props }) {
                 const match = /language-(\w+)/.exec(className || '')
@@ -114,35 +145,51 @@ export function ChatPanel() {
               },
             }}
           />
-          {chatState.resp ? (
+          {response ? (
             <>
-              <Divider style={{ margin: '25 0 0 0' }} />
+              <Divider
+                style={{ margin: history ? '15px 0 10px 0' : '24px 0' }}
+              />
               <Button
                 type="text"
                 block
-                onClick={atemptChange}
-                style={{ fontSize: 12, fontWeight: 'bold' }}
+                onClick={() => atemptChange(response)}
+                style={{ fontSize: history ? 10 : 12, fontWeight: 'bold' }}
               >
                 Attempt Change
               </Button>
             </>
           ) : null}
         </div>
-        <CopyOutlined style={styles.copyIcon} />
+        {response ? <CopyOutlined style={styles.copyIcon} /> : null}
       </div>
     )
   }
 
-  return chatState.visible &&
-    (showSelection || chatState.resp || chatState.respErr) ? (
+  const showContent = showSelection || chatState.resp || chatState.respErr
+  const showChat =
+    ((chatState.visible && showContent) || !minimal) &&
+    !settingState.visible &&
+    !presetState.listVisible
+
+  return showChat ? (
     <>
       <Divider style={{ margin: 0 }} />
       {chatState.respErr ? (
         <Alert message={chatState.respErrMsg} type="warning" showIcon />
       ) : null}
-      <div style={styles.history}>
-        {showCopy()}
-        {showSingleReply()}
+      <div style={styles.history} ref={contentWrapRef} id="scrollView">
+        {showCopyFromEditor()}
+        {!minimal
+          ? chatList.map(chat => (
+              <>
+                {showPrompt(chat.prompt, true)}
+                {showReply(chat.response, true)}
+              </>
+            ))
+          : null}
+        {chatState.curPrompt ? showPrompt(chatState.curPrompt, true) : null}
+        {chatState.resp ? showReply(chatState.resp) : null}
       </div>
     </>
   ) : null
@@ -173,7 +220,7 @@ const styles = {
     color: 'rgb(255, 90, 0)',
   },
   requestWrap: {
-    backgroundColor: '#f7f7f7',
+    backgroundColor: 'rgb(241 241 241)',
     fontSize: 13,
     lineHeight: '20px',
     fontWeight: 'bold',

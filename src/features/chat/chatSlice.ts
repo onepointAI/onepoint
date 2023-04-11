@@ -8,6 +8,8 @@ interface ChatModule {
   inputDiabled: boolean
   respErr: boolean
   respErrMsg: string
+  curPrompt: string
+  isGenerating: boolean
 }
 
 export const initialState: ChatModule = {
@@ -16,6 +18,8 @@ export const initialState: ChatModule = {
   inputDiabled: false,
   respErr: false,
   respErrMsg: '',
+  curPrompt: '',
+  isGenerating: false,
 }
 
 export const chatSlice = createSlice({
@@ -42,6 +46,14 @@ export const chatSlice = createSlice({
       const { payload } = action
       state.respErrMsg = payload
     },
+    setCurPrompt: (state, action: PayloadAction<string>) => {
+      const { payload } = action
+      state.curPrompt = payload
+    },
+    setGenerating: (state, action: PayloadAction<boolean>) => {
+      const { payload } = action
+      state.isGenerating = payload
+    },
   },
 })
 
@@ -51,26 +63,33 @@ export const {
   setInputDisabled,
   setRespErr,
   setRespErrMsg,
+  setCurPrompt,
+  setGenerating,
 } = chatSlice.actions
+
 export const fetchChatResp = createAsyncThunk(
   'chat/fetchChatResp',
   async (
     args: {
-      question: string
+      prompt: string
+      preset: string
     },
     { dispatch }
   ) => {
-    const { question } = args
+    const { prompt, preset } = args
     dispatch(setInputDisabled(true))
     dispatch(setRespErr(false))
+    dispatch(setGenerating(true))
+
     const request = async () => {
-      const response = await fetch(`${baseApiHost}/ask`, {
+      const response = await fetch(`${baseApiHost}/prompt`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          question,
+          prompt,
+          preset,
         }),
       })
 
@@ -108,6 +127,7 @@ export const fetchChatResp = createAsyncThunk(
         dispatch(setRespErrMsg(e.message))
       })
       .finally(() => {
+        dispatch(setGenerating(false))
         dispatch(setInputDisabled(false))
       })
   }

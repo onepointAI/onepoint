@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import { Select, Spin, Switch, Space } from 'antd'
+import { useAppDispatch } from '../../../app/hooks'
 import { StoreKey } from '../../../app/constants'
+import { setMinimal } from '../../../features/setting/settingSlice'
 
 const defaultVals = {
   lng: 'English',
@@ -13,6 +15,7 @@ export default function () {
   const [store, useStore] = useState<number>(defaultVals.store)
   const [contextual, useContextual] = useState<number>(defaultVals.contexual)
   const [minimal, useMinimal] = useState<boolean>(defaultVals.minimal)
+  const dispatch = useAppDispatch()
 
   const gettings = async () => {
     const lng = await window.Main.getSettings(StoreKey.Set_Lng)
@@ -23,6 +26,7 @@ export default function () {
     contextual && useContextual(contextual || defaultVals.contexual)
     const simpleMode = await window.Main.getSettings(StoreKey.Set_SimpleMode)
     simpleMode && useMinimal(simpleMode || defaultVals.minimal)
+    dispatch(setMinimal(simpleMode || false))
   }
 
   // To disable submit button at the beginning.
@@ -124,6 +128,7 @@ export default function () {
               checked={minimal}
               onChange={val => {
                 useMinimal(val)
+                dispatch(setMinimal(val))
                 setStore(StoreKey.Set_SimpleMode, val)
               }}
             />

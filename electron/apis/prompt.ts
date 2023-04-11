@@ -1,16 +1,23 @@
+import Store from 'electron-store'
 import { generatePayload, getAiInstance } from '../server'
 import { Logger } from '../utils/util'
+import { setChat } from '../client/store'
+import { StoreKey } from '../../src/app/constants'
+
+const store = new Store()
 
 export default async (req: any, res: any) => {
-  Logger.log('ask question', req.body.question)
+  const { prompt, preset } = req.body
+  Logger.log('ask question', prompt)
   res.setHeader('Content-type', 'application/octet-stream')
   if (!getAiInstance()) {
     res.write('please save your openkey first')
     return
   }
+  let result = ''
   try {
     const response = await getAiInstance().createChatCompletion(
-      generatePayload(req.body.question),
+      generatePayload(prompt, preset),
       { responseType: 'stream' }
     )
     const stream = response.data
@@ -23,6 +30,7 @@ export default async (req: any, res: any) => {
           try {
             const delta = JSON.parse(data.trim())
             const resp = delta.choices[0].delta?.content
+            result += resp || ''
             res.write(resp || '')
             Logger.log('chunk resp', resp)
           } catch (error) {
@@ -36,6 +44,13 @@ export default async (req: any, res: any) => {
     })
     stream.on('end', () => {
       Logger.log('Stream done')
+      if (store.get(StoreKey.Set_StoreChat)) {
+        setChat({
+          prompt,
+          response: result,
+          preset,
+        })
+      }
       res.end()
     })
     stream.on('error', (e: Error) => {

@@ -15,10 +15,14 @@ export function setupStoreHandlers() {
     }
   )
 
+  ipcMain.handle('getStore', async (event: IpcMainInvokeEvent, key: string) => {
+    return store.get(key)
+  })
+
   ipcMain.handle(
-    'getStore',
-    async (event: IpcMainInvokeEvent, { key }: { key: string }) => {
-      return store.get(key)
+    'getChatList',
+    async (event: IpcMainInvokeEvent, preset: string) => {
+      return getChatList(preset)
     }
   )
 }
@@ -31,16 +35,16 @@ export interface ChatContent {
 export function setChat({
   prompt,
   response,
-  type,
+  preset,
 }: {
   prompt: string
   response: string
-  type: string
+  preset: string
 }) {
   const mapStr = store.get(StorageChatKey) as string | undefined
   if (typeof mapStr !== 'undefined') {
     const chatMap = JSON.parse(mapStr)
-    const list = chatMap[type]
+    const list = chatMap[preset]
     if (Array.isArray(list)) {
       list.push({
         prompt,
@@ -50,7 +54,7 @@ export function setChat({
     store.set(StorageChatKey, JSON.stringify(chatMap))
   } else {
     const map = {
-      [type]: [
+      [preset]: [
         {
           prompt,
           response,
@@ -65,7 +69,7 @@ export function getChatList(type: string): ChatContent[] {
   const mapStr = store.get(StorageChatKey) as string | undefined
   if (typeof mapStr !== 'undefined') {
     const chatMap = JSON.parse(mapStr)
-    const list = chatMap[type]
+    const list = chatMap[type] || []
     return list
   } else {
     return []

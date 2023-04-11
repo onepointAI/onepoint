@@ -1,19 +1,41 @@
 import compression from 'compression'
 import Store from 'electron-store'
 import express from 'express'
-import { StoreApiKey } from '../src/app/constants'
-import { Logger } from './utils/util'
-
+import { getChatList } from './client/store'
 import accountApi from './apis/account'
 import promptApi from './apis/prompt'
 import applyApi from './apis/apply'
 import testApi from './apis/test'
 
+import { StoreKey } from '../src/app/constants'
+import { Logger } from './utils/util'
+
 const { Configuration, OpenAIApi } = require('openai')
 const store = new Store()
 let openai = null as any
 
-export function generatePayload(content: string) {
+function getContextual(prompt: string) {
+  const num = (store.get(StoreKey.Set_Contexual) as number) || 0
+  if (prompt) {
+    const list = getChatList(prompt).slice(-num)
+    const contexual = list.map(item => {
+      return [
+        {
+          role: 'user',
+          content: item.prompt,
+        },
+        {
+          role: 'assistant',
+          content: item.response,
+        },
+      ]
+    })
+    return contexual.flat()
+  }
+  return []
+}
+
+export function generatePayload(content: string, prompt: string) {
   // const apiKey = store.get('api_key');
   // const payload = generatePayload(
   //   `I want you to act as an ${targetLang} translator. I will speak to you in any language and you translate it and answer in the corrected and improved version of my sentence/phrase/word in ${targetLang}. I want you to only reply the translated sentence/phrase/word and nothing else, do not write explanations. You do not need to reply a complete sentence.`,
@@ -25,10 +47,14 @@ export function generatePayload(content: string) {
     model: 'gpt-3.5-turbo-0301',
     messages: [
       // { role: 'system', content: `I want you to act as an ${targetLang} translator. I will speak to you in any language and you translate it and answer in the corrected and improved version of my sentence/phrase/word in ${targetLang}. I want you to only reply the translated sentence/phrase/word and nothing else, do not write explanations. You do not need to reply a complete sentence.`, },
+      // {
+      //   role: 'assistant',
+      //   content
+      // },
+      ...getContextual(prompt),
       {
         role: 'user',
         content,
-        // content: '你好，请问你是chatgpt吗'
       },
     ],
     // 采样温度。值越高意味着模型承担的风险越大。
@@ -56,7 +82,7 @@ export function getAiInstance() {
     return openai
   }
 
-  const apiKey = store.get(StoreApiKey) as string
+  const apiKey = store.get(StoreKey.Set_ApiKey) as string
   Logger.log('store apikey', apiKey)
 
   if (apiKey) {
@@ -77,7 +103,7 @@ const port = 4000
 app.use(compression())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
-app.post('/ask', promptApi)
+app.post('/prompt', promptApi)
 app.post('/apply', applyApi)
 app.post('/test', testApi)
 app.post('/account', accountApi)

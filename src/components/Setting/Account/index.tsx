@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Progress, Button, Form, Input, Select, Alert, Spin } from 'antd'
 import { useAppDispatch, useAppSelector } from '../../../app/hooks'
-import { Models, StoreApiKey, StoreModelKey } from '../../../app/constants'
+import { Models, StoreKey } from '../../../app/constants'
 import { fetchAccountDetail } from '../../../features/setting/settingSlice'
 
 const { Option } = Select
@@ -37,8 +37,8 @@ export default function () {
 
   const onFinish = (values: any) => {
     setSaveSuc(true)
-    window.Main.setStore(StoreApiKey, values.apikey)
-    window.Main.setStore(StoreModelKey, values.model)
+    window.Main.setStore(StoreKey.Set_ApiKey, values.apikey)
+    window.Main.setStore(StoreKey.Set_Model, values.model)
   }
 
   return (

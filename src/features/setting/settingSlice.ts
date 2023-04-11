@@ -7,6 +7,7 @@ interface SettingModule {
   apikey: string
   loadAccount: boolean
   usemodel: string
+  minimal: boolean
 }
 
 export const initialState: SettingModule = {
@@ -15,6 +16,7 @@ export const initialState: SettingModule = {
   billUsage: 0,
   apikey: '',
   usemodel: '',
+  minimal: true,
 }
 
 export const settingSlice = createSlice({
@@ -41,11 +43,21 @@ export const settingSlice = createSlice({
       const { payload } = action
       state.loadAccount = payload
     },
+    setMinimal: (state, action: PayloadAction<boolean>) => {
+      const { payload } = action
+      state.minimal = payload
+    },
   },
 })
 
-export const { setVisible, setUsage, setApikey, setUsemodel, setLoadAccount } =
-  settingSlice.actions
+export const {
+  setVisible,
+  setUsage,
+  setApikey,
+  setUsemodel,
+  setLoadAccount,
+  setMinimal,
+} = settingSlice.actions
 
 export const fetchAccountDetail = createAsyncThunk(
   'setting/fetchAccountDetail',

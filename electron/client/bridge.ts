@@ -16,7 +16,8 @@ export const api = {
   attemptChange: (changes: string) => {
     ipcRenderer.invoke('attemptChange', changes)
   },
-  getSettings: (key: string) => ipcRenderer.invoke('getStore', { key }),
+  getSettings: (key: string) => ipcRenderer.invoke('getStore', key),
+  getChatList: (preset: string) => ipcRenderer.invoke('getChatList', preset),
 
   /**
    * Provide an easier way to listen to events

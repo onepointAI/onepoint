@@ -36,10 +36,6 @@ export const BuiltInPlugins = [
 ]
 
 export const Models = ['gpt-3.5-turbo-0301']
-
-export const StoreModelKey = 'KEY_MODEL'
-export const StoreApiKey = 'APIKEY_GPT'
-
 export const StoreKey = {
   Set_Model: 'KEY_MODEL',
   Set_ApiKey: 'APIKEY_GPT',

@@ -1,5 +1,5 @@
 import Store from 'electron-store'
-import { StoreApiKey, StoreModelKey } from '../../src/app/constants'
+import { StoreKey } from '../../src/app/constants'
 import { BalanceResponse } from '../types'
 
 const store = new Store()
@@ -7,8 +7,8 @@ const store = new Store()
 export default async (req: any, res: any) => {
   const { start_date, end_date } = req.body
   const apiHost = `https://closeai.deno.dev`
-  const apiKey = store.get(StoreApiKey) as string
-  const usemodel = store.get(StoreModelKey) as string
+  const apiKey = store.get(StoreKey.Set_ApiKey) as string
+  const usemodel = store.get(StoreKey.Set_Model) as string
   const basic = {
     usemodel,
     apiKey,
