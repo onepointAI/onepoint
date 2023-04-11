@@ -1,5 +1,5 @@
 import { Tray, Menu, shell, dialog, BrowserWindow } from 'electron'
-import { setWindowVisile } from './window'
+import { setWindowVisile } from '../utils/window'
 import { config } from './shortcuts'
 
 export default (win: BrowserWindow) => {

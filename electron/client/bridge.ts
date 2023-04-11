@@ -16,6 +16,8 @@ export const api = {
   attemptChange: (changes: string) => {
     ipcRenderer.invoke('attemptChange', changes)
   },
+  getSettings: (key: string) => ipcRenderer.invoke('getStore', { key }),
+
   /**
    * Provide an easier way to listen to events
    */

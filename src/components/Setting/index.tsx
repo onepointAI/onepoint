@@ -6,6 +6,7 @@ import {
   MacCommandOutlined,
 } from '@ant-design/icons'
 import Account from './Account'
+import Basic from './Basic'
 import { useAppSelector } from '../../app/hooks'
 
 export function Setting() {
@@ -23,7 +24,7 @@ export function Setting() {
       <Divider style={{ margin: 0 }} />
       <div style={styles.wrap}>
         <Tabs
-          defaultActiveKey="2"
+          defaultActiveKey="1"
           items={[
             {
               label: (
@@ -33,8 +34,7 @@ export function Setting() {
                 </span>
               ),
               key: '1',
-              disabled: true,
-              children: <Account />,
+              children: <Basic />,
             },
             {
               label: (

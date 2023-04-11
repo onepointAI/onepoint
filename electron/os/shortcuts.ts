@@ -1,9 +1,9 @@
 import { BrowserWindow, globalShortcut } from 'electron'
 
-import { getSelection, getRecentApp } from './os'
-import { Logger } from './util'
-import { setWindowVisile } from './window'
-import { Singleton } from './global'
+import { getSelection, getRecentApp } from './applescript'
+import { Logger } from '../utils/util'
+import { setWindowVisile } from '../utils/window'
+import { Singleton } from '../utils/global'
 
 export const config = {
   shortCut: {

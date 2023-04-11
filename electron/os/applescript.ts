@@ -1,4 +1,4 @@
-import { Logger } from './util'
+import { Logger } from '../utils/util'
 const applescript = require('applescript')
 
 function runAppleScript(script: string) {

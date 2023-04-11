@@ -1,7 +1,7 @@
 import { IpcMainInvokeEvent, ipcMain, BrowserWindow, clipboard } from 'electron'
-import { Singleton } from './global'
-import { activeApp, applySelection } from './os'
-import { Logger } from './util'
+import { Singleton } from '../utils/global'
+import { activeApp, applySelection } from '../os/applescript'
+import { Logger } from '../utils/util'
 
 const clipboardWatcher = require('electron-clipboard-watcher')
 

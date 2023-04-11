@@ -1,12 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Input, Image } from 'antd'
+import { Input, Image, message } from 'antd'
 import { GlobalStyle } from './styles/GlobalStyle'
-
 import { ChatPanel } from './components/ChatPanel'
 import { Setting } from './components/Setting'
 import { Preset } from './components/Preset'
 import { Logo } from './components/Logo'
-// import { History } from './components/History'
 
 import { useAppDispatch, useAppSelector } from './app/hooks'
 import {
@@ -30,6 +28,7 @@ export function App() {
   const chatState = useAppSelector(state => state.chat)
   const presetState = useAppSelector(state => state.preset)
   const clipboardState = useAppSelector(state => state.clipboard)
+  const [messageApi, contextHolder] = message.useMessage()
   const dispatch = useAppDispatch()
   useRef<HTMLTextAreaElement>(null)
 
@@ -105,6 +104,16 @@ export function App() {
     )
   }
 
+  const showToast = (
+    message: string,
+    type: 'success' | 'error' | 'warning'
+  ) => {
+    messageApi.open({
+      type,
+      content: message,
+    })
+  }
+
   const preset = presetState.builtInPlugins.filter(
     p => p.title === presetState.currentPreset
   )
@@ -113,6 +122,7 @@ export function App() {
   return (
     <>
       <GlobalStyle />
+      {contextHolder}
       <div style={styles.container}>
         {/* @ts-ignore */}
         <div style={styles.inputWrap}>

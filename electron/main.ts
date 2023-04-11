@@ -1,11 +1,11 @@
 import { app, BrowserWindow, ipcMain } from 'electron'
-import { setupStoreHandlers } from './store'
-import { Logger } from './util'
-import initLog from './log'
-import { setWindowVisile } from './window'
-import { listen as setupShortcutHandlers } from './shortcuts'
-import { listen as setupClipboardHandlers } from './clipboard'
-import initTray from './tray'
+import { setupStoreHandlers } from './client/store'
+import { Logger } from './utils/util'
+import initLog from './utils/log'
+import { setWindowVisile } from './utils/window'
+import { listen as setupShortcutHandlers } from './os/shortcuts'
+import { listen as setupClipboardHandlers } from './client/clipboard'
+import initTray from './os/tray'
 
 require('./server')
 
