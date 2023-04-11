@@ -1,103 +1,16 @@
-import { useEffect, useState } from 'react'
-import {
-  Button,
-  Form,
-  Input,
-  Tabs,
-  Select,
-  Divider,
-  ConfigProvider,
-  Alert,
-} from 'antd'
+import { Tabs, Divider, ConfigProvider } from 'antd'
 import {
   SettingFilled,
   UserOutlined,
-  LockOutlined,
   UsbOutlined,
   MacCommandOutlined,
 } from '@ant-design/icons'
 import Account from './Account'
 import { useAppSelector } from '../../app/hooks'
 
-const storeSuffix = '_apikey'
-
-function TabWrap(props: any) {
-  return <div style={styles.tabWrap}>{props.children}</div>
-}
-
 export function Setting() {
-  const [form] = Form.useForm()
-  const [, forceUpdate] = useState({})
-  const [saved, setSaved] = useState<boolean>(false)
-  const [saveSuc, setSaveSuc] = useState<boolean>(false)
   const settingState = useAppSelector(state => state.setting)
   // const dispatch = useAppDispatch()
-
-  // To disable submit button at the beginning.
-  useEffect(() => {
-    forceUpdate({})
-  }, [])
-
-  const onFinish = (values: any) => {
-    setSaved(true)
-    setSaveSuc(true)
-    // @ts-ignore
-    window.Main.setStore(values.model + storeSuffix, values.apikey)
-  }
-
-  const renderSetting = () => {
-    return (
-      <TabWrap>
-        <Form form={form} name="apiKey" layout="vertical" onFinish={onFinish}>
-          <Form.Item
-            name="model"
-            label="AI Model"
-            rules={[
-              { required: true, message: 'Please select your ai model!' },
-            ]}
-          >
-            <Select
-              showSearch
-              placeholder="ai model"
-              optionFilterProp="children"
-              filterOption={(input, option) =>
-                (option?.label ?? '')
-                  .toLowerCase()
-                  .includes(input.toLowerCase())
-              }
-              options={[
-                {
-                  value: 'ChatGPT',
-                  label: 'ChatGPT',
-                },
-              ]}
-            />
-          </Form.Item>
-          <Form.Item
-            name="apikey"
-            label="APIKEY"
-            rules={[{ required: true, message: 'Please input your apikey!' }]}
-          >
-            <Input
-              prefix={<LockOutlined className="site-form-item-icon" />}
-              type="password"
-              placeholder="apikey"
-            />
-          </Form.Item>
-          <Form.Item shouldUpdate>
-            {() => (
-              <Button type="primary" htmlType="submit" disabled={saved}>
-                Save
-              </Button>
-            )}
-          </Form.Item>
-        </Form>
-        {saveSuc ? (
-          <Alert message="Save Success" type="success" showIcon />
-        ) : null}
-      </TabWrap>
-    )
-  }
 
   return settingState.visible ? (
     <ConfigProvider
@@ -110,7 +23,7 @@ export function Setting() {
       <Divider style={{ margin: 0 }} />
       <div style={styles.wrap}>
         <Tabs
-          defaultActiveKey="1"
+          defaultActiveKey="2"
           items={[
             {
               label: (
@@ -120,7 +33,8 @@ export function Setting() {
                 </span>
               ),
               key: '1',
-              children: renderSetting(),
+              disabled: true,
+              children: <Account />,
             },
             {
               label: (
@@ -130,7 +44,7 @@ export function Setting() {
                 </span>
               ),
               key: '2',
-              children: Account,
+              children: <Account />,
             },
             {
               label: (
@@ -166,9 +80,6 @@ const styles = {
     backgroundColor: '#F8F8F8',
     padding: 15,
     // paddingTop: 30,
-    paddingBottom: 40,
-  },
-  tabWrap: {
-    paddingTop: 10,
+    // paddingBottom: 40,
   },
 }

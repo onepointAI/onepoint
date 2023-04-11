@@ -1,8 +1,11 @@
+import { Logger } from './util'
 const applescript = require('applescript')
 
 function runAppleScript(script: string) {
+  const date = Date.now()
   return new Promise((resolve, reject) => {
     applescript.execString(script, (err: any, rtn: any) => {
+      Logger.log(`runscript: ${script}`, Date.now() - date)
       if (err) {
         reject(err)
         return

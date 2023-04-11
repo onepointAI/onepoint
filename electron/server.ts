@@ -2,6 +2,7 @@ import { clipboard } from 'electron'
 import compression from 'compression'
 import Store from 'electron-store'
 import express from 'express'
+import { StoreApiKey, StoreModelKey } from '../src/app/constants'
 import { BalanceResponse } from './types'
 import { activeApp, applySelection, getBrowserContnet } from './os'
 import { Singleton } from './global'
@@ -55,7 +56,7 @@ function getAiInstance() {
     return openai
   }
 
-  const apiKey = store.get('ChatGPT_apikey') as string
+  const apiKey = store.get(StoreApiKey) as string
   Logger.log('store apikey', apiKey)
 
   if (apiKey) {
@@ -172,30 +173,46 @@ app.post('/test', async (req: any, res: any) => {
   }
 })
 
-app.post('/bill', async (req: any, res: any) => {
+app.post('/account', async (req: any, res: any) => {
   const { start_date, end_date } = req.body
   const apiHost = `https://closeai.deno.dev`
-  const apiKey = store.get('ChatGPT_apikey') as string
-  const response = await fetch(
-    `${apiHost}/v1/dashboard/billing/usage?start_date=${start_date}&end_date=${end_date}`,
-    {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${apiKey}`,
-      },
-    }
-  )
+  const apiKey = store.get(StoreApiKey) as string
+  const usemodel = store.get(StoreModelKey) as string
+  const basic = {
+    usemodel,
+    apiKey,
+  }
+
   try {
+    const response = await fetch(
+      `${apiHost}/v1/dashboard/billing/usage?start_date=${start_date}&end_date=${end_date}`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${apiKey}`,
+        },
+      }
+    )
+
     const usageData = (await response.json()) as BalanceResponse
-    res.end({
+    res.send({
       code: 0,
-      result: usageData,
+      result: {
+        usageData,
+        basic,
+      },
     })
   } catch (e) {
-    res.end({
+    res.send({
       code: -1,
-      result: e.message,
+    })
+    res.send({
+      code: -1,
+      result: {
+        message: e.message,
+        basic,
+      },
     })
   }
 })

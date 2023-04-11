@@ -5,7 +5,6 @@ export const Translate = 'Translate'
 export const Summarize = 'Summarize'
 export const Prettier = 'Prettier'
 export const Analyze = 'Analyze'
-
 export const BuiltInPlugins = [
   {
     logo: chat,
@@ -35,3 +34,8 @@ export const BuiltInPlugins = [
     inputDisable: true,
   },
 ]
+
+export const Models = ['gpt-3.5-turbo-0301']
+
+export const StoreModelKey = 'KEY_MODEL'
+export const StoreApiKey = 'APIKEY_GPT'

@@ -16,6 +16,10 @@ export function listen(win: BrowserWindow | null) {
     const visible = win?.isVisible() && win.isFocused()
     if (!visible) {
       try {
+        setWindowVisile({
+          win,
+          visible: true,
+        })
         const app = (await getRecentApp()) as string
         Logger.log('appName', app)
         Singleton.getInstance().setRecentApp(app)
@@ -25,10 +29,6 @@ export function listen(win: BrowserWindow | null) {
         win?.webContents.send('selection_change', {
           txt: selection,
           app,
-        })
-        setWindowVisile({
-          win,
-          visible: true,
         })
         // clipboard.writeText('')
       } catch (e) {
