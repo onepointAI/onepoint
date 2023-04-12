@@ -24,6 +24,19 @@ export function listen(win: BrowserWindow | null) {
   })
 
   ipcMain.handle(
+    'copyText',
+    async (event: IpcMainInvokeEvent, changes: string) => {
+      try {
+        clipboard.writeText(changes)
+        return true
+      } catch (e) {
+        Logger.error(e)
+        return false
+      }
+    }
+  )
+
+  ipcMain.handle(
     'attemptChange',
     async (event: IpcMainInvokeEvent, changes: string) => {
       try {

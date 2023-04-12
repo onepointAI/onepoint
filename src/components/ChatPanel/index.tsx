@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from 'react'
 import { Divider, Button, Alert } from 'antd'
+import PubSub from 'pubsub-js'
 
 import ReactMarkdown from 'react-markdown'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
@@ -38,7 +39,7 @@ export function ChatPanel() {
   useEffect(() => {
     if (!chatState.isGenerating && contentWrapRef) {
       setTimeout(() => {
-        console.log('scrollToBottom >>>>>>', contentWrapRef.current) // not effect
+        console.log('scrollToBottom >', contentWrapRef.current) // not effect
         contentWrapRef.current?.scrollIntoView({ behavior: 'smooth' })
       }, 200)
     }
@@ -55,7 +56,7 @@ export function ChatPanel() {
     )[0]
     setUsePlugin(plugin)
     fetchChatList()
-  }, [presetState.currentPreset, prompt])
+  }, [presetState.currentPreset, chatState.curPrompt])
 
   useEffect(() => {
     setShowSelection(
@@ -68,6 +69,14 @@ export function ChatPanel() {
     clipboardState.selectApp,
     usePlugin?.inputDisable,
   ])
+
+  const copyTxt = (resp: string) => {
+    window.Main.copyText(resp)
+    PubSub.publish('tips', {
+      type: 'success',
+      message: 'copy success',
+    })
+  }
 
   const atemptChange = (resp: string) => {
     window.Main.attemptChange(resp.replace(/^`{3}[^\n]+|`{3}$/g, ''))
@@ -115,7 +124,7 @@ export function ChatPanel() {
   }
 
   const showPrompt = (prompt: string, history?: boolean) => {
-    return <div style={styles.requestWrap}>➜ {prompt}</div>
+    return history ? <div style={styles.requestWrap}>➜ {prompt}</div> : null
   }
 
   const showReply = (response: string, history?: boolean) => {
@@ -145,23 +154,26 @@ export function ChatPanel() {
               },
             }}
           />
-          {response ? (
+          {response && !history ? (
             <>
-              <Divider
-                style={{ margin: history ? '15px 0 10px 0' : '24px 0' }}
-              />
+              <Divider style={{ margin: '24px 0' }} />
               <Button
                 type="text"
                 block
                 onClick={() => atemptChange(response)}
-                style={{ fontSize: history ? 10 : 12, fontWeight: 'bold' }}
+                style={{ fontSize: 12, fontWeight: 'bold' }}
               >
                 Attempt Change
               </Button>
             </>
           ) : null}
         </div>
-        {response ? <CopyOutlined style={styles.copyIcon} /> : null}
+        {response ? (
+          <CopyOutlined
+            style={styles.copyIcon}
+            onClick={() => copyTxt(response)}
+          />
+        ) : null}
       </div>
     )
   }

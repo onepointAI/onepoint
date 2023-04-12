@@ -16,6 +16,7 @@ export const api = {
   attemptChange: (changes: string) => {
     ipcRenderer.invoke('attemptChange', changes)
   },
+  copyText: (changes: string) => ipcRenderer.invoke('copyText', changes),
   getSettings: (key: string) => ipcRenderer.invoke('getStore', key),
   getChatList: (preset: string) => ipcRenderer.invoke('getChatList', preset),
 

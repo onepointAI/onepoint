@@ -63,11 +63,12 @@ export const fetchAccountDetail = createAsyncThunk(
   'setting/fetchAccountDetail',
   async (
     args: {
-      date: string
+      startDate: string
+      endDate: string
     },
     { dispatch }
   ) => {
-    const { date } = args
+    const { startDate, endDate } = args
     dispatch(setLoadAccount(true))
     const request = async () => {
       const response = await fetch(`${baseApiHost}/account`, {
@@ -76,8 +77,8 @@ export const fetchAccountDetail = createAsyncThunk(
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          start_date: '2023-01-01',
-          end_date: date,
+          start_date: startDate,
+          end_date: endDate,
         }),
       })
       return response.json()
@@ -91,6 +92,7 @@ export const fetchAccountDetail = createAsyncThunk(
       request(),
     ])
       .then(resp => {
+        console.log(resp)
         const {
           basic: { apiKey, usemodel },
           usageData,

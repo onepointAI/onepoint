@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Input, Image, message } from 'antd'
+import PubSub from 'pubsub-js'
 import { GlobalStyle } from './styles/GlobalStyle'
 import { ChatPanel } from './components/ChatPanel'
 import { Setting } from './components/Setting'
@@ -21,6 +22,11 @@ import {
 } from './features/preset/presetSlice'
 import { setVisible as setSettingVisible } from './features/setting/settingSlice'
 import { setSelection } from './features/clipboard/clipboardSlice'
+
+interface Tips {
+  type: 'success' | 'error' | 'warning'
+  message: string
+}
 
 export function App() {
   // const { TextArea } = Input
@@ -61,6 +67,13 @@ export function App() {
     )
 
     window.Main.on('setting_show', () => showSetting())
+    PubSub.subscribe('tips', (name: string, data: Tips) => {
+      const { type, message } = data
+      messageApi.open({
+        type,
+        content: message,
+      })
+    })
   }, [])
 
   const showSetting = () => {
@@ -113,43 +126,38 @@ export function App() {
     )
   }
 
-  const showToast = (
-    message: string,
-    type: 'success' | 'error' | 'warning'
-  ) => {
-    messageApi.open({
-      type,
-      content: message,
-    })
-  }
-
   return (
     <>
       <GlobalStyle />
       {contextHolder}
-      <div style={styles.container}>
-        {/* @ts-ignore */}
-        <div style={styles.inputWrap}>
-          {presetIcon ? (
-            <Image width={30} preview={false} src={presetIcon} />
-          ) : null}
-          <Input
-            placeholder="Enter '/' to process the selection, or directly enter the box to ask questions"
-            allowClear
-            onChange={onInputChange}
-            bordered={false}
-            style={{ height: 40, resize: 'none' }}
-            value={prompt}
-            size="large"
-            onPressEnter={() => search()}
-            disabled={chatState.inputDiabled}
-          />
-          <Logo />
+      {true ? (
+        <div style={styles.container}>
+          {/* @ts-ignore */}
+          <div style={styles.inputWrap}>
+            {presetIcon ? (
+              <Image width={30} preview={false} src={presetIcon} />
+            ) : null}
+            <Input
+              placeholder="Enter '/' to process the selection, or directly enter the box to ask questions"
+              allowClear
+              onChange={onInputChange}
+              bordered={false}
+              style={{ height: 40, resize: 'none' }}
+              value={prompt}
+              size="large"
+              onPressEnter={() => search()}
+              disabled={chatState.inputDiabled}
+            />
+            <Logo />
+          </div>
+          <ChatPanel />
+          <Preset onPresetChange={onPresetChange} />
+          <Setting />
         </div>
-        <ChatPanel />
-        <Preset onPresetChange={onPresetChange} />
-        <Setting />
-      </div>
+      ) : (
+        // guardian mode
+        <Logo guardian />
+      )}
     </>
   )
 }

@@ -6,6 +6,7 @@ import accountApi from './apis/account'
 import promptApi from './apis/prompt'
 import applyApi from './apis/apply'
 import testApi from './apis/test'
+import grabApi from './apis/grab'
 
 import { StoreKey } from '../src/app/constants'
 import { Logger } from './utils/util'
@@ -98,6 +99,8 @@ export function getAiInstance() {
   return null
 }
 
+require('./apis/grab')
+
 const app = express()
 const port = 4000
 app.use(compression())
@@ -107,6 +110,7 @@ app.post('/prompt', promptApi)
 app.post('/apply', applyApi)
 app.post('/test', testApi)
 app.post('/account', accountApi)
+app.post('/grab', grabApi)
 app.listen(port, async () => {
   Logger.log(`onepoint listening on port ${port}!`)
 })

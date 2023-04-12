@@ -17,16 +17,21 @@ export default function () {
     return num.toString().padStart(2, '0')
   }
 
+  const formatDateStr = (date: Date) => {
+    return `${date.getFullYear()}-${formatDate(
+      date.getMonth() + 1
+    )}-${formatDate(date.getDate())}`
+  }
+
   // To disable submit button at the beginning.
   useEffect(() => {
     const date = new Date()
-    const nowDate = `${date.getFullYear()}-${formatDate(
-      date.getMonth() + 1
-    )}-${formatDate(date.getDate())}`
+    const prevDate = new Date(date.valueOf() - 1000 * 60 * 60 * 24 * 99)
     forceUpdate({})
     dispatch(
       fetchAccountDetail({
-        date: nowDate,
+        startDate: formatDateStr(prevDate),
+        endDate: formatDateStr(date),
       })
     )
   }, [])
