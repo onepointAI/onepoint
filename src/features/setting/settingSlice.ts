@@ -8,6 +8,16 @@ interface SettingModule {
   loadAccount: boolean
   usemodel: string
   minimal: boolean
+  contextual: number
+  store: number
+  lng: string
+}
+
+export const defaultVals = {
+  lng: 'English',
+  store: 0,
+  contexual: 0,
+  minimal: false,
 }
 
 export const initialState: SettingModule = {
@@ -16,7 +26,10 @@ export const initialState: SettingModule = {
   billUsage: 0,
   apikey: '',
   usemodel: '',
-  minimal: true,
+  minimal: defaultVals.minimal,
+  contextual: defaultVals.contexual,
+  store: defaultVals.store,
+  lng: defaultVals.lng,
 }
 
 export const settingSlice = createSlice({
@@ -47,6 +60,18 @@ export const settingSlice = createSlice({
       const { payload } = action
       state.minimal = payload
     },
+    setContexual: (state, action: PayloadAction<number>) => {
+      const { payload } = action
+      state.contextual = payload
+    },
+    setStore: (state, action: PayloadAction<number>) => {
+      const { payload } = action
+      state.store = payload
+    },
+    setLng: (state, action: PayloadAction<string>) => {
+      const { payload } = action
+      state.lng = payload
+    },
   },
 })
 
@@ -57,6 +82,9 @@ export const {
   setUsemodel,
   setLoadAccount,
   setMinimal,
+  setContexual,
+  setStore,
+  setLng,
 } = settingSlice.actions
 
 export const fetchAccountDetail = createAsyncThunk(

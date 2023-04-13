@@ -6,8 +6,11 @@ import { ChatPanel } from './components/ChatPanel'
 import { Setting } from './components/Setting'
 import { Preset } from './components/Preset'
 import { Logo } from './components/Logo'
+// import { defaultVals as settingDefaults } from './components/Setting/Basic'
+// FullscreenExitOutlined
 
 import { useAppDispatch, useAppSelector } from './app/hooks'
+// import { StoreKey } from './app/constants'
 import {
   setVisible as setChatVisible,
   setInputDisabled,
@@ -20,7 +23,10 @@ import {
   setPreset,
   presetMap,
 } from './features/preset/presetSlice'
-import { setVisible as setSettingVisible } from './features/setting/settingSlice'
+import {
+  setVisible as setSettingVisible,
+  setMinimal,
+} from './features/setting/settingSlice'
 import { setSelection } from './features/clipboard/clipboardSlice'
 
 interface Tips {
@@ -32,10 +38,12 @@ export function App() {
   // const { TextArea } = Input
   // const [inputVisible] = useState<boolean>(true)
   // const [selection] = useState<string>('')
+  // const [minimal, useMinimal] = useState<boolean>(settingDefaults.minimal)
+  // const clipboardState = useAppSelector(state => state.clipboard)
   const [prompt, setPrompt] = useState<string>('')
   const chatState = useAppSelector(state => state.chat)
   const presetState = useAppSelector(state => state.preset)
-  const clipboardState = useAppSelector(state => state.clipboard)
+  const settingState = useAppSelector(state => state.setting)
   const [messageApi, contextHolder] = message.useMessage()
   const dispatch = useAppDispatch()
   useRef<HTMLTextAreaElement>(null)
@@ -75,6 +83,23 @@ export function App() {
       })
     })
   }, [])
+
+  // const setStore = (key: string, value: string | boolean | number) => {
+  //   window.Main.setStore(key, value)
+  // }
+  // const getMinimalMode = async () => {
+  //   const simpleMode = await window.Main.getSettings(StoreKey.Set_SimpleMode)
+  //   dispatch(setMinimal(simpleMode || false))
+  // }
+  // useEffect(() => {
+  //   getMinimalMode()
+  // }, [])
+
+  const changeMode = () => {
+    // const mode = !minimal
+    // useMinimal(mode)
+    dispatch(setMinimal(!settingState.minimal))
+  }
 
   const showSetting = () => {
     dispatch(setPresetListVisible(false))
@@ -148,6 +173,10 @@ export function App() {
               onPressEnter={() => search()}
               disabled={chatState.inputDiabled}
             />
+            {/* <div style={styles.exitOrOut} onClick={changeMode}>
+              { !settingState.minimal ? <FullscreenExitOutlined /> : <FullscreenOutlined />}                            
+            </div> */}
+
             <Logo />
           </div>
           <ChatPanel />
@@ -182,5 +211,8 @@ const styles = {
     justifyContent: 'space-between',
     alignItems: 'center',
     padding,
+  },
+  exitOrOut: {
+    marginRight: 10,
   },
 }

@@ -1,31 +1,27 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { Select, Spin, Switch, Space } from 'antd'
-import { useAppDispatch } from '../../../app/hooks'
+import { useAppDispatch, useAppSelector } from '../../../app/hooks'
 import { StoreKey } from '../../../app/constants'
-import { setMinimal } from '../../../features/setting/settingSlice'
+import {
+  setMinimal,
+  setLng,
+  setContexual,
+  setStore as setStoreSet,
+  defaultVals,
+} from '../../../features/setting/settingSlice'
 
-const defaultVals = {
-  lng: 'English',
-  store: 0,
-  contexual: 0,
-  minimal: false,
-}
 export default function () {
-  const [lng, useLng] = useState<string>(defaultVals.lng)
-  const [store, useStore] = useState<number>(defaultVals.store)
-  const [contextual, useContextual] = useState<number>(defaultVals.contexual)
-  const [minimal, useMinimal] = useState<boolean>(defaultVals.minimal)
   const dispatch = useAppDispatch()
+  const settingState = useAppSelector(state => state.setting)
 
   const gettings = async () => {
     const lng = await window.Main.getSettings(StoreKey.Set_Lng)
-    lng && useLng(lng || defaultVals.lng)
+    dispatch(setLng(lng || defaultVals.lng))
     const storeSet = await window.Main.getSettings(StoreKey.Set_StoreChat)
-    storeSet && useStore(storeSet || defaultVals.store)
+    dispatch(setStoreSet(storeSet || defaultVals.store))
     const contextual = await window.Main.getSettings(StoreKey.Set_Contexual)
-    contextual && useContextual(contextual || defaultVals.contexual)
+    dispatch(setContexual(contextual || defaultVals.contexual))
     const simpleMode = await window.Main.getSettings(StoreKey.Set_SimpleMode)
-    simpleMode && useMinimal(simpleMode || defaultVals.minimal)
     dispatch(setMinimal(simpleMode || false))
   }
 
@@ -49,10 +45,10 @@ export default function () {
                 style={{ width: '100%' }}
                 placeholder="Select A Language"
                 onChange={val => {
-                  useLng(val)
+                  dispatch(setLng(val))
                   setStore(StoreKey.Set_Lng, val)
                 }}
-                value={lng}
+                value={settingState.lng}
                 // defaultValue={{ value: lng, label: lng }}
                 options={[
                   {
@@ -73,10 +69,10 @@ export default function () {
                 style={{ width: '100%' }}
                 placeholder="Store Chat History"
                 onChange={val => {
-                  useStore(val)
+                  dispatch(setStoreSet(val))
                   setStore(StoreKey.Set_StoreChat, val)
                 }}
-                value={store}
+                value={settingState.store}
                 options={[
                   {
                     value: 1,
@@ -96,10 +92,10 @@ export default function () {
                 style={{ width: 200 }}
                 placeholder="Save Chat"
                 onChange={val => {
-                  useContextual(val)
+                  dispatch(setContexual(val))
                   setStore(StoreKey.Set_Contexual, val)
                 }}
-                value={contextual}
+                value={settingState.contextual}
                 options={[
                   {
                     value: 5,
@@ -122,12 +118,11 @@ export default function () {
             </div>
           </Space>
           <div style={styles.simpleMode}>
-            <div style={styles.title}>Simple Mode</div>
+            <div style={styles.title}>Simple Mode(collapse panel)</div>
             <Switch
               defaultChecked
-              checked={minimal}
+              checked={settingState.minimal}
               onChange={val => {
-                useMinimal(val)
                 dispatch(setMinimal(val))
                 setStore(StoreKey.Set_SimpleMode, val)
               }}
