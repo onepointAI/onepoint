@@ -122,7 +122,7 @@ export const fetchChatResp = createAsyncThunk(
 
     Promise.race([
       timeoutPromise(
-        5000,
+        20000,
         'Network congestion, check whether you have set up a proxy'
       ),
       request(),

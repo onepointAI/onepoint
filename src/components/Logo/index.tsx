@@ -48,7 +48,7 @@ const styles = {
     position: 'relative',
     alignItems: 'center',
     justifyContent: 'center',
-  },
+  } as React.CSSProperties,
   guardian: {
     position: 'absolute',
     right: 30,
@@ -61,19 +61,19 @@ const styles = {
     // justifyContent: 'flex-end',
     padding: 20,
     textAlign: 'right',
-  },
+  } as React.CSSProperties,
   guardLoad: {
     position: 'absolute',
     right: 14,
     top: 15,
     width: 50,
     height: 50,
-  },
+  } as React.CSSProperties,
   loading: {
     position: 'absolute',
     right: -5,
     top: -5,
     width: 50,
     height: 50,
-  },
+  } as React.CSSProperties,
 }

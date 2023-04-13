@@ -27,7 +27,7 @@ export function ChatPanel() {
   const [chatList, setChatList] = useState<ChatContent[]>([])
   const [showSelection, setShowSelection] = useState<boolean>(false)
   const [usePlugin, setUsePlugin] = useState<PluginType>()
-  const contentWrapRef = useRef<HTMLDivElement>(null)
+  const bottomLineRef = useRef<HTMLDivElement>(null)
   const dispatch = useAppDispatch()
 
   const fetchChatList = async () => {
@@ -41,11 +41,10 @@ export function ChatPanel() {
   }
 
   useEffect(() => {
-    if (!chatState.isGenerating && contentWrapRef) {
+    if (!chatState.isGenerating && bottomLineRef) {
       setTimeout(() => {
-        console.log('scrollToBottom >', contentWrapRef.current) // not effect
-        contentWrapRef.current?.scrollIntoView({ behavior: 'smooth' })
-      }, 200)
+        bottomLineRef.current?.scrollIntoView({ behavior: 'smooth' })
+      }, 100)
     }
   }, [chatState.isGenerating])
 
@@ -58,6 +57,7 @@ export function ChatPanel() {
     const plugin = BuiltInPlugins.filter(
       item => presetState.currentPreset === item.title
     )[0]
+    // @ts-ignore
     setUsePlugin(plugin)
     fetchChatList()
   }, [presetState.currentPreset, chatState.curPrompt])
@@ -145,7 +145,7 @@ export function ChatPanel() {
 
   const showReply = (response: string, minimal?: boolean, index?: number) => {
     return (
-      <div style={styles.replyWrap}>
+      <div style={styles.replyWrap as React.CSSProperties}>
         <div style={styles.mdWrap}>
           <ReactMarkdown
             children={response}
@@ -186,13 +186,13 @@ export function ChatPanel() {
         </div>
         {response ? (
           <CopyOutlined
-            style={styles.copyIcon}
+            style={styles.copyIcon as React.CSSProperties}
             onClick={() => copyRsp(response)}
           />
         ) : null}
         {response ? (
           <ClearOutlined
-            style={styles.clearIcon}
+            style={styles.clearIcon as React.CSSProperties}
             onClick={() => delRecord(index)}
           />
         ) : null}
@@ -212,18 +212,19 @@ export function ChatPanel() {
       {chatState.respErr ? (
         <Alert message={chatState.respErrMsg} type="warning" showIcon />
       ) : null}
-      <div style={styles.history} ref={contentWrapRef} id="scrollView">
+      <div style={styles.history}>
         {showCopyFromEditor()}
         {!minimal
           ? chatList.map((chat, index) => (
-              <>
+              <div key={chat.prompt}>
                 {showPrompt(chat.prompt, minimal)}
                 {showReply(chat.response, minimal, index)}
-              </>
+              </div>
             ))
           : null}
         {chatState.curPrompt ? showPrompt(chatState.curPrompt, minimal) : null}
         {chatState.resp ? showReply(chatState.resp) : null}
+        <div ref={bottomLineRef}></div>
       </div>
     </>
   ) : null
@@ -235,8 +236,8 @@ const styles = {
     backgroundColor: 'rgb(240 240 240)',
     fontSize: 13,
     padding,
-    maxHeight: 300,
-    overflow: 'auto',
+    // maxHeight: 300,
+    // overflow: 'auto',
   },
   selection: {
     color: 'rgb(74 74 74)',
@@ -266,8 +267,8 @@ const styles = {
     fontSize: 13,
     padding,
     paddingRight: padding * 2,
-    maxHeight: 300,
-    overflow: 'auto',
+    // maxHeight: 300,
+    // overflow: 'auto',
   },
   mdWrap: {
     marginRight: 30,
