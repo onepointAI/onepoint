@@ -7,15 +7,17 @@ import promptApi from './apis/prompt'
 import applyApi from './apis/apply'
 import testApi from './apis/test'
 import grabApi from './apis/grab'
-
+import { PresetType } from '../src/@types'
 import { StoreKey } from '../src/app/constants'
 import { Logger } from './utils/util'
 
 const { Configuration, OpenAIApi } = require('openai')
 const store = new Store()
+// store.clear()
+
 let openai = null as any
 
-function getContextual(prompt: string) {
+function getContextual(prompt: PresetType) {
   const num = (store.get(StoreKey.Set_Contexual) as number) || 0
   if (prompt) {
     const list = getChatList(prompt).slice(-num)
@@ -110,7 +112,7 @@ app.post('/prompt', promptApi)
 app.post('/apply', applyApi)
 app.post('/test', testApi)
 app.post('/account', accountApi)
-app.post('/grab', grabApi)
+app.post('/grabApi', grabApi)
 app.listen(port, async () => {
   Logger.log(`onepoint listening on port ${port}!`)
 })

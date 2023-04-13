@@ -1,14 +1,6 @@
-import React from 'react'
 import { Avatar, List, Skeleton, Divider } from 'antd'
 import { useAppSelector, useAppDispatch } from '../../app/hooks'
 import { setListVisible as setPresetListVisible } from '../../features/preset/presetSlice'
-
-export interface PresetType {
-  logo: string
-  id: string
-  title: string
-  loading: boolean
-}
 
 interface Props {
   onPresetChange: (preset: string) => void

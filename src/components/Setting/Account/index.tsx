@@ -23,17 +23,21 @@ export default function () {
     )}-${formatDate(date.getDate())}`
   }
 
-  // To disable submit button at the beginning.
-  useEffect(() => {
+  const refreshPage = () => {
     const date = new Date()
     const prevDate = new Date(date.valueOf() - 1000 * 60 * 60 * 24 * 99)
-    forceUpdate({})
     dispatch(
       fetchAccountDetail({
         startDate: formatDateStr(prevDate),
         endDate: formatDateStr(date),
       })
     )
+  }
+
+  // To disable submit button at the beginning.
+  useEffect(() => {
+    forceUpdate({})
+    refreshPage()
   }, [])
 
   useEffect(() => {
@@ -44,6 +48,7 @@ export default function () {
     setSaveSuc(true)
     window.Main.setStore(StoreKey.Set_ApiKey, values.apikey)
     window.Main.setStore(StoreKey.Set_Model, values.model)
+    refreshPage()
   }
 
   return (
@@ -84,6 +89,10 @@ export default function () {
             <Form.Item>
               <Button htmlType="submit" type="primary">
                 Submit
+              </Button>
+
+              <Button style={{ marginLeft: 10 }} onClick={refreshPage}>
+                Refresh
               </Button>
             </Form.Item>
           </Form>

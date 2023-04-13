@@ -1,24 +1,23 @@
 import { contextBridge, ipcRenderer } from 'electron'
+import { PresetType } from '../../src/@types'
 
 export const api = {
   /**
    * Emit events
    */
-  setWinMouseIgnore: (ignore: boolean) => {
-    ipcRenderer.send('winIgnoreMouse', ignore)
-  },
-  sendMessage: (message: string) => {
-    ipcRenderer.send('message', message)
-  },
-  setStore: (key: string, blob: any) => {
-    ipcRenderer.invoke('setStore', { key, blob })
-  },
-  attemptChange: (changes: string) => {
-    ipcRenderer.invoke('attemptChange', changes)
-  },
+  setWinMouseIgnore: (ignore: boolean) =>
+    ipcRenderer.send('winIgnoreMouse', ignore),
+  sendMessage: (message: string) => ipcRenderer.send('message', message),
+  setStore: (key: string, blob: any) =>
+    ipcRenderer.invoke('setStore', { key, blob }),
+  attemptChange: (changes: string) =>
+    ipcRenderer.invoke('attemptChange', changes),
   copyText: (changes: string) => ipcRenderer.invoke('copyText', changes),
   getSettings: (key: string) => ipcRenderer.invoke('getStore', key),
-  getChatList: (preset: string) => ipcRenderer.invoke('getChatList', preset),
+  getChatList: (preset: PresetType) =>
+    ipcRenderer.invoke('getChatList', preset),
+  removeChat: (preset: PresetType, index: number) =>
+    ipcRenderer.invoke('removeChat', { preset, index }),
 
   /**
    * Provide an easier way to listen to events

@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
 import { baseApiHost } from '../../app/api'
 import { timeoutPromise } from '../../utils/fetch'
-
+import { ERR_CODES } from '../../../electron/types'
 interface ChatModule {
   resp: string
   visible: boolean
@@ -81,36 +81,43 @@ export const fetchChatResp = createAsyncThunk(
     dispatch(setRespErr(false))
     dispatch(setGenerating(true))
 
-    const request = async () => {
-      const response = await fetch(`${baseApiHost}/prompt`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          prompt,
-          preset,
-        }),
-      })
+    const request = () => {
+      /* eslint-disable no-async-promise-executor */
+      return new Promise(async (resolve, reject) => {
+        const response = await fetch(`${baseApiHost}/prompt`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            prompt,
+            preset,
+          }),
+        })
 
-      const reader = response.body
-        ?.pipeThrough(new TextDecoderStream())
-        .getReader()
+        const reader = response.body
+          ?.pipeThrough(new TextDecoderStream())
+          .getReader()
 
-      let str = ''
-      let shown = false
-      while (true) {
-        if (!reader) break
-        const { value, done } = await reader.read()
-        if (done) break
-        if (!shown) {
-          dispatch(setVisible(true))
-          shown = true
+        let str = ''
+        let shown = false
+        while (true) {
+          if (!reader) break
+          const { value, done } = await reader.read()
+          if (done) break
+          if (!shown) {
+            dispatch(setVisible(true))
+            shown = true
+          }
+          if (Number(value) === ERR_CODES.NOT_SET_APIKEY) {
+            reject(new Error('please set your apikey first.'))
+            break
+          }
+          str += value
+          dispatch(saveResp(str))
         }
-        str += value
-        console.log('resp:', str)
-        dispatch(saveResp(str))
-      }
+        resolve(true)
+      })
     }
 
     Promise.race([

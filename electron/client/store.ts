@@ -1,8 +1,25 @@
 import { IpcMainInvokeEvent, ipcMain } from 'electron'
 import Store from 'electron-store'
-import { StorageChatKey } from '../constants'
+import { ChatContent, StorageChatKey } from '../types'
+import { PresetType } from '../../src/@types'
 
 const store = new Store()
+// const schema = {
+// 	foo: {
+// 		type: 'number',
+// 		maximum: 100,
+// 		minimum: 1,
+// 		default: 50
+// 	},
+// 	bar: {
+// 		type: 'string',
+// 		format: 'url'
+// 	}
+// };
+// const store = new Store({schema});
+// console.log(store.get('foo'));
+// //=> 50
+// store.set('foo', '1');
 
 export function setupStoreHandlers() {
   ipcMain.handle(
@@ -21,15 +38,32 @@ export function setupStoreHandlers() {
 
   ipcMain.handle(
     'getChatList',
-    async (event: IpcMainInvokeEvent, preset: string) => {
+    async (event: IpcMainInvokeEvent, preset: PresetType) => {
       return getChatList(preset)
     }
   )
-}
 
-export interface ChatContent {
-  prompt: string
-  response: string
+  ipcMain.handle(
+    'removeChat',
+    async (
+      event: IpcMainInvokeEvent,
+      { preset, index }: { preset: PresetType; index: number }
+    ) => {
+      const list = getChatList(preset)
+      list.splice(index, 1)
+      const mapStr = store.get(StorageChatKey) as string | undefined
+
+      if (typeof mapStr !== 'undefined') {
+        const chatMap = JSON.parse(mapStr)
+        console.log('chatMap =>', chatMap)
+        chatMap[preset] = list
+        store.set(StorageChatKey, JSON.stringify(chatMap))
+        return list
+      } else {
+        return []
+      }
+    }
+  )
 }
 
 export function setChat({
@@ -39,7 +73,7 @@ export function setChat({
 }: {
   prompt: string
   response: string
-  preset: string
+  preset: PresetType
 }) {
   const mapStr = store.get(StorageChatKey) as string | undefined
   if (typeof mapStr !== 'undefined') {
@@ -65,7 +99,7 @@ export function setChat({
   }
 }
 
-export function getChatList(type: string): ChatContent[] {
+export function getChatList(type: PresetType): ChatContent[] {
   const mapStr = store.get(StorageChatKey) as string | undefined
   if (typeof mapStr !== 'undefined') {
     const chatMap = JSON.parse(mapStr)

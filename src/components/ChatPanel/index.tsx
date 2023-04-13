@@ -5,14 +5,18 @@ import PubSub from 'pubsub-js'
 import ReactMarkdown from 'react-markdown'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { atomDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
-import { CopyOutlined } from '@ant-design/icons'
+import { CopyOutlined, ClearOutlined } from '@ant-design/icons'
 
 import { useAppSelector, useAppDispatch } from '../../app/hooks'
-import { BuiltInPlugins } from '../../app/constants'
-import { fetchChatResp } from '../../features/chat/chatSlice'
-import { presetMap, PresetType } from '../../features/preset/presetSlice'
-import { ChatContent } from '../../../electron/client/store'
-import { StoreKey } from '../../app/constants'
+import { BuiltInPlugins, StoreKey } from '../../app/constants'
+import {
+  fetchChatResp,
+  setCurPrompt,
+  saveResp,
+} from '../../features/chat/chatSlice'
+import { presetMap } from '../../features/preset/presetSlice'
+import { PluginType } from '../../@types'
+import { ChatContent } from '../../../electron/types'
 
 export function ChatPanel() {
   const chatState = useAppSelector(state => state.chat)
@@ -22,7 +26,7 @@ export function ChatPanel() {
   const [minimal, setMinimal] = useState<boolean>(true)
   const [chatList, setChatList] = useState<ChatContent[]>([])
   const [showSelection, setShowSelection] = useState<boolean>(false)
-  const [usePlugin, setUsePlugin] = useState<PresetType>()
+  const [usePlugin, setUsePlugin] = useState<PluginType>()
   const contentWrapRef = useRef<HTMLDivElement>(null)
   const dispatch = useAppDispatch()
 
@@ -70,12 +74,24 @@ export function ChatPanel() {
     usePlugin?.inputDisable,
   ])
 
-  const copyTxt = (resp: string) => {
+  const copyRsp = (resp: string) => {
     window.Main.copyText(resp)
     PubSub.publish('tips', {
       type: 'success',
       message: 'copy success',
     })
+  }
+
+  const delRecord = async (index?: number) => {
+    if (typeof index === 'undefined') return
+    const list = await window.Main.removeChat(presetState.currentPreset, index)
+    PubSub.publish('tips', {
+      type: 'success',
+      message: 'delete success',
+    })
+    dispatch(setCurPrompt(''))
+    dispatch(saveResp(''))
+    setChatList(list)
   }
 
   const atemptChange = (resp: string) => {
@@ -123,11 +139,11 @@ export function ChatPanel() {
     ) : null
   }
 
-  const showPrompt = (prompt: string, history?: boolean) => {
-    return history ? <div style={styles.requestWrap}>➜ {prompt}</div> : null
+  const showPrompt = (prompt: string, minimal?: boolean) => {
+    return !minimal ? <div style={styles.requestWrap}>➜ {prompt}</div> : null
   }
 
-  const showReply = (response: string, history?: boolean) => {
+  const showReply = (response: string, minimal?: boolean, index?: number) => {
     return (
       <div style={styles.replyWrap}>
         <div style={styles.mdWrap}>
@@ -154,7 +170,7 @@ export function ChatPanel() {
               },
             }}
           />
-          {response && !history ? (
+          {response && minimal ? (
             <>
               <Divider style={{ margin: '24px 0' }} />
               <Button
@@ -171,7 +187,13 @@ export function ChatPanel() {
         {response ? (
           <CopyOutlined
             style={styles.copyIcon}
-            onClick={() => copyTxt(response)}
+            onClick={() => copyRsp(response)}
+          />
+        ) : null}
+        {response ? (
+          <ClearOutlined
+            style={styles.clearIcon}
+            onClick={() => delRecord(index)}
           />
         ) : null}
       </div>
@@ -193,14 +215,14 @@ export function ChatPanel() {
       <div style={styles.history} ref={contentWrapRef} id="scrollView">
         {showCopyFromEditor()}
         {!minimal
-          ? chatList.map(chat => (
+          ? chatList.map((chat, index) => (
               <>
-                {showPrompt(chat.prompt, true)}
-                {showReply(chat.response, true)}
+                {showPrompt(chat.prompt, minimal)}
+                {showReply(chat.response, minimal, index)}
               </>
             ))
           : null}
-        {chatState.curPrompt ? showPrompt(chatState.curPrompt, true) : null}
+        {chatState.curPrompt ? showPrompt(chatState.curPrompt, minimal) : null}
         {chatState.resp ? showReply(chatState.resp) : null}
       </div>
     </>
@@ -243,6 +265,7 @@ const styles = {
     backgroundColor: '#FFF',
     fontSize: 13,
     padding,
+    paddingRight: padding * 2,
     maxHeight: 300,
     overflow: 'auto',
   },
@@ -256,6 +279,11 @@ const styles = {
     overflow: 'auto',
   },
   copyIcon: {
+    position: 'absolute',
+    top: 17,
+    right: 45,
+  },
+  clearIcon: {
     position: 'absolute',
     top: 17,
     right: 20,

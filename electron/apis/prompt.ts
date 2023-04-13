@@ -1,4 +1,5 @@
 import Store from 'electron-store'
+import { ERR_CODES } from '../types'
 import { generatePayload, getAiInstance } from '../server'
 import { Logger } from '../utils/util'
 import { setChat } from '../client/store'
@@ -11,7 +12,8 @@ export default async (req: any, res: any) => {
   Logger.log('ask question', prompt)
   res.setHeader('Content-type', 'application/octet-stream')
   if (!getAiInstance()) {
-    res.write('please save your openkey first')
+    res.write(String(ERR_CODES.NOT_SET_APIKEY))
+    res.end()
     return
   }
   let result = ''
@@ -44,6 +46,7 @@ export default async (req: any, res: any) => {
     })
     stream.on('end', () => {
       Logger.log('Stream done')
+      Logger.log('get storage chat ==>', store.get(StoreKey.Set_StoreChat))
       if (store.get(StoreKey.Set_StoreChat)) {
         setChat({
           prompt,
