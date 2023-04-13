@@ -236,15 +236,12 @@ const styles = {
     backgroundColor: 'rgb(240 240 240)',
     fontSize: 13,
     padding,
-    // maxHeight: 300,
-    // overflow: 'auto',
   },
   selection: {
     color: 'rgb(74 74 74)',
     marginRight: 20,
   },
   selectApp: {
-    fontStyle: 'italic',
     fontSize: 15,
     fontWeight: 'bold',
   },
@@ -266,9 +263,7 @@ const styles = {
     backgroundColor: '#FFF',
     fontSize: 13,
     padding,
-    paddingRight: padding * 2,
-    // maxHeight: 300,
-    // overflow: 'auto',
+    // paddingRight: padding * 2,
   },
   mdWrap: {
     marginRight: 30,
@@ -283,10 +278,12 @@ const styles = {
     position: 'absolute',
     top: 17,
     right: 45,
+    opacity: 0.6,
   },
   clearIcon: {
     position: 'absolute',
     top: 17,
     right: 20,
+    opacity: 0.6,
   },
 }

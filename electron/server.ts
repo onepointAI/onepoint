@@ -13,7 +13,7 @@ import { Logger } from './utils/util'
 
 const { Configuration, OpenAIApi } = require('openai')
 const store = new Store()
-// store.clear()
+// store.delete(StoreKey.History_Chat)
 
 let openai = null as any
 

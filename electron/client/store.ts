@@ -1,8 +1,8 @@
 import { IpcMainInvokeEvent, ipcMain } from 'electron'
 import Store from 'electron-store'
-import { ChatContent, StorageChatKey } from '../types'
+import { ChatContent } from '../types'
 import { PresetType } from '../../src/@types'
-
+import { StoreKey } from '../../src/app/constants'
 const store = new Store()
 // const schema = {
 // 	foo: {
@@ -51,13 +51,13 @@ export function setupStoreHandlers() {
     ) => {
       const list = getChatList(preset)
       list.splice(index, 1)
-      const mapStr = store.get(StorageChatKey) as string | undefined
+      const mapStr = store.get(StoreKey.History_Chat) as string | undefined
 
       if (typeof mapStr !== 'undefined') {
         const chatMap = JSON.parse(mapStr)
         console.log('chatMap =>', chatMap)
         chatMap[preset] = list
-        store.set(StorageChatKey, JSON.stringify(chatMap))
+        store.set(StoreKey.History_Chat, JSON.stringify(chatMap))
         return list
       } else {
         return []
@@ -75,7 +75,7 @@ export function setChat({
   response: string
   preset: PresetType
 }) {
-  const mapStr = store.get(StorageChatKey) as string | undefined
+  const mapStr = store.get(StoreKey.History_Chat) as string | undefined
   if (typeof mapStr !== 'undefined') {
     const chatMap = JSON.parse(mapStr)
     const list = chatMap[preset]
@@ -85,7 +85,7 @@ export function setChat({
         response,
       })
     }
-    store.set(StorageChatKey, JSON.stringify(chatMap))
+    store.set(StoreKey.History_Chat, JSON.stringify(chatMap))
   } else {
     const map = {
       [preset]: [
@@ -95,12 +95,12 @@ export function setChat({
         },
       ],
     }
-    store.set(StorageChatKey, JSON.stringify(map))
+    store.set(StoreKey.History_Chat, JSON.stringify(map))
   }
 }
 
 export function getChatList(type: PresetType): ChatContent[] {
-  const mapStr = store.get(StorageChatKey) as string | undefined
+  const mapStr = store.get(StoreKey.History_Chat) as string | undefined
   if (typeof mapStr !== 'undefined') {
     const chatMap = JSON.parse(mapStr)
     const list = chatMap[type] || []

@@ -1,9 +1,10 @@
 import { Avatar, List, Skeleton, Divider } from 'antd'
+import PubSub from 'pubsub-js'
 import { useAppSelector, useAppDispatch } from '../../app/hooks'
-import { setListVisible as setPresetListVisible } from '../../features/preset/presetSlice'
+import { PresetType } from '../../@types'
 
 interface Props {
-  onPresetChange: (preset: string) => void
+  onPresetChange: (preset: PresetType) => void
 }
 
 const padding = 15
@@ -26,25 +27,27 @@ export function Preset(props: Props) {
           renderItem={item => (
             <List.Item
               className="ant-list-item"
-              actions={[
-                <a
-                  key="list-loadmore-edit"
-                  style={{ marginRight: padding, color: '#a6a6a6' }}
-                >
-                  Edit
-                </a>,
-              ]}
+              actions={
+                [
+                  // <a
+                  //   key="list-loadmore-edit"
+                  //   style={{ marginRight: padding, color: '#a6a6a6' }}
+                  // >
+                  //   Edit
+                  // </a>,
+                ]
+              }
               onClick={() => {
                 onPresetChange(item.title)
-                dispatch(setPresetListVisible(false))
+                PubSub.publish('showPanel', {})
               }}
             >
               <Skeleton avatar title={false} loading={item.loading} active>
                 <List.Item.Meta
                   style={{ paddingLeft: padding }}
                   avatar={<Avatar src={item.logo} />}
-                  title={<a href="https://ant.design">{item.title}</a>}
-                  description="Ant Design, a design language for background applications, is refined by Ant UED Team"
+                  title={item.title}
+                  description={item.desc}
                 />
               </Skeleton>
             </List.Item>

@@ -1,19 +1,19 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import {
   BuiltInPlugins,
-  Casual,
+  Chat,
   Translate,
   Summarize,
-  Prettier,
+  Code,
   Analyze,
 } from '../../app/constants'
-import { PresetModule } from '../../@types'
+import { PresetModule, PresetType } from '../../@types'
 
 export const presetMap = {
-  [Casual]: '',
+  [Chat]: '',
   [Translate]: '请翻译以下内容：',
   [Summarize]: '请总结以下内容：',
-  [Prettier]:
+  [Code]:
     '请重构这段代码，并返回高亮显示的语法(markdown)，注意不需要辅助说明：',
   [Analyze]: '请分析以下内容的含义：',
 }
@@ -21,7 +21,7 @@ export const presetMap = {
 export const initialState: PresetModule = {
   listVisible: false,
   builtInPlugins: BuiltInPlugins,
-  currentPreset: Casual,
+  currentPreset: Chat,
 }
 
 export const presetSlice = createSlice({
@@ -32,7 +32,7 @@ export const presetSlice = createSlice({
       const { payload } = action
       state.listVisible = payload
     },
-    setPreset: (state, action: PayloadAction<string>) => {
+    setPreset: (state, action: PayloadAction<PresetType>) => {
       const { payload } = action
       state.currentPreset = payload
     },

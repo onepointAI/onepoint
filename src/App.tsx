@@ -25,9 +25,10 @@ import {
 } from './features/preset/presetSlice'
 import {
   setVisible as setSettingVisible,
-  setMinimal,
+  // setMinimal,
 } from './features/setting/settingSlice'
 import { setSelection } from './features/clipboard/clipboardSlice'
+import { PresetType, PanelVisible } from './@types'
 
 interface Tips {
   type: 'success' | 'error' | 'warning'
@@ -74,13 +75,21 @@ export function App() {
       }
     )
 
-    window.Main.on('setting_show', () => showSetting())
+    window.Main.on('setting_show', () =>
+      showPanel({
+        setting: true,
+      })
+    )
     PubSub.subscribe('tips', (name: string, data: Tips) => {
       const { type, message } = data
       messageApi.open({
         type,
         content: message,
       })
+    })
+
+    PubSub.subscribe('showPanel', (name: string, data: PanelVisible) => {
+      showPanel(data)
     })
   }, [])
 
@@ -94,17 +103,17 @@ export function App() {
   // useEffect(() => {
   //   getMinimalMode()
   // }, [])
+  // const changeMode = () => {
+  //   // const mode = !minimal
+  //   // useMinimal(mode)
+  //   dispatch(setMinimal(!settingState.minimal))
+  // }
 
-  const changeMode = () => {
-    // const mode = !minimal
-    // useMinimal(mode)
-    dispatch(setMinimal(!settingState.minimal))
-  }
-
-  const showSetting = () => {
-    dispatch(setPresetListVisible(false))
-    dispatch(setSettingVisible(true))
-    dispatch(setChatVisible(false))
+  const showPanel = (options: PanelVisible) => {
+    const { plugin, setting, chatPanel } = options
+    dispatch(setPresetListVisible(!!plugin && !setting && !chatPanel))
+    dispatch(setSettingVisible(!plugin && !!setting && !chatPanel))
+    dispatch(setChatVisible(!plugin && !setting && !!chatPanel))
   }
 
   const onInputChange = (
@@ -113,22 +122,22 @@ export function App() {
     const val = e.target.value
     switch (val) {
       case '/':
-        dispatch(setPresetListVisible(true))
-        dispatch(setSettingVisible(false))
-        dispatch(setChatVisible(false))
+        showPanel({
+          plugin: true,
+        })
         break
       case '/s':
-        showSetting()
+        showPanel({
+          setting: true,
+        })
         break
       default:
-        dispatch(setPresetListVisible(false))
-        dispatch(setSettingVisible(false))
-        dispatch(setChatVisible(false))
+        showPanel({})
     }
     setPrompt(val)
   }
 
-  const onPresetChange = (preset: string) => {
+  const onPresetChange = (preset: PresetType) => {
     dispatch(setPreset(preset))
     // 如果selection有值表示有选中文案
     // if (selection) {
@@ -160,7 +169,16 @@ export function App() {
           {/* @ts-ignore */}
           <div style={styles.inputWrap}>
             {presetIcon ? (
-              <Image width={30} preview={false} src={presetIcon} />
+              <Image
+                width={30}
+                preview={false}
+                src={presetIcon}
+                onClick={() =>
+                  showPanel({
+                    plugin: true,
+                  })
+                }
+              />
             ) : null}
             <Input
               placeholder="Enter '/' to process the selection, or directly enter the box to ask questions"
@@ -172,6 +190,11 @@ export function App() {
               size="large"
               onPressEnter={() => search()}
               disabled={chatState.inputDiabled}
+              onFocus={() =>
+                showPanel({
+                  chatPanel: true,
+                })
+              }
             />
             {/* <div style={styles.exitOrOut} onClick={changeMode}>
               { !settingState.minimal ? <FullscreenExitOutlined /> : <FullscreenOutlined />}                            

@@ -5,7 +5,6 @@ export interface ChatContent {
   prompt: string
   response: string
 }
-export const StorageChatKey = 'CHAT_HISTORY'
 export enum ERR_CODES {
   NETWORK_CONGESTION = -1000,
   NOT_SET_APIKEY = -998,

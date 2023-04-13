@@ -1,10 +1,8 @@
 import { useEffect } from 'react'
 import { Image } from 'antd'
+import PubSub from 'pubsub-js'
 import { searchLogov2, logoSpin } from '../../app/images'
-import { useAppDispatch, useAppSelector } from '../../app/hooks'
-
-import { setVisible as setChatVisible } from '../../features/chat/chatSlice'
-import { setListVisible as setPresetListVisible } from '../../features/preset/presetSlice'
+import { useAppSelector } from '../../app/hooks'
 
 interface Props {
   guardian?: boolean
@@ -12,7 +10,6 @@ interface Props {
 
 export function Logo(props: Props) {
   const { guardian } = props
-  const dispatch = useAppDispatch()
   const chatState = useAppSelector(state => state.chat)
 
   useEffect(() => {
@@ -29,8 +26,9 @@ export function Logo(props: Props) {
         src={searchLogov2}
         style={{ opacity: chatState.inputDiabled ? 0.8 : 1 }}
         onClick={() => {
-          dispatch(setChatVisible(false))
-          dispatch(setPresetListVisible(true))
+          PubSub.publish('showPanel', {
+            setting: true,
+          })
         }}
       />
       {chatState.inputDiabled ? (
