@@ -19,7 +19,7 @@ function runAppleScript(script: string) {
 export function getSelection() {
   const script = `
     tell application "System Events" to keystroke "c" using {command down}
-    delay 0.1
+    delay 0.5
     set selectedText to the clipboard
   `
   return runAppleScript(script)
@@ -56,11 +56,21 @@ export function getBrowserContnet() {
   tell application "Google Chrome"
     tell window 1
       tell active tab
-        execute javascript "document.body.textContent"
+        execute javascript "document.documentElement.innerText"
       end tell
-    end tell
-    
+    end tell    
   end tell
   `
   return runAppleScript(script)
+}
+
+export function getBrowserUrl(browser: string) {
+  const safariScript = `tell application "Safari" to get the URL of the current tab of window 1
+  `
+  const chromeScript = `
+  tell application "Google Chrome" to get the URL of the active tab of window 1  
+  `
+  if (browser.includes('Chrome')) return runAppleScript(chromeScript)
+  if (browser.includes('Safari')) return runAppleScript(safariScript)
+  return ''
 }

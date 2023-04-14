@@ -3,7 +3,7 @@ import { ERR_CODES } from '../types'
 import { generatePayload, getAiInstance } from '../server'
 import { Logger } from '../utils/util'
 import { setChat } from '../client/store'
-import { StoreKey } from '../../src/app/constants'
+import { StoreKey, BuiltInPlugins } from '../../src/app/constants'
 
 const store = new Store()
 
@@ -46,8 +46,10 @@ export default async (req: any, res: any) => {
     })
     stream.on('end', () => {
       Logger.log('Stream done')
-      Logger.log('get storage chat ==>', store.get(StoreKey.Set_StoreChat))
-      if (store.get(StoreKey.Set_StoreChat)) {
+      const usePlugin = BuiltInPlugins.filter(
+        plugin => plugin.title === preset
+      )[0]
+      if (store.get(StoreKey.Set_StoreChat) && !usePlugin.nostore) {
         setChat({
           prompt,
           response: result,

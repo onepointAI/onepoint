@@ -22,6 +22,10 @@ export const GlobalStyle = createGlobalStyle`
     background-color: #F3F3F3;
     cursor: pointer;
   }
+  ol li {
+    list-style-type:decimal !important;
+    list-style-position:inside !important;
+  }
 `
 
 // highlightColor: rgb(10, 11, 60)

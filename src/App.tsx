@@ -27,7 +27,7 @@ import {
   setVisible as setSettingVisible,
   // setMinimal,
 } from './features/setting/settingSlice'
-import { setSelection } from './features/clipboard/clipboardSlice'
+import { setUrl, setSelection } from './features/clipboard/clipboardSlice'
 import { PresetType, PanelVisible } from './@types'
 
 interface Tips {
@@ -64,17 +64,20 @@ export function App() {
     window.Main.on('clipboard_change', (text: string) => {
       setPrompt(text)
     })
-
     window.Main.on(
       'selection_change',
       (selection: { txt: string; app: string }) => {
         const { txt, app } = selection
-        // @ts-ignore
         dispatch(setSelection({ txt, app }))
         dispatch(setChatVisible(!!txt && !!app))
       }
     )
-
+    window.Main.on('url_change', (selection: { url: string }) => {
+      const { url } = selection
+      console.log('=== url change ===>', url)
+      dispatch(setUrl({ url }))
+      dispatch(setChatVisible(true))
+    })
     window.Main.on('setting_show', () =>
       showPanel({
         setting: true,
@@ -87,10 +90,10 @@ export function App() {
         content: message,
       })
     })
-
     PubSub.subscribe('showPanel', (name: string, data: PanelVisible) => {
       showPanel(data)
     })
+    window.Main.setUsePreset('Chat')
   }, [])
 
   // const setStore = (key: string, value: string | boolean | number) => {
@@ -139,6 +142,7 @@ export function App() {
 
   const onPresetChange = (preset: PresetType) => {
     dispatch(setPreset(preset))
+    window.Main.setUsePreset(preset)
     // 如果selection有值表示有选中文案
     // if (selection) {
     //   search(selection)

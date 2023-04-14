@@ -15,7 +15,7 @@ export const presetMap = {
   [Summarize]: '请总结以下内容：',
   [Code]:
     '请重构这段代码，并返回高亮显示的语法(markdown)，注意不需要辅助说明：',
-  [Analyze]: '请分析以下内容的含义：',
+  [Analyze]: '请总结分析以下内容的含义：',
 }
 
 export const initialState: PresetModule = {

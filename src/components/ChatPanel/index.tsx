@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from 'react'
-import { Divider, Button, Alert } from 'antd'
+import { Divider, Button, Alert, ConfigProvider } from 'antd'
 import PubSub from 'pubsub-js'
 
 import ReactMarkdown from 'react-markdown'
@@ -11,9 +11,11 @@ import { useAppSelector, useAppDispatch } from '../../app/hooks'
 import { BuiltInPlugins, StoreKey } from '../../app/constants'
 import {
   fetchChatResp,
+  fetchWebCrawlResp,
   setCurPrompt,
   saveResp,
 } from '../../features/chat/chatSlice'
+import { setSelection, setUrl } from '../../features/clipboard/clipboardSlice'
 import { presetMap } from '../../features/preset/presetSlice'
 import { PluginType } from '../../@types'
 import { ChatContent } from '../../../electron/types'
@@ -26,6 +28,7 @@ export function ChatPanel() {
   const [minimal, setMinimal] = useState<boolean>(true)
   const [chatList, setChatList] = useState<ChatContent[]>([])
   const [showSelection, setShowSelection] = useState<boolean>(false)
+  const [showUrl, setShowUrl] = useState<string>('')
   const [usePlugin, setUsePlugin] = useState<PluginType>()
   const bottomLineRef = useRef<HTMLDivElement>(null)
   const dispatch = useAppDispatch()
@@ -102,7 +105,7 @@ export function ChatPanel() {
     // @ts-ignore
     const qaTpl = presetMap[presetState.currentPreset] as string
     const qa = qaTpl + txt
-    setShowSelection(false)
+    dispatch(setSelection({ txt: '', app: '' }))
     dispatch(
       fetchChatResp({
         prompt: qa,
@@ -111,36 +114,97 @@ export function ChatPanel() {
     )
   }
 
+  const doSummaryWebsite = (url: string) => {
+    dispatch(setUrl({ url: '' }))
+    dispatch(
+      fetchWebCrawlResp({
+        url,
+      })
+    )
+  }
+
   const cancelRequest = () => {
-    setShowSelection(false)
+    dispatch(
+      setSelection({
+        txt: '',
+        app: '',
+      })
+    )
   }
 
   const showCopyFromEditor = () => {
     return showSelection ? (
-      <div style={styles.selectWrap}>
-        <span style={styles.selection}>
-          Sure operate the selection in{' '}
-          <span style={styles.selectApp}>{`${clipboardState.selectApp}`}</span>?
-        </span>
-        <Button
-          type="text"
-          ghost
-          danger
-          style={{ color: 'rgb(255, 90, 0)' }}
-          onClick={() => doRequest(clipboardState.selectTxt)}
-        >
-          Yes
-        </Button>
-        {/* TODO：clear the selections */}
-        <Button type="text" ghost onClick={() => cancelRequest()}>
-          No
-        </Button>
-      </div>
+      <ConfigProvider
+        theme={{
+          token: {
+            colorPrimary: 'rgb(23, 10, 89)',
+          },
+        }}
+      >
+        <div style={styles.selectWrap}>
+          <span style={styles.selection}>
+            Sure operate the selection in{' '}
+            <span
+              style={styles.selectApp}
+            >{`${clipboardState.selectApp}`}</span>
+            ?
+          </span>
+          <Button
+            // type="text"
+            type="primary"
+            // ghost
+
+            style={{ marginRight: 5 }}
+            onClick={() => doRequest(clipboardState.selectTxt)}
+          >
+            Yes
+          </Button>
+          {/* TODO：clear the selections */}
+          <Button type="text" ghost onClick={() => cancelRequest()}>
+            No
+          </Button>
+        </div>
+      </ConfigProvider>
+    ) : null
+  }
+
+  const showSelectUrl = () => {
+    return clipboardState.url && usePlugin?.monitorBrowser ? (
+      <ConfigProvider
+        theme={{
+          token: {
+            colorPrimary: 'rgb(23, 10, 89)',
+          },
+        }}
+      >
+        <div style={styles.selectWrap}>
+          <span style={styles.selection}>
+            <span>Summarize this page? </span>
+            {/* <span style={styles.url}>{clipboardState.url}</span>*/}
+          </span>
+          <Button
+            // type="text"
+            type="primary"
+            // ghost
+
+            style={{ marginRight: 5 }}
+            onClick={() => doSummaryWebsite(clipboardState.url)}
+          >
+            Yes
+          </Button>
+          {/* TODO：clear the selections */}
+          <Button type="text" ghost onClick={() => cancelRequest()}>
+            No
+          </Button>
+        </div>
+      </ConfigProvider>
     ) : null
   }
 
   const showPrompt = (prompt: string, minimal?: boolean) => {
-    return !minimal ? <div style={styles.requestWrap}>➜ {prompt}</div> : null
+    return !minimal && !usePlugin?.nostore ? (
+      <div style={styles.requestWrap}>➜ {prompt}</div>
+    ) : null
   }
 
   const showReply = (response: string, minimal?: boolean, index?: number) => {
@@ -170,7 +234,7 @@ export function ChatPanel() {
               },
             }}
           />
-          {response && minimal ? (
+          {/* {response && (minimal || usePlugin?.nostore)  ? (
             <>
               <Divider style={{ margin: '24px 0' }} />
               <Button
@@ -182,19 +246,30 @@ export function ChatPanel() {
                 Attempt Change
               </Button>
             </>
-          ) : null}
+          ) : null} */}
         </div>
         {response ? (
-          <CopyOutlined
-            style={styles.copyIcon as React.CSSProperties}
-            onClick={() => copyRsp(response)}
-          />
-        ) : null}
-        {response ? (
-          <ClearOutlined
-            style={styles.clearIcon as React.CSSProperties}
-            onClick={() => delRecord(index)}
-          />
+          <>
+            <Divider style={{ margin: '5px 24px' }} />
+            <div style={styles.bottomRspWrap}>
+              <Button
+                type="text"
+                block
+                onClick={() => atemptChange(response)}
+                style={styles.attemptBtn}
+              >
+                Attempt Change
+              </Button>
+              <CopyOutlined
+                style={styles.copyIcon as React.CSSProperties}
+                onClick={() => copyRsp(response)}
+              />
+              <ClearOutlined
+                style={styles.clearIcon as React.CSSProperties}
+                onClick={() => delRecord(index)}
+              />
+            </div>
+          </>
         ) : null}
       </div>
     )
@@ -214,6 +289,7 @@ export function ChatPanel() {
       ) : null}
       <div style={styles.history}>
         {showCopyFromEditor()}
+        {showSelectUrl()}
         {!minimal
           ? chatList.map((chat, index) => (
               <div key={chat.prompt}>
@@ -222,8 +298,11 @@ export function ChatPanel() {
               </div>
             ))
           : null}
+
+        {/* need to separate prompt and resp  */}
         {chatState.curPrompt ? showPrompt(chatState.curPrompt, minimal) : null}
         {chatState.resp ? showReply(chatState.resp) : null}
+        {chatState.webCrawlResp ? showReply(chatState.webCrawlResp) : null}
         <div ref={bottomLineRef}></div>
       </div>
     </>
@@ -241,6 +320,13 @@ const styles = {
     color: 'rgb(74 74 74)',
     marginRight: 20,
   },
+  url: {
+    maxWidth: 400,
+    display: 'inline-block',
+    textOverflow: 'ellipsis',
+    overflow: 'hidden',
+    whiteSpace: 'nowrap',
+  },
   selectApp: {
     fontSize: 15,
     fontWeight: 'bold',
@@ -253,7 +339,7 @@ const styles = {
   },
   requestWrap: {
     backgroundColor: 'rgb(241 241 241)',
-    fontSize: 13,
+    fontSize: 15,
     lineHeight: '20px',
     fontWeight: 'bold',
     padding: '7px 45px 7px 45px',
@@ -261,9 +347,9 @@ const styles = {
   replyWrap: {
     position: 'relative',
     backgroundColor: '#FFF',
-    fontSize: 13,
+    fontSize: 14,
+    lineHeight: 2.5,
     padding,
-    // paddingRight: padding * 2,
   },
   mdWrap: {
     marginRight: 30,
@@ -274,16 +360,27 @@ const styles = {
     maxHeight: 400,
     overflow: 'auto',
   },
+  bottomRspWrap: {
+    position: 'relative',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   copyIcon: {
     position: 'absolute',
-    top: 17,
+    marginRight: 15,
     right: 45,
-    opacity: 0.6,
+    top: 10,
   },
   clearIcon: {
     position: 'absolute',
-    top: 17,
-    right: 20,
-    opacity: 0.6,
+    right: 25,
+    top: 10,
+  },
+  attemptBtn: {
+    width: 300,
+    fontSize: 12,
+    fontWeight: 'bold',
   },
 }

@@ -10,6 +10,7 @@ interface ChatModule {
   respErrMsg: string
   curPrompt: string
   isGenerating: boolean
+  webCrawlResp: string
 }
 
 export const initialState: ChatModule = {
@@ -20,6 +21,7 @@ export const initialState: ChatModule = {
   respErrMsg: '',
   curPrompt: '',
   isGenerating: false,
+  webCrawlResp: '', // 区分err、errmsp等等
 }
 
 export const chatSlice = createSlice({
@@ -54,6 +56,10 @@ export const chatSlice = createSlice({
       const { payload } = action
       state.isGenerating = payload
     },
+    saveWebCrawlResp: (state, action: PayloadAction<string>) => {
+      const { payload } = action
+      state.webCrawlResp = payload
+    },
   },
 })
 
@@ -65,6 +71,7 @@ export const {
   setRespErrMsg,
   setCurPrompt,
   setGenerating,
+  saveWebCrawlResp,
 } = chatSlice.actions
 
 export const fetchChatResp = createAsyncThunk(
@@ -139,4 +146,56 @@ export const fetchChatResp = createAsyncThunk(
       })
   }
 )
+
+export const fetchWebCrawlResp = createAsyncThunk(
+  'chat/fetchWebCrawlResp',
+  async (
+    args: {
+      url: string
+    },
+    { dispatch }
+  ) => {
+    const { url } = args
+    dispatch(setInputDisabled(true))
+    dispatch(setRespErr(false))
+    dispatch(setGenerating(true))
+
+    const request = async () => {
+      const response = await fetch(`${baseApiHost}/crawl`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          url,
+        }),
+      })
+      return response.json()
+    }
+
+    Promise.race([
+      timeoutPromise(
+        20000,
+        'Network congestion, check whether you have set up a proxy'
+      ),
+      request(),
+    ])
+      .then(resp => {
+        const { result, code } = resp
+        if (code === 0) {
+          dispatch(saveWebCrawlResp(result))
+        }
+      })
+      .catch(e => {
+        dispatch(setVisible(true))
+        dispatch(setRespErr(true))
+        dispatch(setRespErrMsg(e.message))
+      })
+      .finally(() => {
+        dispatch(setGenerating(false))
+        dispatch(setInputDisabled(false))
+      })
+  }
+)
+
 export default chatSlice.reducer

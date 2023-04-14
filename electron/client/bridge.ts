@@ -7,6 +7,7 @@ export const api = {
    */
   setWinMouseIgnore: (ignore: boolean) =>
     ipcRenderer.send('winIgnoreMouse', ignore),
+  setUsePreset: (preset: PresetType) => ipcRenderer.send('usePreset', preset),
   sendMessage: (message: string) => ipcRenderer.send('message', message),
   setStore: (key: string, blob: any) =>
     ipcRenderer.invoke('setStore', { key, blob }),

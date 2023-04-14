@@ -6,7 +6,7 @@ import accountApi from './apis/account'
 import promptApi from './apis/prompt'
 import applyApi from './apis/apply'
 import testApi from './apis/test'
-import grabApi from './apis/grab'
+import crawlApi from './apis/crawl'
 import { PresetType } from '../src/@types'
 import { StoreKey } from '../src/app/constants'
 import { Logger } from './utils/util'
@@ -19,7 +19,7 @@ let openai = null as any
 
 function getContextual(prompt: PresetType) {
   const num = (store.get(StoreKey.Set_Contexual) as number) || 0
-  if (prompt) {
+  if (prompt && num) {
     const list = getChatList(prompt).slice(-num)
     const contexual = list.map(item => {
       return [
@@ -38,7 +38,7 @@ function getContextual(prompt: PresetType) {
   return []
 }
 
-export function generatePayload(content: string, prompt: string) {
+export function generatePayload(content: string, prompt: PresetType) {
   // const apiKey = store.get('api_key');
   // const payload = generatePayload(
   //   `I want you to act as an ${targetLang} translator. I will speak to you in any language and you translate it and answer in the corrected and improved version of my sentence/phrase/word in ${targetLang}. I want you to only reply the translated sentence/phrase/word and nothing else, do not write explanations. You do not need to reply a complete sentence.`,
@@ -101,8 +101,6 @@ export function getAiInstance() {
   return null
 }
 
-require('./apis/grab')
-
 const app = express()
 const port = 4000
 app.use(compression())
@@ -112,7 +110,7 @@ app.post('/prompt', promptApi)
 app.post('/apply', applyApi)
 app.post('/test', testApi)
 app.post('/account', accountApi)
-app.post('/grabApi', grabApi)
+app.post('/crawl', crawlApi)
 app.listen(port, async () => {
   Logger.log(`onepoint listening on port ${port}!`)
 })

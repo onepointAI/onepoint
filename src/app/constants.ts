@@ -21,6 +21,8 @@ export const BuiltInPlugins = [
     loading: false,
     inputDisable: true,
     desc: 'Code Master, generate or refactor the code you want.',
+    nostore: true,
+    monitorClipboard: true,
   },
   {
     logo: post,
@@ -29,6 +31,8 @@ export const BuiltInPlugins = [
     loading: false,
     inputDisable: true,
     desc: 'Professional writer, proficient in writing various types of copy.',
+    nostore: true,
+    monitorBrowser: true,
   },
   {
     logo: translate,
@@ -36,7 +40,9 @@ export const BuiltInPlugins = [
     title: Translate,
     loading: false,
     inputDisable: true,
+    monitorClipboard: true,
     desc: 'Language expert, proficient in various languages from different countries.',
+    nostore: true,
   },
 ] as PluginType[]
 

@@ -5,6 +5,9 @@ export interface PluginType {
   desc?: string
   loading: boolean
   inputDisable?: boolean
+  nostore?: boolean
+  monitorClipboard?: boolean
+  monitorBrowser?: boolean
 }
 
 export interface PresetModule {

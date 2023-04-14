@@ -2,10 +2,12 @@ import { app, BrowserWindow, ipcMain } from 'electron'
 import { setupStoreHandlers } from './client/store'
 import { Logger } from './utils/util'
 import initLog from './utils/log'
+import { Singleton } from './utils/global'
 import { setWindowVisile } from './utils/window'
 import { listen as setupShortcutHandlers } from './os/shortcuts'
 import { listen as setupClipboardHandlers } from './client/clipboard'
 import initTray from './os/tray'
+import { PresetType } from '../src/@types'
 
 require('./server')
 
@@ -63,6 +65,9 @@ async function registerListeners() {
   })
   ipcMain.on('winIgnoreMouse', (_, ignore) => {
     win?.setIgnoreMouseEvents(ignore, { forward: true })
+  })
+  ipcMain.on('usePreset', (_, preset: PresetType) => {
+    Singleton.getInstance().setCurPreset(preset)
   })
   setupClipboardHandlers(win)
   setupShortcutHandlers(win)
