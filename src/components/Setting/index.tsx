@@ -7,6 +7,7 @@ import {
 } from '@ant-design/icons'
 import Account from './Account'
 import Basic from './Basic'
+import Prompt from './Prompt'
 import { useAppSelector } from '../../app/hooks'
 
 export function Setting() {
@@ -65,7 +66,7 @@ export function Setting() {
                 </span>
               ),
               key: '4',
-              children: 'Tab 3',
+              children: <Prompt />,
               disabled: true,
             },
             {
