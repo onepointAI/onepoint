@@ -6,6 +6,7 @@ import { Singleton } from './utils/global'
 import { setWindowVisile } from './utils/window'
 import { listen as setupShortcutHandlers } from './os/shortcuts'
 import { listen as setupClipboardHandlers } from './client/clipboard'
+import { setupSoundHandlers } from './sound'
 import initTray from './os/tray'
 import { PresetType } from '../src/@types'
 
@@ -71,6 +72,7 @@ async function registerListeners() {
   })
   setupClipboardHandlers(win)
   setupShortcutHandlers(win)
+  setupSoundHandlers()
   setupStoreHandlers()
 }
 

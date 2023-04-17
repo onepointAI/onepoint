@@ -5,7 +5,7 @@ import PubSub from 'pubsub-js'
 import ReactMarkdown from 'react-markdown'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { atomDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
-import { CopyOutlined, ClearOutlined } from '@ant-design/icons'
+import { CopyOutlined, ClearOutlined, SoundOutlined } from '@ant-design/icons'
 
 import { useAppSelector, useAppDispatch } from '../../app/hooks'
 import { BuiltInPlugins, StoreKey } from '../../app/constants'
@@ -16,7 +16,6 @@ import {
   saveResp,
 } from '../../features/chat/chatSlice'
 import { setSelection, setUrl } from '../../features/clipboard/clipboardSlice'
-import { presetMap } from '../../features/preset/presetSlice'
 import { PluginType } from '../../@types'
 import { ChatContent } from '../../../electron/types'
 
@@ -77,6 +76,14 @@ export function ChatPanel() {
     usePlugin?.inputDisable,
   ])
 
+  const speakRsp = (resp: string) => {
+    window.Main.speakText(resp)
+    // PubSub.publish('tips', {
+    //   type: 'success',
+    //   message: 'speak success',
+    // })
+  }
+
   const copyRsp = (resp: string) => {
     window.Main.copyText(resp)
     PubSub.publish('tips', {
@@ -102,9 +109,7 @@ export function ChatPanel() {
   }
 
   const doRequest = (txt: string) => {
-    // @ts-ignore
-    const qaTpl = presetMap[presetState.currentPreset] as string
-    const qa = qaTpl + txt
+    const qa = txt
     dispatch(setSelection({ txt: '', app: '' }))
     dispatch(
       fetchChatResp({
@@ -260,6 +265,10 @@ export function ChatPanel() {
               >
                 Attempt Change
               </Button>
+              <SoundOutlined
+                style={styles.speakIcon as React.CSSProperties}
+                onClick={() => speakRsp(response)}
+              />
               <CopyOutlined
                 style={styles.copyIcon as React.CSSProperties}
                 onClick={() => copyRsp(response)}
@@ -366,6 +375,12 @@ const styles = {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  speakIcon: {
+    position: 'absolute',
+    marginRight: 30,
+    right: 65,
+    top: 10,
   },
   copyIcon: {
     position: 'absolute',

@@ -33,14 +33,14 @@ export function listen(win: BrowserWindow | null) {
       try {
         const preset = Singleton.getInstance().getCurPreset()
         const plugin = BuiltInPlugins.filter(plugin => plugin.title === preset)
-
+        const app = await setApp()
         if (plugin.length > 0) {
           const usePlugin = plugin[0]
           if (usePlugin.monitorClipboard) {
             const clipboardContent = clipboard.readText()
             // 每次获取完后需要清空一下剪切板，否则判断会有问题
             const selection = await getSelection()
-            const app = await setApp()
+            // const app = await setApp()
             Logger.log('selectionTxt =>', selection)
             win?.webContents.send('selection_change', {
               txt: selection,
@@ -48,7 +48,7 @@ export function listen(win: BrowserWindow | null) {
             })
             clipboard.writeText(clipboardContent)
           } else if (usePlugin.monitorBrowser) {
-            const app = await setApp()
+            // const app = await setApp()
             const url = await getBrowserUrl(app)
             Logger.log('current url =>', url)
             win?.webContents.send('url_change', {

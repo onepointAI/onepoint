@@ -74,3 +74,10 @@ export function getBrowserUrl(browser: string) {
   if (browser.includes('Safari')) return runAppleScript(safariScript)
   return ''
 }
+
+export function speakTxt(txt: string, voice: string, rate: number) {
+  const script = `
+  tell application "Finder" to say "${txt}" using "${voice}" speaking rate ${rate}
+  `
+  return runAppleScript(script)
+}

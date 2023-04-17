@@ -5,8 +5,9 @@ export const api = {
   /**
    * Emit events
    */
-  setWinMouseIgnore: (ignore: boolean) =>
-    ipcRenderer.send('winIgnoreMouse', ignore),
+  setWinMouseIgnore: (ignore: boolean) => {
+    return ipcRenderer.send('winIgnoreMouse', ignore)
+  },
   setUsePreset: (preset: PresetType) => ipcRenderer.send('usePreset', preset),
   sendMessage: (message: string) => ipcRenderer.send('message', message),
   setStore: (key: string, blob: any) =>
@@ -14,6 +15,7 @@ export const api = {
   attemptChange: (changes: string) =>
     ipcRenderer.invoke('attemptChange', changes),
   copyText: (changes: string) => ipcRenderer.invoke('copyText', changes),
+  speakText: (changes: string) => ipcRenderer.invoke('speakText', changes),
   getSettings: (key: string) => ipcRenderer.invoke('getStore', key),
   getChatList: (preset: PresetType) =>
     ipcRenderer.invoke('getChatList', preset),

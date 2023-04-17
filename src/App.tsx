@@ -21,7 +21,6 @@ import {
 import {
   setListVisible as setPresetListVisible,
   setPreset,
-  presetMap,
 } from './features/preset/presetSlice'
 import {
   setVisible as setSettingVisible,
@@ -158,7 +157,7 @@ export function App() {
     dispatch(
       fetchChatResp({
         // @ts-ignore
-        prompt: `${presetMap[presetState.currentPreset]}${prompt}`,
+        prompt: `${prompt}`,
         preset: presetState.currentPreset,
       })
     )

@@ -61,7 +61,10 @@ export default async (req: any, res: any) => {
     //   contents.push(getUserContent(content))
     // })
 
-    const contents = [getUserContent('请帮我总结一下下面这篇文章:' + text)]
+    // const contents = [getUserContent('请帮我总结一下下面这篇文章:' + text)]
+    const contents = [
+      getUserContent('please help me to summarize this website:' + text),
+    ]
 
     const completion = await getAiInstance().createChatCompletion(
       generatePayload(contents)

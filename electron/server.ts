@@ -10,6 +10,7 @@ import crawlApi from './apis/crawl'
 import { PresetType } from '../src/@types'
 import { StoreKey } from '../src/app/constants'
 import { Logger } from './utils/util'
+import { presetMap } from './prompt'
 
 const { Configuration, OpenAIApi } = require('openai')
 const store = new Store()
@@ -19,6 +20,13 @@ let openai = null as any
 
 function getContextual(prompt: PresetType) {
   const num = (store.get(StoreKey.Set_Contexual) as number) || 0
+  const sPreset = [
+    {
+      role: 'system',
+      content: presetMap[prompt],
+    },
+  ]
+
   if (prompt && num) {
     const list = getChatList(prompt).slice(-num)
     const contexual = list.map(item => {
@@ -33,9 +41,9 @@ function getContextual(prompt: PresetType) {
         },
       ]
     })
-    return contexual.flat()
+    return [...contexual.flat(), ...sPreset]
   }
-  return []
+  return [...sPreset]
 }
 
 export function generatePayload(content: string, prompt: PresetType) {
