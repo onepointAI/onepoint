@@ -2,8 +2,9 @@ import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
 import { baseApiHost } from '../../app/api'
 import { timeoutPromise } from '../../utils/fetch'
 import { ERR_CODES } from '../../../electron/types'
+
 interface ChatModule {
-  resp: string
+  resp: Record<string, string>
   visible: boolean
   inputDiabled: boolean
   respErr: boolean
@@ -14,7 +15,7 @@ interface ChatModule {
 }
 
 export const initialState: ChatModule = {
-  resp: '',
+  resp: {},
   visible: false,
   inputDiabled: false,
   respErr: false,
@@ -24,13 +25,22 @@ export const initialState: ChatModule = {
   webCrawlResp: '', // 区分err、errmsp等等
 }
 
+interface Resp {
+  preset: string
+  content: string
+}
+
 export const chatSlice = createSlice({
   name: 'chat',
   initialState,
   reducers: {
-    saveResp: (state, action: PayloadAction<string>) => {
-      const { payload } = action
-      state.resp = payload
+    saveResp: (state, action: PayloadAction<Resp>) => {
+      const {
+        payload: { preset, content },
+      } = action
+      const resp = state.resp
+      resp[preset] = content
+      state.resp = resp
     },
     setVisible: (state, action: PayloadAction<boolean>) => {
       const { payload } = action
@@ -121,7 +131,12 @@ export const fetchChatResp = createAsyncThunk(
             break
           }
           str += value
-          dispatch(saveResp(str))
+          dispatch(
+            saveResp({
+              preset,
+              content: str,
+            })
+          )
         }
         resolve(true)
       })

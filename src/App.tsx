@@ -153,7 +153,12 @@ export function App() {
     if (!prompt) return
     dispatch(setInputDisabled(true))
     dispatch(setCurPrompt(prompt))
-    dispatch(saveResp(''))
+    dispatch(
+      saveResp({
+        preset: presetState.currentPreset,
+        content: '',
+      })
+    )
     dispatch(
       fetchChatResp({
         // @ts-ignore

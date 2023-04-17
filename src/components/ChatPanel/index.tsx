@@ -27,7 +27,7 @@ export function ChatPanel() {
   const [minimal, setMinimal] = useState<boolean>(true)
   const [chatList, setChatList] = useState<ChatContent[]>([])
   const [showSelection, setShowSelection] = useState<boolean>(false)
-  const [showUrl, setShowUrl] = useState<string>('')
+  // const [showUrl, setShowUrl] = useState<string>('')
   const [usePlugin, setUsePlugin] = useState<PluginType>()
   const bottomLineRef = useRef<HTMLDivElement>(null)
   const dispatch = useAppDispatch()
@@ -47,6 +47,16 @@ export function ChatPanel() {
       setTimeout(() => {
         bottomLineRef.current?.scrollIntoView({ behavior: 'smooth' })
       }, 100)
+      if (!usePlugin?.nostore) {
+        dispatch(setCurPrompt(''))
+        dispatch(
+          saveResp({
+            preset: presetState.currentPreset,
+            content: '',
+          })
+        )
+        fetchChatList()
+      }
     }
   }, [chatState.isGenerating])
 
@@ -59,7 +69,6 @@ export function ChatPanel() {
     const plugin = BuiltInPlugins.filter(
       item => presetState.currentPreset === item.title
     )[0]
-    // @ts-ignore
     setUsePlugin(plugin)
     fetchChatList()
   }, [presetState.currentPreset, chatState.curPrompt])
@@ -78,10 +87,6 @@ export function ChatPanel() {
 
   const speakRsp = (resp: string) => {
     window.Main.speakText(resp)
-    // PubSub.publish('tips', {
-    //   type: 'success',
-    //   message: 'speak success',
-    // })
   }
 
   const copyRsp = (resp: string) => {
@@ -100,7 +105,12 @@ export function ChatPanel() {
       message: 'delete success',
     })
     dispatch(setCurPrompt(''))
-    dispatch(saveResp(''))
+    dispatch(
+      saveResp({
+        preset: presetState.currentPreset,
+        content: '',
+      })
+    )
     setChatList(list)
   }
 
@@ -155,17 +165,13 @@ export function ChatPanel() {
             ?
           </span>
           <Button
-            // type="text"
             type="primary"
-            // ghost
-
             style={{ marginRight: 5 }}
             onClick={() => doRequest(clipboardState.selectTxt)}
           >
             Yes
           </Button>
-          {/* TODO：clear the selections */}
-          <Button type="text" ghost onClick={() => cancelRequest()}>
+          <Button type="text" onClick={() => cancelRequest()}>
             No
           </Button>
         </div>
@@ -190,15 +196,12 @@ export function ChatPanel() {
           <Button
             // type="text"
             type="primary"
-            // ghost
-
             style={{ marginRight: 5 }}
             onClick={() => doSummaryWebsite(clipboardState.url)}
           >
             Yes
           </Button>
-          {/* TODO：clear the selections */}
-          <Button type="text" ghost onClick={() => cancelRequest()}>
+          <Button type="text" onClick={() => cancelRequest()}>
             No
           </Button>
         </div>
@@ -219,7 +222,7 @@ export function ChatPanel() {
           <ReactMarkdown
             children={response}
             components={{
-              code({ node, inline, className, children, ...props }) {
+              code({ inline, className, children, ...props }) {
                 const match = /language-(\w+)/.exec(className || '')
                 return !inline && match ? (
                   <SyntaxHighlighter
@@ -255,7 +258,7 @@ export function ChatPanel() {
         </div>
         {response ? (
           <>
-            <Divider style={{ margin: '5px 24px' }} />
+            <Divider style={{ margin: '5px 0' }} />
             <div style={styles.bottomRspWrap}>
               <Button
                 type="text"
@@ -284,7 +287,8 @@ export function ChatPanel() {
     )
   }
 
-  const showContent = showSelection || chatState.resp || chatState.respErr
+  const respContent = chatState.resp[presetState.currentPreset]
+  const showContent = showSelection || respContent || chatState.respErr
   const showChat =
     ((chatState.visible && showContent) || !minimal) &&
     !settingState.visible &&
@@ -301,16 +305,15 @@ export function ChatPanel() {
         {showSelectUrl()}
         {!minimal
           ? chatList.map((chat, index) => (
-              <div key={chat.prompt}>
+              <div key={chat.prompt + index}>
                 {showPrompt(chat.prompt, minimal)}
                 {showReply(chat.response, minimal, index)}
               </div>
             ))
           : null}
-
         {/* need to separate prompt and resp  */}
         {chatState.curPrompt ? showPrompt(chatState.curPrompt, minimal) : null}
-        {chatState.resp ? showReply(chatState.resp) : null}
+        {respContent ? showReply(respContent) : null}
         {chatState.webCrawlResp ? showReply(chatState.webCrawlResp) : null}
         <div ref={bottomLineRef}></div>
       </div>
@@ -375,7 +378,7 @@ const styles = {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-  },
+  } as React.CSSProperties,
   speakIcon: {
     position: 'absolute',
     marginRight: 30,
