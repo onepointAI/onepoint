@@ -7,6 +7,7 @@ export interface ChatContent {
 }
 export enum ERR_CODES {
   NETWORK_CONGESTION = -1000,
-  NOT_SET_APIKEY = -998,
   TIMEOUT = -999,
+  NOT_SET_APIKEY = -998,
+  TOKEN_TOO_LONG = -997,
 }

@@ -47,6 +47,14 @@ export default async (req: any, res: any) => {
 
     const resp = (await getBrowserContnet()) as string
     const text = resp.replace(/[\r\n\t ]/g, '')
+    if (text.length > 4000) {
+      res.send({
+        code: ERR_CODES.TOKEN_TOO_LONG,
+        result: null,
+      })
+      return
+    }
+
     // let chunkLen = 250;
     // let total = text.length;
     // let o = []
@@ -57,14 +65,10 @@ export default async (req: any, res: any) => {
 
     // console.log('o ===>', o)
     // const contents = [] as UserMsg[];
-    // [...o, '请总结'].map((content: string) => {
+    // [...o, 'summarize this website:'].map((content: string) => {
     //   contents.push(getUserContent(content))
     // })
-
-    // const contents = [getUserContent('请帮我总结一下下面这篇文章:' + text)]
-    const contents = [
-      getUserContent('please help me to summarize this website:' + text),
-    ]
+    const contents = [getUserContent('please summarize this website:' + text)]
 
     const completion = await getAiInstance().createChatCompletion(
       generatePayload(contents)
