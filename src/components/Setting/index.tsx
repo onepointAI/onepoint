@@ -49,11 +49,22 @@ export function Setting() {
             {
               label: (
                 <span>
+                  <UserOutlined />
+                  Advanced
+                </span>
+              ),
+              key: '3',
+              children: <Account />,
+              disabled: true,
+            },
+            {
+              label: (
+                <span>
                   <MacCommandOutlined />
                   Prompts
                 </span>
               ),
-              key: '3',
+              key: '4',
               children: 'Tab 3',
               disabled: true,
             },
@@ -64,7 +75,7 @@ export function Setting() {
                   Plugins
                 </span>
               ),
-              key: '4',
+              key: '5',
               children: 'Tab 3',
               disabled: true,
             },

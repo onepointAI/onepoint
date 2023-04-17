@@ -7,7 +7,8 @@ export function setupSoundHandlers() {
     'speakText',
     async (event: IpcMainInvokeEvent, resp: string) => {
       try {
-        speakTxt(resp, 'Ting-Ting', 200)
+        // https://gist.github.com/mculp/4b95752e25c456d425c6
+        speakTxt(resp, 200)
         return true
       } catch (e) {
         Logger.error(e)

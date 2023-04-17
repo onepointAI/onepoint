@@ -75,9 +75,10 @@ export function getBrowserUrl(browser: string) {
   return ''
 }
 
-export function speakTxt(txt: string, voice: string, rate: number) {
+export function speakTxt(txt: string, rate: number) {
+  // using "${voice}"
   const script = `
-  tell application "Finder" to say "${txt}" using "${voice}" speaking rate ${rate}
+  tell application "Finder" to say "${txt}" speaking rate ${rate}
   `
   return runAppleScript(script)
 }
