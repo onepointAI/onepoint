@@ -1,91 +1,38 @@
 import { useEffect, useState } from 'react'
-import { Space, Table, Modal, Form, Input } from 'antd'
+import { Button, Space, Table, Modal, Form, Input } from 'antd'
+import PubSub from 'pubsub-js'
 import type { ColumnsType } from 'antd/es/table'
-
-// import { useAppDispatch, useAppSelector } from '../../../app/hooks'
-// import { StoreKey } from '../../../app/constants'
-// import {
-//   setMinimal,
-//   setLng,
-//   setContexual,
-//   setStore as setStoreSet,
-//   defaultVals,
-// } from '../../../features/setting/settingSlice'
-
-interface DataType {
-  key: string
-  character: string
-  prompt: string
-  tags: string[]
-}
-
-const data: DataType[] = [
-  {
-    key: '1',
-    character: 'Chater',
-    prompt: 'New York No. 1 Lake Park',
-    tags: ['nice', 'developer'],
-  },
-  {
-    key: '2',
-    character: 'Code Master',
-    prompt: 'London No. 1 Lake Park',
-    tags: ['loser'],
-  },
-  {
-    key: '3',
-    character: 'Analysis Expert',
-    prompt: 'Sydney No. 1 Lake Park',
-    tags: ['cool', 'teacher'],
-  },
-
-  {
-    key: '1',
-    character: 'Chater2',
-    prompt: 'New York No. 1 Lake Park',
-    tags: ['nice', 'developer'],
-  },
-  {
-    key: '2',
-    character: 'Code Master2',
-    prompt: 'London No. 1 Lake Park',
-    tags: ['loser'],
-  },
-  {
-    key: '3',
-    character: 'Analysis Expert2',
-    prompt: 'Sydney No. 1 Lake Park',
-    tags: ['cool', 'teacher'],
-  },
-]
+import { Prompts_ZH_Link } from '../../../app/constants'
+import { DataType } from '../../../@types'
 
 export default function () {
-  //   const dispatch = useAppDispatch()
-  //   const settingState = useAppSelector(state => state.setting)
-
   const [form] = Form.useForm()
+  const [promptList, setPromptList] = useState<DataType[]>([])
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isEdit, setIsEdit] = useState<boolean>(false)
+  const [former, setFormer] = useState<string>('')
   const [formValues, setFormValues] = useState({
     layout: 'vertical',
     character: '',
     prompt: '',
   })
-  const gettings = async () => {
-    // const lng = await window.Main.getSettings(StoreKey.Set_Lng)
-    // dispatch(setLng(lng || defaultVals.lng))
-    // const storeSet = await window.Main.getSettings(StoreKey.Set_StoreChat)
-    // dispatch(setStoreSet(storeSet || defaultVals.store))
-    // const contextual = await window.Main.getSettings(StoreKey.Set_Contexual)
-    // dispatch(setContexual(contextual || defaultVals.contexual))
-    // const simpleMode = await window.Main.getSettings(StoreKey.Set_SimpleMode)
-    // dispatch(setMinimal(simpleMode || false))
+
+  const getPromptList = async () => {
+    const list = await window.Main.getPromptList()
+    setPromptList(list)
   }
 
-  const showModal = (record: DataType) => {
+  useEffect(() => {
+    getPromptList()
+  }, [])
+
+  const showModal = (record?: DataType) => {
+    setIsEdit(!!record)
+    setFormer(record ? record.character : '')
     setFormValues({
       layout: 'vertical',
-      character: record.character,
-      prompt: record.prompt,
+      character: record?.character || '',
+      prompt: record?.prompt || '',
     })
     setIsModalOpen(true)
   }
@@ -94,17 +41,43 @@ export default function () {
     form.setFieldsValue(formValues)
   }, [formValues])
 
-  const handleOk = () => {
+  const handleSave = async () => {
+    const { character, prompt } = form.getFieldsValue()
+    let list = []
+    if (isEdit) {
+      list = await window.Main.editPrompt(former, character, prompt)
+    } else {
+      list = await window.Main.addPrompt(character, prompt)
+    }
+    PubSub.publish('tips', {
+      type: list ? 'success' : 'error',
+      message: list ? 'Saved successfully' : 'Duplicated Character',
+    })
+    if (list) {
+      setPromptList(list)
+    }
     setIsModalOpen(false)
+  }
+
+  const handleDelete = async (record: DataType) => {
+    const { character } = record
+    const list = await window.Main.removePrompt(character)
+    PubSub.publish('tips', {
+      type: list ? 'success' : 'error',
+      message: list ? 'Removed successfully' : 'Remove Error',
+    })
+    if (list) {
+      setPromptList(list)
+    }
   }
 
   const handleCancel = () => {
     setIsModalOpen(false)
   }
 
-  // const setStore = (key: string, value: string | boolean | number) => {
-  //   window.Main.setStore(key, value)
-  // }
+  const jumpReference = () => {
+    window.Main.jumpLink(Prompts_ZH_Link)
+  }
 
   const columns: ColumnsType<DataType> = [
     {
@@ -116,11 +89,6 @@ export default function () {
       title: 'Prompt',
       dataIndex: 'prompt',
       key: 'prompt',
-    },
-    {
-      title: 'Tags',
-      dataIndex: 'tags',
-      key: 'tags',
     },
     {
       title: 'Action',
@@ -137,7 +105,7 @@ export default function () {
           <a
             style={{ color: '#d03050' }}
             onClick={() => {
-              record.prompt
+              handleDelete(record)
             }}
           >
             Delete
@@ -149,8 +117,15 @@ export default function () {
 
   return (
     <div style={styles.wrap}>
-      <Table pagination={{ pageSize: 3 }} columns={columns} dataSource={data} />
-      <Modal open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+      <Button type="primary" style={styles.addBtn} onClick={() => showModal()}>
+        Add
+      </Button>
+      <Table
+        pagination={{ pageSize: 3 }}
+        columns={columns}
+        dataSource={promptList}
+      />
+      <Modal open={isModalOpen} onOk={handleSave} onCancel={handleCancel}>
         <Form
           layout={'vertical'}
           form={form}
@@ -168,6 +143,11 @@ export default function () {
           <Form.Item label="Prompt" name="prompt">
             <Input placeholder="Please input your prompt." />
           </Form.Item>
+          {/* <Form.Item label="Reference" name="reference"> */}
+          <a href="javascript:void(0);" onClick={() => jumpReference()}>
+            Prompt Reference
+          </a>
+          {/* </Form.Item> */}
         </Form>
       </Modal>
     </div>
@@ -178,17 +158,7 @@ const styles = {
   wrap: {
     paddingTop: 10,
   },
-  inner: {
-    marginBottom: 10,
-    paddingLeft: 20,
-    paddingRight: 20,
-  },
-  title: {
-    fontSize: 14,
-    marginBottom: 5,
-    color: 'rgb(10, 11, 60)',
-  },
-  simpleMode: {
-    marginTop: 20,
+  addBtn: {
+    margin: '0px 0px 10px 10px',
   },
 }

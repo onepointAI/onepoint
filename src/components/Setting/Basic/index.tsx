@@ -14,7 +14,7 @@ export default function () {
   const dispatch = useAppDispatch()
   const settingState = useAppSelector(state => state.setting)
 
-  const gettings = async () => {
+  const getSettings = async () => {
     const lng = await window.Main.getSettings(StoreKey.Set_Lng)
     dispatch(setLng(lng || defaultVals.lng))
     const storeSet = await window.Main.getSettings(StoreKey.Set_StoreChat)
@@ -25,9 +25,8 @@ export default function () {
     dispatch(setMinimal(simpleMode || false))
   }
 
-  // To disable submit button at the beginning.
   useEffect(() => {
-    gettings()
+    getSettings()
   }, [])
 
   const setStore = (key: string, value: string | boolean | number) => {

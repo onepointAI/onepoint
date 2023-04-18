@@ -1,14 +1,18 @@
 import { app, BrowserWindow, ipcMain } from 'electron'
-import { setupStoreHandlers } from './client/store'
+import { PresetType } from '../src/@types'
+
 import { Logger } from './utils/util'
 import initLog from './utils/log'
 import { Singleton } from './utils/global'
 import { setWindowVisile } from './utils/window'
-import { listen as setupShortcutHandlers } from './os/shortcuts'
+
 import { listen as setupClipboardHandlers } from './client/clipboard'
+import { setupStoreHandlers } from './client/store'
+import { setupLinkHandlers } from './client/link'
 import { setupSoundHandlers } from './sound'
+
 import initTray from './os/tray'
-import { PresetType } from '../src/@types'
+import { listen as setupShortcutHandlers } from './os/shortcuts'
 
 require('./server')
 
@@ -74,6 +78,7 @@ async function registerListeners() {
   setupShortcutHandlers(win)
   setupSoundHandlers()
   setupStoreHandlers()
+  setupLinkHandlers()
 }
 
 app

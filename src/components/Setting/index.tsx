@@ -12,7 +12,6 @@ import { useAppSelector } from '../../app/hooks'
 
 export function Setting() {
   const settingState = useAppSelector(state => state.setting)
-  // const dispatch = useAppDispatch()
 
   return settingState.visible ? (
     <ConfigProvider
@@ -50,24 +49,24 @@ export function Setting() {
             {
               label: (
                 <span>
-                  <UserOutlined />
-                  Advanced
-                </span>
-              ),
-              key: '3',
-              children: <Account />,
-              disabled: true,
-            },
-            {
-              label: (
-                <span>
                   <MacCommandOutlined />
                   Prompts
                 </span>
               ),
-              key: '4',
+              key: '3',
               children: <Prompt />,
               // disabled: true,
+            },
+            {
+              label: (
+                <span>
+                  <UserOutlined />
+                  Advanced
+                </span>
+              ),
+              key: '4',
+              children: <Account />,
+              disabled: true,
             },
             {
               label: (
@@ -91,7 +90,5 @@ const styles = {
   wrap: {
     backgroundColor: '#F8F8F8',
     padding: 15,
-    // paddingTop: 30,
-    // paddingBottom: 40,
   },
 }

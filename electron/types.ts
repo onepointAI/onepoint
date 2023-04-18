@@ -5,6 +5,12 @@ export interface ChatContent {
   prompt: string
   response: string
 }
+
+export interface PromptSet {
+  character: string
+  prompt: string
+}
+
 export enum ERR_CODES {
   NETWORK_CONGESTION = -1000,
   TIMEOUT = -999,

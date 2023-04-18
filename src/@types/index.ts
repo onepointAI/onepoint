@@ -23,3 +23,9 @@ export interface PanelVisible {
   setting?: boolean
   chatPanel?: boolean
 }
+
+export interface DataType {
+  key: string
+  character: string
+  prompt: string
+}

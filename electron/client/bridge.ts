@@ -10,6 +10,7 @@ export const api = {
   },
   setUsePreset: (preset: PresetType) => ipcRenderer.send('usePreset', preset),
   sendMessage: (message: string) => ipcRenderer.send('message', message),
+  jumpLink: (link: string) => ipcRenderer.send('jumpLink', link),
   setStore: (key: string, blob: any) =>
     ipcRenderer.invoke('setStore', { key, blob }),
   attemptChange: (changes: string) =>
@@ -21,6 +22,13 @@ export const api = {
     ipcRenderer.invoke('getChatList', preset),
   removeChat: (preset: PresetType, index: number) =>
     ipcRenderer.invoke('removeChat', { preset, index }),
+  addPrompt: (character: string, prompt: string) =>
+    ipcRenderer.invoke('addPrompt', { character, prompt }),
+  removePrompt: (character: string) =>
+    ipcRenderer.invoke('removePrompt', { character }),
+  getPromptList: () => ipcRenderer.invoke('getPromptList'),
+  editPrompt: (former: string, character: string, prompt: string) =>
+    ipcRenderer.invoke('editPrompt', { former, character, prompt }),
 
   /**
    * Provide an easier way to listen to events

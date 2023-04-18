@@ -1,16 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Input, Image, message } from 'antd'
 import PubSub from 'pubsub-js'
+import { MoreOutlined } from '@ant-design/icons'
 import { GlobalStyle } from './styles/GlobalStyle'
 import { ChatPanel } from './components/ChatPanel'
 import { Setting } from './components/Setting'
 import { Preset } from './components/Preset'
 import { Logo } from './components/Logo'
-// import { defaultVals as settingDefaults } from './components/Setting/Basic'
-// FullscreenExitOutlined
+import { Prompt as PromptModal } from './components/Modal/prompt'
 
 import { useAppDispatch, useAppSelector } from './app/hooks'
-// import { StoreKey } from './app/constants'
 import {
   setVisible as setChatVisible,
   setInputDisabled,
@@ -22,10 +21,7 @@ import {
   setListVisible as setPresetListVisible,
   setPreset,
 } from './features/preset/presetSlice'
-import {
-  setVisible as setSettingVisible,
-  // setMinimal,
-} from './features/setting/settingSlice'
+import { setVisible as setSettingVisible } from './features/setting/settingSlice'
 import { setUrl, setSelection } from './features/clipboard/clipboardSlice'
 import { PresetType, PanelVisible } from './@types'
 
@@ -35,15 +31,9 @@ interface Tips {
 }
 
 export function App() {
-  // const { TextArea } = Input
-  // const [inputVisible] = useState<boolean>(true)
-  // const [selection] = useState<string>('')
-  // const [minimal, useMinimal] = useState<boolean>(settingDefaults.minimal)
-  // const clipboardState = useAppSelector(state => state.clipboard)
   const [prompt, setPrompt] = useState<string>('')
   const chatState = useAppSelector(state => state.chat)
   const presetState = useAppSelector(state => state.preset)
-  const settingState = useAppSelector(state => state.setting)
   const [messageApi, contextHolder] = message.useMessage()
   const dispatch = useAppDispatch()
   useRef<HTMLTextAreaElement>(null)
@@ -54,10 +44,9 @@ export function App() {
   const presetIcon = preset.length > 0 ? preset[0].logo : null
 
   useEffect(() => {
+    // TODO
     window.addEventListener('mousemove', event => {
-      // TODO
       // let flag = event.target === document.documentElement
-      // // @ts-ignore
       // window.Main.setWinMouseIgnore(flag)
     })
     window.Main.on('clipboard_change', (text: string) => {
@@ -73,7 +62,6 @@ export function App() {
     )
     window.Main.on('url_change', (selection: { url: string }) => {
       const { url } = selection
-      console.log('=== url change ===>', url)
       dispatch(setUrl({ url }))
       dispatch(setChatVisible(true))
     })
@@ -142,11 +130,6 @@ export function App() {
   const onPresetChange = (preset: PresetType) => {
     dispatch(setPreset(preset))
     window.Main.setUsePreset(preset)
-    // 如果selection有值表示有选中文案
-    // if (selection) {
-    //   search(selection)
-    //   dispatch(setPresetListVisible(false))
-    // }
   }
 
   const search = async () => {
@@ -161,7 +144,6 @@ export function App() {
     )
     dispatch(
       fetchChatResp({
-        // @ts-ignore
         prompt: `${prompt}`,
         preset: presetState.currentPreset,
       })
@@ -172,52 +154,49 @@ export function App() {
     <>
       <GlobalStyle />
       {contextHolder}
-      {true ? (
-        <div style={styles.container}>
-          {/* @ts-ignore */}
-          <div style={styles.inputWrap}>
-            {presetIcon ? (
-              <Image
-                width={30}
-                preview={false}
-                src={presetIcon}
-                onClick={() =>
-                  showPanel({
-                    plugin: true,
-                  })
-                }
-              />
-            ) : null}
-            <Input
-              placeholder="Enter '/' to process the selection, or directly enter the box to ask questions"
-              allowClear
-              onChange={onInputChange}
-              bordered={false}
-              style={{ height: 40, resize: 'none' }}
-              value={prompt}
-              size="large"
-              onPressEnter={() => search()}
-              disabled={chatState.inputDiabled}
-              onFocus={() =>
+      <div style={styles.container}>
+        <div style={styles.inputWrap}>
+          {presetIcon ? (
+            <Image
+              width={30}
+              preview={false}
+              src={presetIcon}
+              onClick={() =>
                 showPanel({
-                  chatPanel: true,
+                  plugin: true,
                 })
               }
             />
-            {/* <div style={styles.exitOrOut} onClick={changeMode}>
-              { !settingState.minimal ? <FullscreenExitOutlined /> : <FullscreenOutlined />}                            
-            </div> */}
-
-            <Logo />
-          </div>
-          <ChatPanel />
-          <Preset onPresetChange={onPresetChange} />
-          <Setting />
+          ) : null}
+          <Input
+            placeholder="Enter '/' to process the selection, or directly enter the box to ask questions"
+            allowClear
+            onChange={onInputChange}
+            bordered={false}
+            style={{ height: 40, resize: 'none' }}
+            value={prompt}
+            size="large"
+            onPressEnter={() => search()}
+            disabled={chatState.inputDiabled}
+            onFocus={() =>
+              showPanel({
+                chatPanel: true,
+              })
+            }
+          />
+          <MoreOutlined
+            style={styles.moreIcon}
+            onClick={() => {
+              PubSub.publish('showPromptModal')
+            }}
+          />
+          <Logo />
         </div>
-      ) : (
-        // guardian mode
-        <Logo guardian />
-      )}
+        <ChatPanel />
+        <Preset onPresetChange={onPresetChange} />
+        <Setting />
+        <PromptModal />
+      </div>
     </>
   )
 }
@@ -242,8 +221,12 @@ const styles = {
     justifyContent: 'space-between',
     alignItems: 'center',
     padding,
-  },
+  } as React.CSSProperties,
   exitOrOut: {
     marginRight: 10,
+  },
+  moreIcon: {
+    fontSize: 20,
+    margin: '0 10px',
   },
 }

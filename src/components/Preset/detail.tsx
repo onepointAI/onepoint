@@ -8,7 +8,7 @@ interface Props {
 }
 
 const padding = 15
-export function Preset(props: Props) {
+export function PresetDetail(props: Props) {
   const { onPresetChange } = props
   const presetState = useAppSelector(state => state.preset)
   return presetState.listVisible ? (
@@ -24,19 +24,18 @@ export function Preset(props: Props) {
           renderItem={item => (
             <List.Item
               className="ant-list-item"
-              // actions={
-              //   [
-              //     <a
-              //       key="list-loadmore-edit"
-              //       style={{ marginRight: padding, color: '#a6a6a6' }}
-              //       onClick={() => {
-              //         return ;
-              //       }}
-              //     >
-              //       Edit
-              //     </a>,
-              //   ]
-              // }
+              actions={[
+                <a
+                  key="list-loadmore-edit"
+                  style={{ marginRight: padding, color: '#a6a6a6' }}
+                  onClick={() => {
+                    console.log('设置页面')
+                    return
+                  }}
+                >
+                  Edit
+                </a>,
+              ]}
               onClick={() => {
                 onPresetChange(item.title)
                 PubSub.publish('showPanel', {})

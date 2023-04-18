@@ -46,13 +46,16 @@ export const BuiltInPlugins = [
   },
 ] as PluginType[]
 
+export const Prompts_ZH_Link =
+  'https://github.com/PlexPt/awesome-chatgpt-prompts-zh/blob/main/prompts-zh.json'
 export const Models = ['gpt-3.5-turbo-0301']
 export const StoreKey = {
   Set_Model: 'KEY_MODEL',
   Set_ApiKey: 'APIKEY_GPT',
   Set_Lng: 'LNG',
-  Set_StoreChat: 'StoreChat',
-  Set_SimpleMode: 'SimpleMode',
-  Set_Contexual: 'Contexual',
+  Set_StoreChat: 'STORE_CHAT',
+  Set_SimpleMode: 'SIMPLE_MODE',
+  Set_Contexual: 'CONTEXUAL',
   History_Chat: 'CHAT_HISTORY',
+  List_Prompt: 'PROMPT_LIST',
 }

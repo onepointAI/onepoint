@@ -1,6 +1,6 @@
 import { IpcMainInvokeEvent, ipcMain } from 'electron'
 import Store from 'electron-store'
-import { ChatContent } from '../types'
+import { ChatContent, PromptSet } from '../types'
 import { PresetType } from '../../src/@types'
 import { StoreKey } from '../../src/app/constants'
 const store = new Store()
@@ -55,7 +55,6 @@ export function setupStoreHandlers() {
 
       if (typeof mapStr !== 'undefined') {
         const chatMap = JSON.parse(mapStr)
-        console.log('chatMap =>', chatMap)
         chatMap[preset] = list
         store.set(StoreKey.History_Chat, JSON.stringify(chatMap))
         return list
@@ -64,6 +63,69 @@ export function setupStoreHandlers() {
       }
     }
   )
+
+  ipcMain.handle(
+    'addPrompt',
+    async (
+      event: IpcMainInvokeEvent,
+      { character, prompt }: { character: string; prompt: string }
+    ) => {
+      const list = getPromptList()
+      const index = list.findIndex(item => item.character === character)
+      if (index !== -1) {
+        return false
+      }
+      list.push({
+        character,
+        prompt,
+      })
+      store.set(StoreKey.List_Prompt, JSON.stringify(list))
+      return list
+    }
+  )
+
+  ipcMain.handle(
+    'editPrompt',
+    async (
+      event: IpcMainInvokeEvent,
+      {
+        former,
+        character,
+        prompt,
+      }: { former: string; character: string; prompt: string }
+    ) => {
+      const list = getPromptList()
+      const index = list.findIndex(item => item.character === former)
+      if (index !== -1) {
+        list.splice(index, 1)
+        list.splice(index, 1, {
+          character,
+          prompt,
+        })
+        store.set(StoreKey.List_Prompt, JSON.stringify(list))
+        return list
+      }
+      return false
+    }
+  )
+
+  ipcMain.handle(
+    'removePrompt',
+    async (event: IpcMainInvokeEvent, { character }: { character: string }) => {
+      const list = getPromptList()
+      const index = list.findIndex(item => item.character === character)
+      if (index !== -1) {
+        list.splice(index, 1)
+        store.set(StoreKey.List_Prompt, JSON.stringify(list))
+        return list
+      }
+      return false
+    }
+  )
+
+  ipcMain.handle('getPromptList', async () => {
+    return getPromptList()
+  })
 }
 
 export function setChat({
@@ -105,6 +167,16 @@ export function getChatList(type: PresetType): ChatContent[] {
     const chatMap = JSON.parse(mapStr)
     const list = chatMap[type] || []
     return list
+  } else {
+    return []
+  }
+}
+
+export function getPromptList(): PromptSet[] {
+  const mapStr = store.get(StoreKey.List_Prompt) as string | undefined
+  if (typeof mapStr !== 'undefined') {
+    const promptList = JSON.parse(mapStr)
+    return promptList
   } else {
     return []
   }

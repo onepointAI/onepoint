@@ -93,7 +93,7 @@ export function ChatPanel() {
     window.Main.copyText(resp)
     PubSub.publish('tips', {
       type: 'success',
-      message: 'copy success',
+      message: 'Copyed Successfully',
     })
   }
 
@@ -102,7 +102,7 @@ export function ChatPanel() {
     const list = await window.Main.removeChat(presetState.currentPreset, index)
     PubSub.publish('tips', {
       type: 'success',
-      message: 'delete success',
+      message: 'Deleted successfully',
     })
     dispatch(setCurPrompt(''))
     dispatch(
