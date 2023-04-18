@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Space, Table, Modal, Form, Input, Select } from 'antd'
+import { Space, Table, Modal, Form, Input } from 'antd'
 import type { ColumnsType } from 'antd/es/table'
 
 // import { useAppDispatch, useAppSelector } from '../../../app/hooks'
@@ -14,7 +14,7 @@ import type { ColumnsType } from 'antd/es/table'
 
 interface DataType {
   key: string
-  act: string
+  character: string
   prompt: string
   tags: string[]
 }
@@ -22,19 +22,38 @@ interface DataType {
 const data: DataType[] = [
   {
     key: '1',
-    act: 'John Brown',
+    character: 'Chater',
     prompt: 'New York No. 1 Lake Park',
     tags: ['nice', 'developer'],
   },
   {
     key: '2',
-    act: 'Jim Green',
+    character: 'Code Master',
     prompt: 'London No. 1 Lake Park',
     tags: ['loser'],
   },
   {
     key: '3',
-    act: 'Joe Black',
+    character: 'Analysis Expert',
+    prompt: 'Sydney No. 1 Lake Park',
+    tags: ['cool', 'teacher'],
+  },
+
+  {
+    key: '1',
+    character: 'Chater2',
+    prompt: 'New York No. 1 Lake Park',
+    tags: ['nice', 'developer'],
+  },
+  {
+    key: '2',
+    character: 'Code Master2',
+    prompt: 'London No. 1 Lake Park',
+    tags: ['loser'],
+  },
+  {
+    key: '3',
+    character: 'Analysis Expert2',
     prompt: 'Sydney No. 1 Lake Park',
     tags: ['cool', 'teacher'],
   },
@@ -46,6 +65,11 @@ export default function () {
 
   const [form] = Form.useForm()
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [formValues, setFormValues] = useState({
+    layout: 'vertical',
+    character: '',
+    prompt: '',
+  })
   const gettings = async () => {
     // const lng = await window.Main.getSettings(StoreKey.Set_Lng)
     // dispatch(setLng(lng || defaultVals.lng))
@@ -57,9 +81,18 @@ export default function () {
     // dispatch(setMinimal(simpleMode || false))
   }
 
-  const showModal = () => {
+  const showModal = (record: DataType) => {
+    setFormValues({
+      layout: 'vertical',
+      character: record.character,
+      prompt: record.prompt,
+    })
     setIsModalOpen(true)
   }
+
+  useEffect(() => {
+    form.setFieldsValue(formValues)
+  }, [formValues])
 
   const handleOk = () => {
     setIsModalOpen(false)
@@ -69,25 +102,25 @@ export default function () {
     setIsModalOpen(false)
   }
 
-  // To disable submit button at the beginning.
-  useEffect(() => {
-    // gettings()
-  }, [])
-
-  const setStore = (key: string, value: string | boolean | number) => {
-    window.Main.setStore(key, value)
-  }
+  // const setStore = (key: string, value: string | boolean | number) => {
+  //   window.Main.setStore(key, value)
+  // }
 
   const columns: ColumnsType<DataType> = [
     {
-      title: 'Act',
-      dataIndex: 'act',
-      key: 'act',
+      title: 'Character',
+      dataIndex: 'character',
+      key: 'character',
     },
     {
       title: 'Prompt',
       dataIndex: 'prompt',
       key: 'prompt',
+    },
+    {
+      title: 'Tags',
+      dataIndex: 'tags',
+      key: 'tags',
     },
     {
       title: 'Action',
@@ -96,7 +129,7 @@ export default function () {
         <Space size="middle">
           <a
             onClick={() => {
-              showModal()
+              showModal(record)
             }}
           >
             Edit
@@ -116,30 +149,24 @@ export default function () {
 
   return (
     <div style={styles.wrap}>
-      <Table columns={columns} dataSource={data} />
+      <Table pagination={{ pageSize: 3 }} columns={columns} dataSource={data} />
       <Modal open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
         <Form
           layout={'vertical'}
           form={form}
           // onFinish={onFinish}
           style={{ maxWidth: 600 }}
-          // initialValues={{
-          //   layout: 'vertical',
-          //   model: settingState.usemodel,
-          //   apikey: settingState.apikey,
-          // }}
+          initialValues={formValues}
         >
-          <Form.Item label="Model" name="model" style={{ marginBottom: 12 }}>
-            <Select>
-              {/* {Models.map(model => (
-                  <Option key={model} value={model}>
-                    {model}
-                  </Option>
-                ))} */}
-            </Select>
+          <Form.Item
+            label="Character"
+            name="character"
+            style={{ marginBottom: 12 }}
+          >
+            <Input placeholder="Please input your act." />
           </Form.Item>
-          <Form.Item label="ApiKey" name="apikey">
-            <Input.Password placeholder="Please input your apikey!" />
+          <Form.Item label="Prompt" name="prompt">
+            <Input placeholder="Please input your prompt." />
           </Form.Item>
         </Form>
       </Modal>

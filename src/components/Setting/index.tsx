@@ -67,7 +67,7 @@ export function Setting() {
               ),
               key: '4',
               children: <Prompt />,
-              disabled: true,
+              // disabled: true,
             },
             {
               label: (
