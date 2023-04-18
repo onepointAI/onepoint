@@ -30,7 +30,6 @@ const store = new Store()
 // store.set('foo', '1');
 
 export function init() {
-  store.clear()
   const promptTemplates = store.get(StoreKey.List_Prompt) as string | undefined
   const pluginPrompts = store.get(StoreKey.Map_Pluginprompt) as
     | string
