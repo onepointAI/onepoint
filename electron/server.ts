@@ -1,7 +1,6 @@
 import compression from 'compression'
 import Store from 'electron-store'
 import express from 'express'
-import { getChatList } from './client/store'
 import accountApi from './apis/account'
 import promptApi from './apis/prompt'
 import applyApi from './apis/apply'
@@ -10,7 +9,7 @@ import crawlApi from './apis/crawl'
 import { PresetType } from '../src/@types'
 import { StoreKey } from '../src/app/constants'
 import { Logger } from './utils/util'
-import { presetMap } from './prompt'
+import { getChatList, getPluginPrompt } from './client/store'
 
 const { Configuration, OpenAIApi } = require('openai')
 const store = new Store()
@@ -23,7 +22,7 @@ function getContextual(prompt: PresetType) {
   const sPreset = [
     {
       role: 'system',
-      content: presetMap[prompt],
+      content: getPluginPrompt(prompt).prompt,
     },
   ]
 

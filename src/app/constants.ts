@@ -58,4 +58,5 @@ export const StoreKey = {
   Set_Contexual: 'CONTEXUAL',
   History_Chat: 'CHAT_HISTORY',
   List_Prompt: 'PROMPT_LIST',
+  Map_Pluginprompt: 'PLUGIN_PROMPT_MAP',
 }

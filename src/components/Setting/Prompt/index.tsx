@@ -19,6 +19,7 @@ export default function () {
 
   const getPromptList = async () => {
     const list = await window.Main.getPromptList()
+    console.log('--- list --->', list)
     setPromptList(list)
   }
 
@@ -157,6 +158,8 @@ export default function () {
 const styles = {
   wrap: {
     paddingTop: 10,
+    height: 400,
+    overflow: 'auto',
   },
   addBtn: {
     margin: '0px 0px 10px 10px',

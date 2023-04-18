@@ -10,6 +10,7 @@ import { Logo } from './components/Logo'
 import { Prompt as PromptModal } from './components/Modal/prompt'
 
 import { useAppDispatch, useAppSelector } from './app/hooks'
+import { StoreKey } from './app/constants'
 import {
   setVisible as setChatVisible,
   setInputDisabled,
@@ -21,7 +22,15 @@ import {
   setListVisible as setPresetListVisible,
   setPreset,
 } from './features/preset/presetSlice'
-import { setVisible as setSettingVisible } from './features/setting/settingSlice'
+import {
+  setVisible as setSettingVisible,
+  setMinimal,
+  setLng,
+  setContexual,
+  setStore as setStoreSet,
+  defaultVals,
+} from './features/setting/settingSlice'
+
 import { setUrl, setSelection } from './features/clipboard/clipboardSlice'
 import { PresetType, PanelVisible } from './@types'
 
@@ -42,6 +51,21 @@ export function App() {
     p => p.title === presetState.currentPreset
   )
   const presetIcon = preset.length > 0 ? preset[0].logo : null
+
+  const getSettings = async () => {
+    const lng = await window.Main.getSettings(StoreKey.Set_Lng)
+    dispatch(setLng(lng || defaultVals.lng))
+    const storeSet = await window.Main.getSettings(StoreKey.Set_StoreChat)
+    dispatch(setStoreSet(storeSet || defaultVals.store))
+    const contextual = await window.Main.getSettings(StoreKey.Set_Contexual)
+    dispatch(setContexual(contextual || defaultVals.contexual))
+    const simpleMode = await window.Main.getSettings(StoreKey.Set_SimpleMode)
+    dispatch(setMinimal(simpleMode || false))
+  }
+
+  useEffect(() => {
+    getSettings() // app start
+  }, [])
 
   useEffect(() => {
     // TODO

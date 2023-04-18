@@ -1,15 +1,16 @@
 import { useEffect, useState } from 'react'
 import { Modal, Select, ConfigProvider } from 'antd'
 import PubSub from 'pubsub-js'
-
+import { useAppSelector } from '../../app/hooks'
 interface SelectOption {
   value: string
   label: string
 }
 export function Prompt() {
+  const presetState = useAppSelector(state => state.preset)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [selectOptions, setSelectOptions] = useState<SelectOption[]>([])
-
+  const [curval, setCurval] = useState<string>('')
   const getPromptList = async () => {
     const list = await window.Main.getPromptList()
     const options = list.map((item: { character: string }) => {
@@ -20,6 +21,16 @@ export function Prompt() {
     })
     setSelectOptions(options)
   }
+
+  const getUseCharacter = async () => {
+    const prompt = await window.Main.getPluginPrompt(presetState.currentPreset)
+    setCurval(prompt.character)
+    // 设置当前的character
+  }
+
+  useEffect(() => {
+    getUseCharacter()
+  }, [presetState.currentPreset])
 
   useEffect(() => {
     getPromptList()
@@ -40,6 +51,8 @@ export function Prompt() {
   }
   const onChange = (value: string) => {
     console.log(`selected ${value}`)
+    setCurval(value)
+    window.Main.setPluginPrompt(presetState.currentPreset, value)
   }
   const onSearch = (value: string) => {
     console.log('search:', value)
@@ -60,6 +73,7 @@ export function Prompt() {
         onCancel={handleCancel}
       >
         <Select
+          value={curval}
           showSearch
           defaultValue={'代码大神'}
           placeholder="Select a character"

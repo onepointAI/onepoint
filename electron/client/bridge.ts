@@ -29,6 +29,10 @@ export const api = {
   getPromptList: () => ipcRenderer.invoke('getPromptList'),
   editPrompt: (former: string, character: string, prompt: string) =>
     ipcRenderer.invoke('editPrompt', { former, character, prompt }),
+  getPluginPrompt: (plugin: string) =>
+    ipcRenderer.invoke('getPluginPrompt', { plugin }),
+  setPluginPrompt: (plugin: string, character: string) =>
+    ipcRenderer.invoke('setPluginPrompt', { plugin, character }),
 
   /**
    * Provide an easier way to listen to events

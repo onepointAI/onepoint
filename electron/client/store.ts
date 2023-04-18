@@ -3,6 +3,14 @@ import Store from 'electron-store'
 import { ChatContent, PromptSet } from '../types'
 import { PresetType } from '../../src/@types'
 import { StoreKey } from '../../src/app/constants'
+import {
+  Chat,
+  Translate,
+  Summarize,
+  Code,
+  Analyze,
+} from '../../src/app/constants'
+import * as prompts from '../prompt/prompts-zh.json'
 const store = new Store()
 // const schema = {
 // 	foo: {
@@ -20,6 +28,30 @@ const store = new Store()
 // console.log(store.get('foo'));
 // //=> 50
 // store.set('foo', '1');
+
+export function init() {
+  store.clear()
+  const promptTemplates = store.get(StoreKey.List_Prompt) as string | undefined
+  const pluginPrompts = store.get(StoreKey.Map_Pluginprompt) as
+    | string
+    | undefined
+  if (typeof promptTemplates === 'undefined') {
+    const _prompts = prompts.map(item => {
+      return {
+        character: item.act,
+        prompt: item.prompt,
+      }
+    })
+    store.set(StoreKey.List_Prompt, JSON.stringify(_prompts))
+  }
+  if (typeof pluginPrompts === 'undefined') {
+    setPluginPrompt({ plugin: Chat, character: 'AI写作导师' })
+    setPluginPrompt({ plugin: Code, character: '编程大师' })
+    setPluginPrompt({ plugin: Analyze, character: '网页总结' })
+    setPluginPrompt({ plugin: Summarize, character: '网页总结' })
+    setPluginPrompt({ plugin: Translate, character: '英语翻译和改进者' })
+  }
+}
 
 export function setupStoreHandlers() {
   ipcMain.handle(
@@ -126,6 +158,23 @@ export function setupStoreHandlers() {
   ipcMain.handle('getPromptList', async () => {
     return getPromptList()
   })
+
+  ipcMain.handle(
+    'getPluginPrompt',
+    async (event: IpcMainInvokeEvent, { plugin }: { plugin: string }) => {
+      return getPluginPrompt(plugin)
+    }
+  )
+
+  ipcMain.handle(
+    'setPluginPrompt',
+    async (
+      event: IpcMainInvokeEvent,
+      { plugin, character }: { plugin: string; character: string }
+    ) => {
+      return setPluginPrompt({ plugin, character })
+    }
+  )
 }
 
 export function setChat({
@@ -179,5 +228,50 @@ export function getPromptList(): PromptSet[] {
     return promptList
   } else {
     return []
+  }
+}
+
+export function getPromptByCharacter(character: string): string {
+  const list = getPromptList()
+  const selectedItems = list.filter(item => item.character === character)
+  if (selectedItems.length > 0) {
+    return selectedItems[0].prompt
+  }
+  return ''
+}
+
+export function setPluginPrompt({
+  plugin,
+  character,
+}: {
+  plugin: string
+  character: string
+}) {
+  const mapStr = store.get(StoreKey.Map_Pluginprompt) as string | undefined
+  if (typeof mapStr !== 'undefined') {
+    const map = JSON.parse(mapStr)
+    map[plugin] = character
+    store.set(StoreKey.Map_Pluginprompt, JSON.stringify(map))
+  } else {
+    const map = {
+      [plugin]: character,
+    }
+    store.set(StoreKey.Map_Pluginprompt, JSON.stringify(map))
+  }
+}
+
+export function getPluginPrompt(plugin: string): PromptSet {
+  const mapStr = store.get(StoreKey.Map_Pluginprompt) as string | undefined
+  if (typeof mapStr !== 'undefined') {
+    const map = JSON.parse(mapStr)
+    const character = map[plugin] || ''
+    return {
+      character,
+      prompt: getPromptByCharacter(character),
+    }
+  }
+  return {
+    character: '',
+    prompt: '',
   }
 }

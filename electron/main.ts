@@ -7,7 +7,7 @@ import { Singleton } from './utils/global'
 import { setWindowVisile } from './utils/window'
 
 import { listen as setupClipboardHandlers } from './client/clipboard'
-import { setupStoreHandlers } from './client/store'
+import { setupStoreHandlers, init as initStore } from './client/store'
 import { setupLinkHandlers } from './client/link'
 import { setupSoundHandlers } from './sound'
 
@@ -61,6 +61,7 @@ function initWindow() {
     })
   })
   app.dock.hide()
+  initStore()
   registerListeners()
 }
 

@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import { Select, Spin, Switch, Space } from 'antd'
 import { useAppDispatch, useAppSelector } from '../../../app/hooks'
 import { StoreKey } from '../../../app/constants'
@@ -7,28 +6,12 @@ import {
   setLng,
   setContexual,
   setStore as setStoreSet,
-  defaultVals,
+  // defaultVals,
 } from '../../../features/setting/settingSlice'
 
 export default function () {
   const dispatch = useAppDispatch()
   const settingState = useAppSelector(state => state.setting)
-
-  const getSettings = async () => {
-    const lng = await window.Main.getSettings(StoreKey.Set_Lng)
-    dispatch(setLng(lng || defaultVals.lng))
-    const storeSet = await window.Main.getSettings(StoreKey.Set_StoreChat)
-    dispatch(setStoreSet(storeSet || defaultVals.store))
-    const contextual = await window.Main.getSettings(StoreKey.Set_Contexual)
-    dispatch(setContexual(contextual || defaultVals.contexual))
-    const simpleMode = await window.Main.getSettings(StoreKey.Set_SimpleMode)
-    dispatch(setMinimal(simpleMode || false))
-  }
-
-  useEffect(() => {
-    getSettings()
-  }, [])
-
   const setStore = (key: string, value: string | boolean | number) => {
     window.Main.setStore(key, value)
   }

@@ -47,7 +47,7 @@ export function ChatPanel() {
       setTimeout(() => {
         bottomLineRef.current?.scrollIntoView({ behavior: 'smooth' })
       }, 100)
-      if (!usePlugin?.nostore && !minimal) {
+      if (!usePlugin?.nostore && !minimal && settingState.store) {
         dispatch(setCurPrompt(''))
         dispatch(
           saveResp({
