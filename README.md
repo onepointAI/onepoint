@@ -71,8 +71,7 @@ With ChatGPT technology, users can continuously train onepoint to generate and r
 
  <br/>
 
- ## 02 Screenshots
-
+## 02 Screenshots
 
 <details>
 <summary>Detail</summary>

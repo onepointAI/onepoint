@@ -69,13 +69,27 @@ Onepoint 是一款基于 Electron 的开源 AI 助手，旨在打造极致的桌
 - 账号余额查询
 - 多语言支持
 
-## 02 开始
+
+## 02 截图
+
+<details>
+<summary>Detail</summary>
+<img src='./assets/screenshot/chat.png' />
+<img src='./assets/screenshot/code.png' />
+<img src='./assets/screenshot/console.png' />
+<img src='./assets/screenshot/plugin.png' />
+<img src='./assets/screenshot/setting.png' />
+<img src='./assets/screenshot/account.png' />
+<img src='./assets/screenshot/prompts.png' />
+</details>
+ 
+## 03 开始
 
 前往 [官网](https://www.1ptai.com/) 下载并试用该工具。
 
 如果你遇到相关 Bug，或者是有其他的功能需求，欢迎提 issue 或相关 PR，除了能得到我们大大的赞 👍 以外，还有机会获得个人定制的 avatar 形象，并通过 [NFT](https://opensea.io/zh-CN/collection/onepointai-collection) 的形式免费赠与到你的钱包（详情参见[贡献者须知 - 开发者激励](https://github.com/onepointAI/onepoint/issues/4) ）。
 
-## 03 开发
+## 04 开发
 
 欢迎为我们提交 PR，或具有建设性的意见，一起做点有意思的事情
 
@@ -86,7 +100,7 @@ Onepoint 是一款基于 Electron 的开源 AI 助手，旨在打造极致的桌
 > yarn start
 ```
 
-## 04 愿景与路线图
+## 05 愿景与路线图
 
 长远地看，我们希望把 onepoint 打造成个性化的智能辅助工具，以作为各个编辑与阅读软件的能力延伸，同时借助可扩展的插件机制丰富更多样的玩法，它既是工具，也是入口，希望对屏幕前的你有所帮助或启发。
 
