@@ -11,7 +11,7 @@ export const GlobalStyle = createGlobalStyle`
     font-family: Arial, Helvetica, sans-serif;
     font-size: 16px;
     background-color: rgba(0,0,0,0);
-    overflow: hidden;
+    overflow: hidden;    
   }
 
   .ant-list-item:hover {

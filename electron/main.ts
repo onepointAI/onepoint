@@ -1,7 +1,6 @@
 import { app, BrowserWindow, ipcMain } from 'electron'
 import { PresetType } from '../src/@types'
 
-import { Logger } from './utils/util'
 import initLog from './utils/log'
 import { Singleton } from './utils/global'
 import { setWindowVisile } from './utils/window'
@@ -9,6 +8,7 @@ import { setWindowVisile } from './utils/window'
 import { listen as setupClipboardHandlers } from './client/clipboard'
 import { setupStoreHandlers, init as initStore } from './client/store'
 import { setupLinkHandlers } from './client/link'
+import { setupWindowHandlers } from './client/window'
 import { setupSoundHandlers } from './sound'
 
 import initTray from './os/tray'
@@ -39,8 +39,6 @@ function initWindow() {
       webviewTag: true,
       nodeIntegration: true,
       preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
-      // enableRemoteModule: true,
-      // preload: path.join(__static, "preload.js")
     },
   })
 
@@ -60,21 +58,16 @@ function initWindow() {
       visible: false,
     })
   })
-  app.dock.hide()
+  app.dock?.hide()
   initStore()
   registerListeners()
 }
 
 async function registerListeners() {
-  ipcMain.on('message', (_, message) => {
-    Logger.log(message)
-  })
-  ipcMain.on('winIgnoreMouse', (_, ignore) => {
-    win?.setIgnoreMouseEvents(ignore, { forward: true })
-  })
   ipcMain.on('usePreset', (_, preset: PresetType) => {
     Singleton.getInstance().setCurPreset(preset)
   })
+  setupWindowHandlers(win)
   setupClipboardHandlers(win)
   setupShortcutHandlers(win)
   setupSoundHandlers()

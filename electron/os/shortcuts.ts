@@ -1,10 +1,11 @@
-import { BrowserWindow, globalShortcut } from 'electron'
-import { clipboard } from 'electron'
+import os from 'node:os'
+import { BrowserWindow, globalShortcut, clipboard } from 'electron'
 import { getRecentApp, getSelection, getBrowserUrl } from './applescript'
+import { BuiltInPlugins } from '../../src/app/constants'
 import { Logger } from '../utils/util'
 import { setWindowVisile } from '../utils/window'
 import { Singleton } from '../utils/global'
-import { BuiltInPlugins } from '../../src/app/constants'
+import { selection_change, url_change } from '../constants/event'
 
 export const config = {
   shortCut: {
@@ -31,6 +32,9 @@ export function listen(win: BrowserWindow | null) {
     const visible = win?.isVisible() && win.isFocused()
     if (!visible) {
       try {
+        if (os.platform() !== 'darwin') {
+          throw new Error('Only support macOS')
+        }
         const preset = Singleton.getInstance().getCurPreset()
         const plugin = BuiltInPlugins.filter(plugin => plugin.title === preset)
         const app = await setApp()
@@ -38,20 +42,17 @@ export function listen(win: BrowserWindow | null) {
           const usePlugin = plugin[0]
           if (usePlugin.monitorClipboard) {
             const clipboardContent = clipboard.readText()
-            // 每次获取完后需要清空一下剪切板，否则判断会有问题
             const selection = await getSelection()
-            // const app = await setApp()
             Logger.log('selectionTxt =>', selection)
-            win?.webContents.send('selection_change', {
+            win?.webContents.send(selection_change, {
               txt: selection,
               app,
             })
             clipboard.writeText(clipboardContent)
           } else if (usePlugin.monitorBrowser) {
-            // const app = await setApp()
             const url = await getBrowserUrl(app)
             Logger.log('current url =>', url)
-            win?.webContents.send('url_change', {
+            win?.webContents.send(url_change, {
               url,
             })
           }

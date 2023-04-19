@@ -46,6 +46,7 @@ export default function () {
 
   const onFinish = (values: any) => {
     setSaveSuc(true)
+    window.Main.setStore(StoreKey.Set_BasePath, values.basePath)
     window.Main.setStore(StoreKey.Set_ApiKey, values.apikey)
     window.Main.setStore(StoreKey.Set_Model, values.model)
     refreshPage()
@@ -70,10 +71,17 @@ export default function () {
             style={{ maxWidth: 600 }}
             initialValues={{
               layout: 'vertical',
+              basePath: settingState.basePath,
               model: settingState.usemodel,
               apikey: settingState.apikey,
             }}
           >
+            <Form.Item label="BasePath" name="basePath">
+              <Input placeholder="Like https://api.openai.com/v1" />
+            </Form.Item>
+            <Form.Item label="ApiKey" name="apikey">
+              <Input.Password placeholder="Please input your apikey!" />
+            </Form.Item>
             <Form.Item label="Model" name="model" style={{ marginBottom: 12 }}>
               <Select>
                 {Models.map(model => (
@@ -82,9 +90,6 @@ export default function () {
                   </Option>
                 ))}
               </Select>
-            </Form.Item>
-            <Form.Item label="ApiKey" name="apikey">
-              <Input.Password placeholder="Please input your apikey!" />
             </Form.Item>
             <Form.Item>
               <Button htmlType="submit" type="primary">

@@ -18,7 +18,6 @@ export default async (req: any, res: any) => {
   }
   let result = ''
   try {
-    console.log('--- payload ---->', generatePayload(prompt, preset))
     const response = await getAiInstance().createChatCompletion(
       generatePayload(prompt, preset),
       { responseType: 'stream' }

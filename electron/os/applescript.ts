@@ -15,7 +15,6 @@ function runAppleScript(script: string) {
   })
 }
 
-// TODO: 这种方法在vscode上哪怕没有选中也会复制一行
 export function getSelection() {
   const script = `
     tell application "System Events" to keystroke "c" using {command down}
