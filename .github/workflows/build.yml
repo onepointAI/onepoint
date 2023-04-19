@@ -10,23 +10,23 @@ jobs:
     name: Create Release
     runs-on: [ubuntu-latest]
     steps:
-    - name: Create Release
-      id: create_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: ${{ github.ref }}
-        release_name: Release ${{ github.ref }}
-        draft: false
-        prerelease: false
-    - name: Output Release URL File
-      run: echo "${{ steps.create_release.outputs.upload_url }}" > release_url.txt
-    - name: Save Release URL File for publish
-      uses: actions/upload-artifact@v1
-      with:
-        name: release_url
-        path: release_url.txt
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+      - name: Output Release URL File
+        run: echo "${{ steps.create_release.outputs.upload_url }}" > release_url.txt
+      - name: Save Release URL File for publish
+        uses: actions/upload-artifact@v1
+        with:
+          name: release_url
+          path: release_url.txt
 
   build:
     runs-on: ${{ matrix.os }}
@@ -45,7 +45,7 @@ jobs:
             PLATFORM: squirrel.windows
             TYPE: x64
             FORMAT: exe
-            ASSET_MIME: application/vnd.microsoft.portable-executable 
+            ASSET_MIME: application/vnd.microsoft.portable-executable
 
     steps:
       - name: Checkout Code
@@ -89,7 +89,6 @@ jobs:
         shell: bash
         run: echo "RELEASE_VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
 
-
       - name: Upload Release Asset ${{ matrix.PLATFORM }}
         if: runner.os != 'windows'
         id: upload-release-asset
@@ -98,10 +97,10 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.get_release_info.outputs.upload_url }}
-          asset_path: ./out/mark/zip/${{ matrix.PLATFORM }}/${{ matrix.TYPE }}/onepoint-${{ matrix.PLATFORM }}-${{ matrix.TYPE }}-${{ env.RELEASE_VERSION }}.zip
+          asset_path: ./out/make/zip/${{ matrix.PLATFORM }}/${{ matrix.TYPE }}/onepoint-${{ matrix.PLATFORM }}-${{ matrix.TYPE }}-${{ env.RELEASE_VERSION }}.zip
           asset_name: onepoint-${{ matrix.PLATFORM }}-${{ matrix.TYPE }}-${{ env.RELEASE_VERSION }}.zip
           asset_content_type: ${{ matrix.ASSET_MIME}}
-      
+
       - name: Upload Release Asset win
         if: runner.os == 'windows'
         id: upload-release-asset-win
@@ -110,6 +109,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.get_release_info.outputs.upload_url }}
-          asset_path: ./out/mark/zip/${{ matrix.PLATFORM }}/${{ matrix.TYPE }}/onepoint-${{ env.RELEASE_VERSION }} Setup.exe
+          asset_path: ./out/make/${{ matrix.PLATFORM }}/${{ matrix.TYPE }}/onepoint-${{ env.RELEASE_VERSION }} Setup.exe
           asset_name: onepoint-${{ env.RELEASE_VERSION }} Setup.exe
           asset_content_type: ${{ matrix.ASSET_MIME}}
