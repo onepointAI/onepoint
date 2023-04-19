@@ -39,8 +39,7 @@ export function listen(_win: BrowserWindow | null) {
       try {
         clipboard.writeText(changes)
         await activeApp(Singleton.getInstance().getRecentApp())
-        const result = await applySelection()
-        Logger.log('应用改变:', result)
+        await applySelection()
       } catch (e) {
         Logger.error(e)
       }

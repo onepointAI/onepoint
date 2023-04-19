@@ -23,6 +23,7 @@ import {
   StoreKey,
 } from '../../src/app/constants'
 import * as prompts from '../prompt/prompts-zh.json'
+
 const store = new Store()
 
 // TODO: need to refactor to schema
