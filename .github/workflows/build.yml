@@ -40,12 +40,14 @@ jobs:
             TYPE: x64
             FORMAT: dmg
             ASSET_MIME: application/x-apple-diskimage 
+            FILE: onepoint-${{ matrix.PLATFORM }}-${{ matrix.TYPE }}-${{ env.RELEASE_VERSION }}.zip
           - os: windows-latest
             TARGET: windows
-            PLATFORM: win32
+            PLATFORM: squirrel.windows
             TYPE: x64
             FORMAT: exe
             ASSET_MIME: application/vnd.microsoft.portable-executable 
+            FILE: onepoint-${{ env.RELEASE_VERSION }} Setup.exe
 
     steps:
       - name: Checkout Code
@@ -97,6 +99,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.get_release_info.outputs.upload_url }}
-          asset_path: ./out/mark/zip/${{ matrix.PLATFORM }}/${{ matrix.TYPE }}/onepoint-${{ matrix.PLATFORM }}-${{ matrix.TYPE }}-${{ env.RELEASE_VERSION }}.zip
-          asset_name: onepoint-${{ matrix.PLATFORM }}-${{ matrix.TYPE }}-${{ env.RELEASE_VERSION }}.zip
+          asset_path: ./out/mark/zip/${{ matrix.PLATFORM }}/${{ matrix.TYPE }}/${{ matrix.FILE }}
+          asset_name: ${{ matrix.FILE }}
           asset_content_type: ${{ matrix.ASSET_MIME}}
