@@ -70,8 +70,22 @@ With ChatGPT technology, users can continuously train onepoint to generate and r
 - Multi-language support.
 
  <br/>
+
+ ## 02 Screenshots
+
+
+<details>
+<summary>Detail</summary>
+<img src='./assets/screenshot/chat.png' />
+<img src='./assets/screenshot/code.png' />
+<img src='./assets/screenshot/console.png' />
+<img src='./assets/screenshot/plugin.png' />
+<img src='./assets/screenshot/setting.png' />
+<img src='./assets/screenshot/account.png' />
+<img src='./assets/screenshot/prompts.png' />
+</details>
  
-## 02 Getting Started
+## 03 Getting Started
 
 Please go to the [official website](https://www.1ptai.com/) to download and try out the tool.
 
@@ -79,7 +93,7 @@ If you encounter any bugs or have other feature requests, please feel free to su
 
  <br/>
 
-## 03 Development
+## 04 Development
 
 Welcome to submit a Pull Request (PR) or provide constructive feedback for us. Let's do something interesting together.
 
@@ -90,7 +104,7 @@ Welcome to submit a Pull Request (PR) or provide constructive feedback for us. L
 > yarn start
 ```
 
-## 04 Vision & Roadmap
+## 05 Vision & Roadmap
 
 In the long term, we hope to develop onepoint into a personalized intelligent assistant tool that extends the capabilities of various editing and reading software. At the same time, we aim to enrich its functionality through scalable plugin mechanisms, making it not only a tool but also an entry point that can help or inspire you in front of your screen.
 

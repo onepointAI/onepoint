@@ -55,7 +55,7 @@ export default function () {
     <div style={styles.wrap}>
       <Spin tip="Loading..." spinning={settingState.loadAccount}>
         <div style={styles.inner}>
-          <div style={styles.title}>Account Usage</div>
+          <div style={styles.title}>Token Usage</div>
           <Progress
             style={{ marginBottom: 20 }}
             percent={settingState.billUsage}
