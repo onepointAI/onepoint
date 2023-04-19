@@ -75,11 +75,11 @@ Onepoint 是一款基于 Electron 的开源 AI 助手，旨在打造极致的桌
 <summary>详情</summary>
 
 #### 极简风
-     
+
 <img src='./assets/screenshot/chat.png' />
 
 #### 历史模式
-     
+
 <img src='./assets/screenshot/list.png' />
     
 #### Code 辅助

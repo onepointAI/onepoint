@@ -77,11 +77,11 @@ With ChatGPT technology, users can continuously train onepoint to generate and r
 <summary>Detail</summary>
 
 #### Minimal Mode
-     
+
 <img src='./assets/screenshot/chat.png' />
 
 #### History Mode
-     
+
 <img src='./assets/screenshot/list.png' />
     
 #### Code Assistant
