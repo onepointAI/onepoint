@@ -29,3 +29,8 @@ export interface DataType {
   character: string
   prompt: string
 }
+
+export interface PosType {
+  posX: number
+  posY: number
+}

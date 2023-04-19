@@ -1,34 +1,31 @@
 import { IpcMainInvokeEvent, ipcMain } from 'electron'
 import Store from 'electron-store'
 import { ChatContent, PromptSet } from '../types'
+import {
+  setStore,
+  getStore,
+  removeChat,
+  addPrompt,
+  editPrompt,
+  removePrompt,
+  getChatList as getChatListEvt,
+  getPromptList as getPromptListEvt,
+  getPluginPrompt as getPluginPromptEvt,
+  setPluginPrompt as setPluginPromptEvt,
+} from '../constants/event'
 import { PresetType } from '../../src/@types'
-import { StoreKey } from '../../src/app/constants'
 import {
   Chat,
   Translate,
   Summarize,
   Code,
   Analyze,
+  StoreKey,
 } from '../../src/app/constants'
 import * as prompts from '../prompt/prompts-zh.json'
 const store = new Store()
-// const schema = {
-// 	foo: {
-// 		type: 'number',
-// 		maximum: 100,
-// 		minimum: 1,
-// 		default: 50
-// 	},
-// 	bar: {
-// 		type: 'string',
-// 		format: 'url'
-// 	}
-// };
-// const store = new Store({schema});
-// console.log(store.get('foo'));
-// //=> 50
-// store.set('foo', '1');
 
+// TODO: need to refactor to schema
 export function init() {
   const promptTemplates = store.get(StoreKey.List_Prompt) as string | undefined
   const pluginPrompts = store.get(StoreKey.Map_Pluginprompt) as
@@ -54,7 +51,7 @@ export function init() {
 
 export function setupStoreHandlers() {
   ipcMain.handle(
-    'setStore',
+    setStore,
     async (
       event: IpcMainInvokeEvent,
       { key, blob }: { key: string; blob: any }
@@ -63,19 +60,19 @@ export function setupStoreHandlers() {
     }
   )
 
-  ipcMain.handle('getStore', async (event: IpcMainInvokeEvent, key: string) => {
+  ipcMain.handle(getStore, async (event: IpcMainInvokeEvent, key: string) => {
     return store.get(key)
   })
 
   ipcMain.handle(
-    'getChatList',
+    getChatListEvt,
     async (event: IpcMainInvokeEvent, preset: PresetType) => {
       return getChatList(preset)
     }
   )
 
   ipcMain.handle(
-    'removeChat',
+    removeChat,
     async (
       event: IpcMainInvokeEvent,
       { preset, index }: { preset: PresetType; index: number }
@@ -96,7 +93,7 @@ export function setupStoreHandlers() {
   )
 
   ipcMain.handle(
-    'addPrompt',
+    addPrompt,
     async (
       event: IpcMainInvokeEvent,
       { character, prompt }: { character: string; prompt: string }
@@ -116,7 +113,7 @@ export function setupStoreHandlers() {
   )
 
   ipcMain.handle(
-    'editPrompt',
+    editPrompt,
     async (
       event: IpcMainInvokeEvent,
       {
@@ -141,7 +138,7 @@ export function setupStoreHandlers() {
   )
 
   ipcMain.handle(
-    'removePrompt',
+    removePrompt,
     async (event: IpcMainInvokeEvent, { character }: { character: string }) => {
       const list = getPromptList()
       const index = list.findIndex(item => item.character === character)
@@ -154,19 +151,19 @@ export function setupStoreHandlers() {
     }
   )
 
-  ipcMain.handle('getPromptList', async () => {
+  ipcMain.handle(getPromptListEvt, async () => {
     return getPromptList()
   })
 
   ipcMain.handle(
-    'getPluginPrompt',
+    getPluginPromptEvt,
     async (event: IpcMainInvokeEvent, { plugin }: { plugin: string }) => {
       return getPluginPrompt(plugin)
     }
   )
 
   ipcMain.handle(
-    'setPluginPrompt',
+    setPluginPromptEvt,
     async (
       event: IpcMainInvokeEvent,
       { plugin, character }: { plugin: string; character: string }

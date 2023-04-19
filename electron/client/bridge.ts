@@ -1,38 +1,54 @@
 import { contextBridge, ipcRenderer } from 'electron'
-import { PresetType } from '../../src/@types'
+import { PresetType, PosType } from '../../src/@types'
+import {
+  winIgnoreMouse,
+  winMouseMove,
+  attemptChange,
+  usePreset,
+  jumpLink,
+  copyText,
+  speakText,
+  setStore,
+  getStore,
+  removeChat,
+  getChatList,
+  addPrompt,
+  removePrompt,
+  getPromptList,
+  editPrompt,
+  setPluginPrompt,
+  getPluginPrompt,
+} from '../constants/event'
 
 export const api = {
   /**
    * Emit events
    */
-  setWinMouseIgnore: (ignore: boolean) => {
-    return ipcRenderer.send('winIgnoreMouse', ignore)
-  },
-  setUsePreset: (preset: PresetType) => ipcRenderer.send('usePreset', preset),
-  sendMessage: (message: string) => ipcRenderer.send('message', message),
-  jumpLink: (link: string) => ipcRenderer.send('jumpLink', link),
+  ignoreWinMouse: (ignore: boolean) => ipcRenderer.send(winIgnoreMouse, ignore),
+  moveWindowPos: (pos: PosType) => ipcRenderer.send(winMouseMove, pos),
+  setUsePreset: (preset: PresetType) => ipcRenderer.send(usePreset, preset),
+  jumpLink: (link: string) => ipcRenderer.send(jumpLink, link),
   setStore: (key: string, blob: any) =>
-    ipcRenderer.invoke('setStore', { key, blob }),
+    ipcRenderer.invoke(setStore, { key, blob }),
+  getSettings: (key: string) => ipcRenderer.invoke(getStore, key),
   attemptChange: (changes: string) =>
-    ipcRenderer.invoke('attemptChange', changes),
-  copyText: (changes: string) => ipcRenderer.invoke('copyText', changes),
-  speakText: (changes: string) => ipcRenderer.invoke('speakText', changes),
-  getSettings: (key: string) => ipcRenderer.invoke('getStore', key),
-  getChatList: (preset: PresetType) =>
-    ipcRenderer.invoke('getChatList', preset),
+    ipcRenderer.invoke(attemptChange, changes),
+  copyText: (changes: string) => ipcRenderer.invoke(copyText, changes),
+  speakText: (changes: string) => ipcRenderer.invoke(speakText, changes),
+  getChatList: (preset: PresetType) => ipcRenderer.invoke(getChatList, preset),
   removeChat: (preset: PresetType, index: number) =>
-    ipcRenderer.invoke('removeChat', { preset, index }),
+    ipcRenderer.invoke(removeChat, { preset, index }),
   addPrompt: (character: string, prompt: string) =>
-    ipcRenderer.invoke('addPrompt', { character, prompt }),
-  removePrompt: (character: string) =>
-    ipcRenderer.invoke('removePrompt', { character }),
-  getPromptList: () => ipcRenderer.invoke('getPromptList'),
+    ipcRenderer.invoke(addPrompt, { character, prompt }),
   editPrompt: (former: string, character: string, prompt: string) =>
-    ipcRenderer.invoke('editPrompt', { former, character, prompt }),
-  getPluginPrompt: (plugin: string) =>
-    ipcRenderer.invoke('getPluginPrompt', { plugin }),
+    ipcRenderer.invoke(editPrompt, { former, character, prompt }),
+  removePrompt: (character: string) =>
+    ipcRenderer.invoke(removePrompt, { character }),
+  getPromptList: () => ipcRenderer.invoke(getPromptList),
   setPluginPrompt: (plugin: string, character: string) =>
-    ipcRenderer.invoke('setPluginPrompt', { plugin, character }),
+    ipcRenderer.invoke(setPluginPrompt, { plugin, character }),
+  getPluginPrompt: (plugin: string) =>
+    ipcRenderer.invoke(getPluginPrompt, { plugin }),
 
   /**
    * Provide an easier way to listen to events
