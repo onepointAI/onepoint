@@ -6,10 +6,12 @@ const store = new Store()
 
 export default async (req: any, res: any) => {
   const { start_date, end_date } = req.body
-  const apiHost = `https://closeai.deno.dev`
+  const basePath = store.get(StoreKey.Set_BasePath) as string
+  const apiHost = basePath || `https://closeai.deno.dev`
   const apiKey = store.get(StoreKey.Set_ApiKey) as string
   const usemodel = store.get(StoreKey.Set_Model) as string
   const basic = {
+    apiHost,
     usemodel,
     apiKey,
   }
@@ -34,7 +36,7 @@ export default async (req: any, res: any) => {
         basic,
       },
     })
-  } catch (e) {
+  } catch (e: any) {
     res.send({
       code: -1,
     })
