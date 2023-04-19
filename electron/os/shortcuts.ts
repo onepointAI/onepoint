@@ -1,3 +1,4 @@
+import os from 'node:os'
 import { BrowserWindow, globalShortcut } from 'electron'
 import { clipboard } from 'electron'
 import { getRecentApp, getSelection, getBrowserUrl } from './applescript'
@@ -31,6 +32,9 @@ export function listen(win: BrowserWindow | null) {
     const visible = win?.isVisible() && win.isFocused()
     if (!visible) {
       try {
+        if (os.platform() !== 'darwin') {
+          throw new Error('Only support macOS')
+        }
         const preset = Singleton.getInstance().getCurPreset()
         const plugin = BuiltInPlugins.filter(plugin => plugin.title === preset)
         const app = await setApp()
