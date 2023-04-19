@@ -1,9 +1,19 @@
 import { Tray, Menu, shell, dialog, BrowserWindow } from 'electron'
 import { setWindowVisile } from '../utils/window'
 import { config } from './shortcuts'
+import path from 'node:path'
+
+const isProd = process.env.production
+
+function getTrayImagePath() {
+  if (isProd) {
+    return path.join(process.resourcesPath, 'assets/icon/icon24.png')
+  }
+  return 'assets/icon/icon24.png'
+}
 
 export default (win: BrowserWindow) => {
-  const tray = new Tray('assets/icon/icon24.png')
+  const tray = new Tray(getTrayImagePath())
   const contextMenu = Menu.buildFromTemplate([
     {
       label: 'Feedback',
