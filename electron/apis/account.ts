@@ -39,9 +39,6 @@ export default async (req: any, res: any) => {
   } catch (e: any) {
     res.send({
       code: -1,
-    })
-    res.send({
-      code: -1,
       result: {
         message: e.message,
         basic,

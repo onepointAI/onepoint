@@ -30,8 +30,14 @@ import {
   setStore as setStoreSet,
   defaultVals,
 } from './features/setting/settingSlice'
-
 import { setUrl, setSelection } from './features/clipboard/clipboardSlice'
+
+import {
+  clipboard_change,
+  selection_change,
+  url_change,
+  setting_show,
+} from '../electron/constants/event'
 import { PresetType, PanelVisible } from './@types'
 
 interface Tips {
@@ -53,43 +59,39 @@ export function App() {
   const presetIcon = preset.length > 0 ? preset[0].logo : null
 
   const getSettings = async () => {
-    const lng = await window.Main.getSettings(StoreKey.Set_Lng)
+    const getter = window.Main.getSettings
+    const lng = await getter(StoreKey.Set_Lng)
     dispatch(setLng(lng || defaultVals.lng))
-    const storeSet = await window.Main.getSettings(StoreKey.Set_StoreChat)
+    const storeSet = await getter(StoreKey.Set_StoreChat)
     dispatch(setStoreSet(storeSet || defaultVals.store))
-    const contextual = await window.Main.getSettings(StoreKey.Set_Contexual)
+    const contextual = await getter(StoreKey.Set_Contexual)
     dispatch(setContexual(contextual || defaultVals.contexual))
-    const simpleMode = await window.Main.getSettings(StoreKey.Set_SimpleMode)
+    const simpleMode = await getter(StoreKey.Set_SimpleMode)
     dispatch(setMinimal(simpleMode || false))
   }
 
   useEffect(() => {
-    getSettings() // app start
+    getSettings()
   }, [])
 
   useEffect(() => {
-    // TODO
-    window.addEventListener('mousemove', event => {
-      // let flag = event.target === document.documentElement
-      // window.Main.setWinMouseIgnore(flag)
-    })
-    window.Main.on('clipboard_change', (text: string) => {
+    window.Main.on(clipboard_change, (text: string) => {
       setPrompt(text)
     })
     window.Main.on(
-      'selection_change',
+      selection_change,
       (selection: { txt: string; app: string }) => {
         const { txt, app } = selection
         dispatch(setSelection({ txt, app }))
         dispatch(setChatVisible(!!txt && !!app))
       }
     )
-    window.Main.on('url_change', (selection: { url: string }) => {
+    window.Main.on(url_change, (selection: { url: string }) => {
       const { url } = selection
       dispatch(setUrl({ url }))
       dispatch(setChatVisible(true))
     })
-    window.Main.on('setting_show', () =>
+    window.Main.on(setting_show, () =>
       showPanel({
         setting: true,
       })
@@ -106,22 +108,6 @@ export function App() {
     })
     window.Main.setUsePreset('Chat')
   }, [])
-
-  // const setStore = (key: string, value: string | boolean | number) => {
-  //   window.Main.setStore(key, value)
-  // }
-  // const getMinimalMode = async () => {
-  //   const simpleMode = await window.Main.getSettings(StoreKey.Set_SimpleMode)
-  //   dispatch(setMinimal(simpleMode || false))
-  // }
-  // useEffect(() => {
-  //   getMinimalMode()
-  // }, [])
-  // const changeMode = () => {
-  //   // const mode = !minimal
-  //   // useMinimal(mode)
-  //   dispatch(setMinimal(!settingState.minimal))
-  // }
 
   const showPanel = (options: PanelVisible) => {
     const { plugin, setting, chatPanel } = options

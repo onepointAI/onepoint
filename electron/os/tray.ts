@@ -1,7 +1,8 @@
 import { Tray, Menu, shell, dialog, BrowserWindow } from 'electron'
+import path from 'node:path'
 import { setWindowVisile } from '../utils/window'
 import { config } from './shortcuts'
-import path from 'node:path'
+import { setting_show } from '../constants/event'
 
 const isProd = process.env.production
 
@@ -37,7 +38,7 @@ export default (win: BrowserWindow) => {
     {
       label: 'Settings',
       click: () => {
-        win?.webContents.send('setting_show')
+        win?.webContents.send(setting_show)
         setWindowVisile({
           win,
           visible: true,
