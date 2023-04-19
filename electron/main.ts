@@ -58,7 +58,7 @@ function initWindow() {
       visible: false,
     })
   })
-  app.dock.hide()
+  app.dock?.hide()
   initStore()
   registerListeners()
 }
