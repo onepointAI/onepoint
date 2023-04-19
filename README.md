@@ -70,20 +70,38 @@ With ChatGPT technology, users can continuously train onepoint to generate and r
 - Multi-language support.
 
  <br/>
-
+ 
 ## 02 Screenshots
 
 <details>
 <summary>Detail</summary>
+
+#### Minimal Mode
+     
 <img src='./assets/screenshot/chat.png' />
-<img src='./assets/screenshot/code.png' />
-<img src='./assets/screenshot/console.png' />
+
+#### History Mode
+     
+<img src='./assets/screenshot/list.png' />
+    
+#### Code Assistant
+<img src='./assets/screenshot/code.png' />     
+     
+#### Plugin List
 <img src='./assets/screenshot/plugin.png' />
+     
+#### Setting Page
 <img src='./assets/screenshot/setting.png' />
+     
+#### Account Page
 <img src='./assets/screenshot/account.png' />
+     
+#### Custom Prompts
 <img src='./assets/screenshot/prompts.png' />
 </details>
  
+<br/>
+
 ## 03 Getting Started
 
 Please go to the [official website](https://www.1ptai.com/) to download and try out the tool.

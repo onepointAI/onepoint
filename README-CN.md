@@ -69,20 +69,39 @@ Onepoint 是一款基于 Electron 的开源 AI 助手，旨在打造极致的桌
 - 账号余额查询
 - 多语言支持
 
-
 ## 02 截图
 
 <details>
-<summary>Detail</summary>
+<summary>详情</summary>
+
+#### 极简风
+     
 <img src='./assets/screenshot/chat.png' />
-<img src='./assets/screenshot/code.png' />
-<img src='./assets/screenshot/console.png' />
+
+#### 历史模式
+     
+<img src='./assets/screenshot/list.png' />
+    
+#### Code 辅助
+<img src='./assets/screenshot/code.png' />     
+     
+#### 插件列表
 <img src='./assets/screenshot/plugin.png' />
+     
+#### 设置页
 <img src='./assets/screenshot/setting.png' />
+     
+#### 账户页
 <img src='./assets/screenshot/account.png' />
+     
+#### 自定义 Prompts
 <img src='./assets/screenshot/prompts.png' />
+
+更多功能持续推进开发中
+
 </details>
  
+<br/>
 ## 03 开始
 
 前往 [官网](https://www.1ptai.com/) 下载并试用该工具。
