@@ -4,6 +4,7 @@ import { baseApiHost } from '../../app/api'
 interface SettingModule {
   visible: boolean
   billUsage: number
+  basePath: string
   apikey: string
   loadAccount: boolean
   usemodel: string
@@ -24,6 +25,7 @@ export const initialState: SettingModule = {
   visible: false,
   loadAccount: true,
   billUsage: 0,
+  basePath: '',
   apikey: '',
   usemodel: '',
   minimal: defaultVals.minimal,
@@ -43,6 +45,10 @@ export const settingSlice = createSlice({
     setUsage: (state, action: PayloadAction<number>) => {
       const { payload } = action
       state.billUsage = payload
+    },
+    setBasePath: (state, action: PayloadAction<string>) => {
+      const { payload } = action
+      state.basePath = payload
     },
     setApikey: (state, action: PayloadAction<string>) => {
       const { payload } = action
@@ -78,6 +84,7 @@ export const settingSlice = createSlice({
 export const {
   setVisible,
   setUsage,
+  setBasePath,
   setApikey,
   setUsemodel,
   setLoadAccount,
@@ -122,9 +129,10 @@ export const fetchAccountDetail = createAsyncThunk(
       .then(resp => {
         console.log(resp)
         const {
-          basic: { apiKey, usemodel },
+          basic: { apiHost, apiKey, usemodel },
           usageData,
         } = resp.result
+        dispatch(setBasePath(apiHost))
         dispatch(setApikey(apiKey))
         dispatch(setUsemodel(usemodel))
         if (resp.code === 0) {
