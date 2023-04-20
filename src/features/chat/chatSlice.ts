@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
 import { baseApiHost } from '../../app/api'
 import { timeoutPromise } from '../../utils/fetch'
-import { ERR_CODES } from '../../../electron/types'
+import { ERR_CODES } from '../../electron/types'
 
 interface ChatModule {
   resp: Record<string, string>

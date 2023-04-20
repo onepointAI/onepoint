@@ -17,7 +17,7 @@ import {
 } from '../../features/chat/chatSlice'
 import { setSelection, setUrl } from '../../features/clipboard/clipboardSlice'
 import { PluginType } from '../../@types'
-import { ChatContent } from '../../../electron/types'
+import { ChatContent } from '../../electron/types'
 
 export function ChatPanel() {
   const chatState = useAppSelector(state => state.chat)

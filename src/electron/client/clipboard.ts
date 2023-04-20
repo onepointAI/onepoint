@@ -14,7 +14,7 @@ export function listen(_win: BrowserWindow | null) {
       if (Singleton.getInstance().getCopyFromElectron()) {
         Singleton.getInstance().setCopyStateSource(false)
       }
-      // TODO: 粘贴板内容变化弹窗，感觉没必要保留，会对用户体验造成非常大的影响
+      // TODO: Pop-up notifications for clipboard content changes are unnecessary and can have a significant impact on user experience.
       // setWindowVisile(true)
       // win?.webContents.send(clipboard_change, text)
     },

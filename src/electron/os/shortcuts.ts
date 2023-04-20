@@ -1,7 +1,7 @@
 import os from 'os'
 import { BrowserWindow, globalShortcut, clipboard } from 'electron'
 import { getRecentApp, getSelection, getBrowserUrl } from './applescript'
-import { BuiltInPlugins } from '../../src/app/constants'
+import { BuiltInPlugins } from '../../app/constants'
 import { Logger } from '../utils/util'
 import { setWindowVisile } from '../utils/window'
 import { Singleton } from '../utils/global'

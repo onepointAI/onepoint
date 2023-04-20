@@ -1,4 +1,4 @@
-import { PresetType } from '../../src/@types'
+import { PresetType } from '../../@types'
 export class Singleton {
   private static instance: Singleton
 

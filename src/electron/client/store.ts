@@ -13,7 +13,7 @@ import {
   getPluginPrompt as getPluginPromptEvt,
   setPluginPrompt as setPluginPromptEvt,
 } from '../constants/event'
-import { PresetType } from '../../src/@types'
+import { PresetType } from '../../@types'
 import {
   Chat,
   Translate,
@@ -21,7 +21,7 @@ import {
   Code,
   Analyze,
   StoreKey,
-} from '../../src/app/constants'
+} from '../../app/constants'
 import * as prompts from '../prompt/prompts-zh.json'
 
 const store = new Store()

@@ -20,7 +20,7 @@ module.exports = {
               js: './src/index.tsx',
               name: 'main_window',
               preload: {
-                js: './electron/client/bridge.ts',
+                js: './src/electron/client/bridge.ts',
               },
             },
           ],

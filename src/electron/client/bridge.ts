@@ -1,5 +1,5 @@
 import { contextBridge, ipcRenderer } from 'electron'
-import { PresetType, PosType } from '../../src/@types'
+import { PresetType, PosType } from '../../@types'
 import {
   winIgnoreMouse,
   winMouseMove,

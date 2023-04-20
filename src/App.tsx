@@ -38,7 +38,7 @@ import {
   selection_change,
   url_change,
   setting_show,
-} from '../electron/constants/event'
+} from './electron/constants/event'
 import { PresetType, PanelVisible } from './@types'
 
 interface Tips {

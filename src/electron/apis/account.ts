@@ -1,5 +1,5 @@
 import Store from 'electron-store'
-import { StoreKey } from '../../src/app/constants'
+import { StoreKey } from '../../app/constants'
 import { BalanceResponse } from '../types'
 
 const store = new Store()

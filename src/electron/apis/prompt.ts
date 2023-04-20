@@ -3,7 +3,7 @@ import { ERR_CODES } from '../types'
 import { generatePayload, getAiInstance } from '../server'
 import { Logger } from '../utils/util'
 import { setChat } from '../client/store'
-import { StoreKey, BuiltInPlugins } from '../../src/app/constants'
+import { StoreKey, BuiltInPlugins } from '../../app/constants'
 
 const store = new Store()
 

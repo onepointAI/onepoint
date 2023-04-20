@@ -1,5 +1,5 @@
 import { app, BrowserWindow, ipcMain } from 'electron'
-import { PresetType } from '../src/@types'
+import { PresetType } from '../@types'
 
 import initLog from './utils/log'
 import { Singleton } from './utils/global'
