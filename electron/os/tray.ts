@@ -1,5 +1,5 @@
 import { Tray, Menu, shell, dialog, BrowserWindow } from 'electron'
-import path from 'node:path'
+import path from 'path'
 import { setWindowVisile } from '../utils/window'
 import { config } from './shortcuts'
 import { setting_show } from '../constants/event'

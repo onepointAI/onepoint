@@ -1,4 +1,4 @@
-import os from 'node:os'
+import os from 'os'
 import { BrowserWindow, globalShortcut, clipboard } from 'electron'
 import { getRecentApp, getSelection, getBrowserUrl } from './applescript'
 import { BuiltInPlugins } from '../../src/app/constants'
