@@ -23,7 +23,6 @@ let win: BrowserWindow | null
 
 function initWindow() {
   win = new BrowserWindow({
-    // useContentSize: true,
     resizable: false,
     width: 800,
     height: 600,

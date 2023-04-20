@@ -11,6 +11,7 @@ import { Prompt as PromptModal } from './components/Modal/prompt'
 
 import { useAppDispatch, useAppSelector } from './app/hooks'
 import { StoreKey } from './app/constants'
+import { draggableStyle } from './utils'
 import {
   setVisible as setChatVisible,
   setInputDisabled,
@@ -169,6 +170,7 @@ export function App() {
           {presetIcon ? (
             <Image
               width={30}
+              style={styles.nonDragable}
               preview={false}
               src={presetIcon}
               onClick={() =>
@@ -183,7 +185,7 @@ export function App() {
             allowClear
             onChange={onInputChange}
             bordered={false}
-            style={{ height: 40, resize: 'none' }}
+            style={styles.search}
             value={prompt}
             size="large"
             onPressEnter={() => search()}
@@ -231,12 +233,19 @@ const styles = {
     justifyContent: 'space-between',
     alignItems: 'center',
     padding,
+    ...draggableStyle(true),
   } as React.CSSProperties,
-  exitOrOut: {
-    marginRight: 10,
-  },
+  nonDragable: {
+    ...draggableStyle(false),
+  } as React.CSSProperties,
+  search: {
+    height: 40,
+    resize: 'none',
+    ...draggableStyle(false),
+  } as React.CSSProperties,
   moreIcon: {
     fontSize: 20,
     margin: '0 10px',
+    ...draggableStyle(false),
   },
 }

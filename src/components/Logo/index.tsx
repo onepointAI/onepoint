@@ -3,7 +3,7 @@ import { Image } from 'antd'
 import PubSub from 'pubsub-js'
 import { searchLogov2, logoSpin } from '../../app/images'
 import { useAppSelector } from '../../app/hooks'
-
+import { draggableStyle } from '../../utils'
 interface Props {
   guardian?: boolean
 }
@@ -46,6 +46,7 @@ const styles = {
     position: 'relative',
     alignItems: 'center',
     justifyContent: 'center',
+    ...draggableStyle(false),
   } as React.CSSProperties,
   guardian: {
     position: 'absolute',
