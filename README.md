@@ -18,12 +18,12 @@
     <a href="https://github.com/onepointAI/onepoint/releases/latest">
       <img alt="macOS" src="https://img.shields.io/badge/-macOS-black?style=flat-square&logo=apple&logoColor=white" />
     </a>
-    <!-- <a href="https://github.com/onepointAI/onepoint/releases/latest">
+    <a href="https://github.com/onepointAI/onepoint/releases/latest">
       <img alt="Windows" src="https://img.shields.io/badge/-Windows-blue?style=flat-square&logo=windows&logoColor=white" />
     </a>
     <a href="https://github.com/onepointAI/onepointreleases/latest">
       <img alt="Linux" src="https://img.shields.io/badge/-Linux-yellow?style=flat-square&logo=linux&logoColor=white" />
-    </a> -->
+    </a>
   </div>
   <div>
     <img alt="GitHub Actions" src="https://github.com/onepointAI/onepoint/actions/workflows/ci.yaml/badge.svg?branch=main" />
@@ -138,6 +138,20 @@ In the long term, we hope to develop onepoint into a personalized intelligent as
 - 🔧 Efficient output, not to replace certain tools but to complement and enhance the capabilities of existing editors.
 - 📖 Reading assistance, summarizing and organizing reading scenarios to improve the speed of information acquisition.
 - 🎈 Creative play, providing plugin mechanisms as an entry point to meet various scenarios and providing an NFT ecosystem with a harmonious technical community atmosphere.
+
+## 06 QA
+
+<details><summary>Q1: Can onepoint be used on the Windows platform?</summary>
+Basic abilities such as chatting and switching roles can be used normally, but others such as IDE code selection and application, and browser content acquisition require native capabilities (applescript is used on the Mac platform), which is not yet supported on Windows. In the future, vbscript will be considered to implement similar capabilities.
+</details>
+
+<details><summary>Q2: How to use code helpers or web scraping tools?</summary>
+First, you need to click on the icon on the left to select and switch to the corresponding mode (such as code refactoring, summarization, etc.), and then select a piece of code in the IDE or focus the mouse on the current browser. Use `command + k` to globally call up onepoint. At this time, it will display whether to make changes to the application, choose `yes`.
+</details>
+
+<details><summary>Q3: What are the limitations of web scraping?</summary>
+Currently, there is a character limit of 4000 for web page crawling (excluding line breaks, carriage returns, and HTML tags) to achieve faster speed. In the future, the ability to segment long web pages with context will be used to summarize their contents.
+</details>
 
 ## Contributors
 

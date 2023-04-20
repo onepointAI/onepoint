@@ -18,12 +18,12 @@
     <a href="https://github.com/onepointAI/onepoint/releases/latest">
       <img alt="macOS" src="https://img.shields.io/badge/-macOS-black?style=flat-square&logo=apple&logoColor=white" />
     </a>
-    <!-- <a href="https://github.com/onepointAI/onepoint/releases/latest">
+    <a href="https://github.com/onepointAI/onepoint/releases/latest">
       <img alt="Windows" src="https://img.shields.io/badge/-Windows-blue?style=flat-square&logo=windows&logoColor=white" />
     </a>
     <a href="https://github.com/onepointAI/onepointreleases/latest">
       <img alt="Linux" src="https://img.shields.io/badge/-Linux-yellow?style=flat-square&logo=linux&logoColor=white" />
-    </a> -->
+    </a>
   </div>
   <div>
     <img alt="GitHub Actions" src="https://github.com/onepointAI/onepoint/actions/workflows/ci.yaml/badge.svg?branch=main" />
@@ -138,7 +138,21 @@ Onepoint 是一款基于 Electron 的开源 AI 助手，旨在打造极致的桌
 - 📖 阅读护航：总结归纳阅读场景，提高获取信息的能力与速度
 - 🎈 创意玩法：作为入口提供插件机制满足各类场景，提供 NFT 生态与和谐友好的技术社区氛围
 
-## 06 贡献者
+## 06 QA
+
+<details><summary>Q1: onepoint 不能用在 windows 平台？</summary>
+聊天、角色切换等基础能力可以正常使用，但IDE代码选择与应用、浏览器内容获取等需要调用到原生能力（macOS 通过 applescript 实现），Windows 暂不支持这样的原生调用，但以后会考虑 vbscript 来实现类似的能力。
+</details>
+
+<details><summary>Q2: 怎么使用代码辅助或者网页抓取工具？</summary>
+首先需要点击左侧的图标选择并切换到对应的模式（如代码重构、总结等），然后在IDE中选择一段代码或者鼠标聚焦到当前浏览器，通过`command + k` 全局呼起onepoint，此时会显示是否对应用修改，选择 `yes`。
+</details>
+
+<details><summary>Q3: 网页总结有什么限制吗？</summary>
+目前对抓取网页的字符限制数为4000（已经提出换行、回车和html标签等）以获得更快的速度，后续会通过开关已经上下文分段的能力处理长网页的内容总结
+</details>
+
+## 贡献者
 
 <a href="https://github.com/onepointAI/onepoint/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=onepointAI/onepoint" />
