@@ -140,17 +140,31 @@ Onepoint 是一款基于 Electron 的开源 AI 助手，旨在打造极致的桌
 
 ## 06 QA
 
-<details><summary>Q1: onepoint 不能用在 windows 平台？</summary>
-聊天、角色切换等基础能力可以正常使用，但IDE代码选择与应用、浏览器内容获取等需要调用到原生能力（macOS 通过 applescript 实现），Windows 暂不支持这样的原生调用，但以后会考虑 vbscript 来实现类似的能力。
+<details>
+
+<summary>Q1: onepoint 不能用在 windows 平台？</summary>
+
+聊天、角色切换等基础能力可以正常使用，但 IDE 代码选择与应用、浏览器内容获取等需要调用到原生能力（macOS 通过 applescript 实现），Windows 暂不支持这样的原生调用，但以后会考虑 vbscript 来实现类似的能力。
+
 </details>
 
-<details><summary>Q2: 怎么使用代码辅助或者网页抓取工具？</summary>
-首先需要点击左侧的图标选择并切换到对应的模式（如代码重构、总结等），然后在IDE中选择一段代码或者鼠标聚焦到当前浏览器，通过`command + k` 全局呼起onepoint，此时会显示是否对应用修改，选择 `yes`。
+<details>
+
+<summary>Q2: 怎么使用代码辅助或者网页抓取工具？</summary>
+
+首先需要点击左侧的图标选择并切换到对应的模式（如代码重构、总结等），然后在 IDE 中选择一段代码或者鼠标聚焦到当前浏览器，通过`command + k` 全局呼起 onepoint，此时会显示是否对应用修改，选择 `yes`。
+
 </details>
 
-<details><summary>Q3: 网页总结有什么限制吗？</summary>
-目前对抓取网页的字符限制数为4000（已经提出换行、回车和html标签等）以获得更快的速度，后续会通过开关已经上下文分段的能力处理长网页的内容总结
+<details>
+
+<summary>Q3: 网页总结有什么限制吗？</summary>
+
+目前对抓取网页的字符限制数为 4000（已经提出换行、回车和 html 标签等）以获得更快的速度，后续会通过开关已经上下文分段的能力处理长网页的内容总结
+
 </details>
+
+<br />
 
 ## 贡献者
 

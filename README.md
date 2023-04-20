@@ -141,17 +141,31 @@ In the long term, we hope to develop onepoint into a personalized intelligent as
 
 ## 06 QA
 
-<details><summary>Q1: Can onepoint be used on the Windows platform?</summary>
+<details>
+
+<summary>Q1: Can onepoint be used on the Windows platform?</summary>
+
 Basic abilities such as chatting and switching roles can be used normally, but others such as IDE code selection and application, and browser content acquisition require native capabilities (applescript is used on the Mac platform), which is not yet supported on Windows. In the future, vbscript will be considered to implement similar capabilities.
+
 </details>
 
-<details><summary>Q2: How to use code helpers or web scraping tools?</summary>
+<details>
+
+<summary>Q2: How to use code helpers or web scraping tools?</summary>
+
 First, you need to click on the icon on the left to select and switch to the corresponding mode (such as code refactoring, summarization, etc.), and then select a piece of code in the IDE or focus the mouse on the current browser. Use `command + k` to globally call up onepoint. At this time, it will display whether to make changes to the application, choose `yes`.
+
 </details>
 
-<details><summary>Q3: What are the limitations of web scraping?</summary>
+<details>
+
+<summary>Q3: What are the limitations of web scraping?</summary>
+
 Currently, there is a character limit of 4000 for web page crawling (excluding line breaks, carriage returns, and HTML tags) to achieve faster speed. In the future, the ability to segment long web pages with context will be used to summarize their contents.
+
 </details>
+
+<br />
 
 ## Contributors
 
