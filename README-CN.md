@@ -102,6 +102,14 @@ Onepoint 是一款基于 Electron 的开源 AI 助手，旨在打造极致的桌
 </details>
  
 <br/>
+
+<div align=center>
+    <a href="https://www.youtube.com/watch?v=izi5Vrqa-VY&t=1s" target="_blank">
+     <img align="center" src="https://raw.githubusercontent.com/onepointAI/onepoint/main/assets/screenshot/video.png" />
+    </a>
+     <br/>
+</div>
+
 ## 03 开始
 
 前往 [官网](https://www.1ptai.com/) 下载并试用该工具。
