@@ -1,23 +1,23 @@
 import { chat, translate, code, post } from './images'
 import { PluginType } from '../@types'
 
-export const Chat = 'Chat'
-export const Translate = 'Translate'
-export const Summarize = 'Summarize'
-export const Code = 'Code'
-export const Analyze = 'Analyze'
+export const Casual = 'Casual'
+export const Translator = 'Translator'
+export const Summarizer = 'Summarize'
+export const Programmer = 'Programmer'
+export const Analyst = 'Analyst'
 export const BuiltInPlugins = [
   {
     logo: chat,
-    id: Chat,
-    title: Chat,
+    id: Casual,
+    title: Casual,
     loading: false,
     desc: 'Chat mode, feel free to ask any questions you want.',
   },
   {
     logo: code,
-    id: Code,
-    title: Code,
+    id: Programmer,
+    title: Programmer,
     loading: false,
     inputDisable: true,
     desc: 'Code Master, generate or refactor the code you want.',
@@ -26,8 +26,8 @@ export const BuiltInPlugins = [
   },
   {
     logo: post,
-    id: Summarize,
-    title: Summarize,
+    id: Summarizer,
+    title: Summarizer,
     loading: false,
     inputDisable: true,
     desc: 'Content analysis summary assistant, helps you read and browse web pages more effectively.',
@@ -36,8 +36,8 @@ export const BuiltInPlugins = [
   },
   {
     logo: translate,
-    id: Translate,
-    title: Translate,
+    id: Translator,
+    title: Translator,
     loading: false,
     inputDisable: false,
     monitorClipboard: true,
@@ -46,8 +46,11 @@ export const BuiltInPlugins = [
   },
 ] as PluginType[]
 
+export const Prompts_Link =
+  'https://github.com/onepointAI/awesome-chatgpt-prompts/blob/main/prompts.csv'
 export const Prompts_ZH_Link =
   'https://github.com/PlexPt/awesome-chatgpt-prompts-zh/blob/main/prompts-zh.json'
+
 export const Models = ['gpt-3.5-turbo-0301']
 export const StoreKey = {
   Set_Model: 'KEY_MODEL',

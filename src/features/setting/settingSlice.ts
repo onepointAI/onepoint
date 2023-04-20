@@ -1,3 +1,4 @@
+// import { init as initI18n } from '../../i18n'
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
 import { timeoutPromise } from '../../utils/fetch'
 import { baseApiHost } from '../../app/api'

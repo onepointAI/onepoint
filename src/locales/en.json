@@ -1,3 +1,15 @@
 {
-  "SETTINGS": "SETTINGS"
+  "Casual": "Casual",
+  "Programmer": "Programmer",
+  "Translator": "Translator",
+  "Summarizer": "Summarizer",
+  "Analyst": "Analyst",
+  "Feedback": "Feedback",
+  "Display Window": "Display Window",
+  "Settings": "Settings",
+  "About": "About",
+  "More than just chat. Write, read, and code with powerful AI anywhere.": "More than just chat. Write, read, and code with powerful AI anywhere.",
+  "Version:": "Version:",
+  "onepoint | more than just chat": "onepoint | more than just chat",
+  "exit": "exit"
 }

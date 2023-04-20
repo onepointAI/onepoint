@@ -1,4 +1,5 @@
 import { app, BrowserWindow, ipcMain } from 'electron'
+import Store from 'electron-store'
 import { PresetType } from '../@types'
 
 import initLog from './utils/log'
@@ -10,15 +11,17 @@ import { setupStoreHandlers, init as initStore } from './client/store'
 import { setupLinkHandlers } from './client/link'
 import { setupWindowHandlers } from './client/window'
 import { setupSoundHandlers } from './sound'
-
 import initTray from './os/tray'
 import { listen as setupShortcutHandlers } from './os/shortcuts'
 
+import { StoreKey } from '../app/constants'
+import { init as initI18n, Languages } from '../i18n'
 require('./server')
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string
 declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string
 const userLog = initLog()
+const store = new Store()
 let win: BrowserWindow | null
 
 function initWindow() {
@@ -42,7 +45,6 @@ function initWindow() {
     },
   })
 
-  // win.setPosition(3000, 2000)
   if (!app.isPackaged) {
     win?.webContents.openDevTools({
       mode: 'bottom',
@@ -59,6 +61,7 @@ function initWindow() {
     })
   })
   app.dock?.hide()
+  initI18n('中文' || (store.get(StoreKey.Set_Lng) as Languages))
   initStore()
   registerListeners()
 }
@@ -78,7 +81,7 @@ async function registerListeners() {
 app
   .on('ready', initWindow)
   .whenReady()
-  .then(() => win && initTray(win))
+  .then(() => win && initTray(win, app))
   .catch(e => {
     console.error(e)
     userLog.error(e)

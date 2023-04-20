@@ -77,6 +77,8 @@ export default function () {
   }
 
   const jumpReference = () => {
+    // TODO: language
+    // Prompts_Link
     window.Main.jumpLink(Prompts_ZH_Link)
   }
 

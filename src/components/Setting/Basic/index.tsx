@@ -38,8 +38,8 @@ export default function () {
                     label: 'English',
                   },
                   {
-                    value: 'Chinese',
-                    label: 'Chinese',
+                    value: '中文',
+                    label: '中文',
                   },
                 ]}
               />

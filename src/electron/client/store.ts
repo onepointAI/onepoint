@@ -1,3 +1,4 @@
+import { t } from 'i18next'
 import { IpcMainInvokeEvent, ipcMain } from 'electron'
 import Store from 'electron-store'
 import { ChatContent, PromptSet } from '../types'
@@ -15,11 +16,11 @@ import {
 } from '../constants/event'
 import { PresetType } from '../../@types'
 import {
-  Chat,
-  Translate,
-  Summarize,
-  Code,
-  Analyze,
+  Casual,
+  Translator,
+  Summarizer,
+  Programmer,
+  Analyst,
   StoreKey,
 } from '../../app/constants'
 import * as prompts from '../prompt/prompts-zh.json'
@@ -42,11 +43,11 @@ export function init() {
     store.set(StoreKey.List_Prompt, JSON.stringify(_prompts))
   }
   if (typeof pluginPrompts === 'undefined') {
-    setPluginPrompt({ plugin: Chat, character: 'AI写作导师' })
-    setPluginPrompt({ plugin: Code, character: '编程大师' })
-    setPluginPrompt({ plugin: Analyze, character: '网页总结' })
-    setPluginPrompt({ plugin: Summarize, character: '网页总结' })
-    setPluginPrompt({ plugin: Translate, character: '英语翻译和改进者' })
+    setPluginPrompt({ plugin: Casual, character: t('Casual') })
+    setPluginPrompt({ plugin: Programmer, character: t('Programmer') })
+    setPluginPrompt({ plugin: Summarizer, character: 'Summarizer' })
+    setPluginPrompt({ plugin: Analyst, character: 'Analyst' })
+    setPluginPrompt({ plugin: Translator, character: 'Translator' })
   }
 }
 

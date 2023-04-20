@@ -1,4 +1,4 @@
-import i18n from 'i18next'
+import { use } from 'i18next'
 import { initReactI18next } from 'react-i18next'
 import HttpBackend from 'i18next-http-backend'
 
@@ -14,8 +14,7 @@ export type Languages = keyof typeof localeOptions
 
 export const init = (locale: Languages = 'English') => {
   const lng = localeOptions[locale]
-  i18n
-    .use(initReactI18next)
+  use(initReactI18next)
     .use(HttpBackend)
     .init({
       lng,
@@ -28,5 +27,4 @@ export const init = (locale: Languages = 'English') => {
         zh: { translation: zh },
       },
     })
-  return i18n
 }

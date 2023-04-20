@@ -138,6 +138,7 @@ export function ChatPanel() {
     dispatch(
       fetchWebCrawlResp({
         url,
+        preset: presetState.currentPreset,
       })
     )
   }

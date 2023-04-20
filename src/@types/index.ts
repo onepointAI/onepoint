@@ -15,7 +15,12 @@ export interface PresetModule {
   currentPreset: PresetType
 }
 
-export type PresetType = 'Chat' | 'Translate' | 'Summarize' | 'Code' | 'Analyze'
+export type PresetType =
+  | 'Casual'
+  | 'Translator'
+  | 'Summarizer'
+  | 'Programmer'
+  | 'Analyst'
 
 export interface PanelVisible {
   plugin?: boolean

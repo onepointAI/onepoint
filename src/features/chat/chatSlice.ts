@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
+import { PresetType } from '../../@types'
 import { baseApiHost } from '../../app/api'
 import { timeoutPromise } from '../../utils/fetch'
 import { ERR_CODES } from '../../electron/types'
@@ -89,7 +90,7 @@ export const fetchChatResp = createAsyncThunk(
   async (
     args: {
       prompt: string
-      preset: string
+      preset: PresetType
     },
     { dispatch }
   ) => {
@@ -167,10 +168,11 @@ export const fetchWebCrawlResp = createAsyncThunk(
   async (
     args: {
       url: string
+      preset: PresetType
     },
     { dispatch }
   ) => {
-    const { url } = args
+    const { url, preset } = args
     dispatch(setInputDisabled(true))
     dispatch(setRespErr(false))
     dispatch(setGenerating(true))
@@ -183,6 +185,7 @@ export const fetchWebCrawlResp = createAsyncThunk(
         },
         body: JSON.stringify({
           url,
+          preset,
         }),
       })
       return response.json()

@@ -74,7 +74,6 @@ export function getAiInstance() {
     openai = new OpenAIApi(
       new Configuration({
         apiKey,
-        // TODO
         basePath: basePath || 'https://closeai.deno.dev/v1',
       })
     )

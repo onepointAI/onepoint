@@ -22,7 +22,7 @@ export default async (req: any, res: any) => {
       Logger.log('getBrowserContnet:', plainText)
 
       const completion = await getAiInstance().createChatCompletion(
-        generatePayload(`请帮我总结一下这篇内容:${plainText}`, 'Summarize')
+        generatePayload(`${plainText}`, 'Summarizer')
       )
       Logger.log(completion.data.choices)
       const result = completion.data.choices

@@ -1,3 +1,15 @@
 {
-  "SETTINGS": "设置"
+  "Casual": "随便侃侃",
+  "Programmer": "编程大师",
+  "Translator": "翻译专家",
+  "Summarizer": "网页大纲",
+  "Analyst": "文本分析",
+  "Feedback": "反馈",
+  "Display Window": "显示窗口",
+  "Settings": "设置",
+  "About": "关于",
+  "More than just chat. Write, read, and code with powerful AI anywhere.": "不仅仅是聊天，利用AI辅助你阅读、写作与编程，用完即走",
+  "Version:": "版本号:",
+  "onepoint | more than just chat": "onepoint | 不仅仅是聊天",
+  "exit": "退出"
 }

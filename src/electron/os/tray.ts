@@ -1,3 +1,4 @@
+import { t } from 'i18next'
 import { Tray, Menu, shell, dialog, BrowserWindow } from 'electron'
 import path from 'path'
 import { setWindowVisile } from '../utils/window'
@@ -13,11 +14,11 @@ function getTrayImagePath() {
   return 'assets/icon/icon24.png'
 }
 
-export default (win: BrowserWindow) => {
+export default (win: BrowserWindow, app: Electron.App) => {
   const tray = new Tray(getTrayImagePath())
   const contextMenu = Menu.buildFromTemplate([
     {
-      label: 'Feedback',
+      label: t('Feedback'),
       click: () => {
         process.nextTick(() => {
           shell.openExternal('https://github.com/onepointAI/onepoint/issues')
@@ -26,7 +27,7 @@ export default (win: BrowserWindow) => {
     },
     { type: 'separator' },
     {
-      label: 'Display Window',
+      label: t('Display Window'),
       accelerator: config.shortCut.showAndHidden,
       click: () => {
         setWindowVisile({
@@ -36,7 +37,7 @@ export default (win: BrowserWindow) => {
       },
     },
     {
-      label: 'Settings',
+      label: t('Settings'),
       click: () => {
         win?.webContents.send(setting_show)
         setWindowVisile({
@@ -47,18 +48,26 @@ export default (win: BrowserWindow) => {
     },
     { type: 'separator' },
     {
-      label: 'About',
+      label: t('About'),
       click() {
         dialog.showMessageBox({
-          title: 'onepoint',
-          message:
-            'More than just chat. Write, read, and code with powerful AI anywhere.',
-          detail: `Version: beta 0.1.0`,
+          title: t('onepoint'),
+          message: t(
+            'More than just chat. Write, read, and code with powerful AI anywhere.'
+          ),
+          detail: t(`Version:`) + 'beta 0.1.0',
         })
+      },
+    },
+    { type: 'separator' },
+    {
+      label: t('exit'),
+      click() {
+        app.quit()
       },
     },
   ])
   // TODO: did not show Tray after package
-  tray.setToolTip('onepoint | more than just chat')
+  tray.setToolTip(t('onepoint | more than just chat'))
   tray.setContextMenu(contextMenu)
 }
