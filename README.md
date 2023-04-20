@@ -105,9 +105,10 @@ With ChatGPT technology, users can continuously train onepoint to generate and r
 <div align=center>
     <a href="https://www.youtube.com/watch?v=izi5Vrqa-VY&t=1s" target="_blank">
      <img align="center" src="https://raw.githubusercontent.com/onepointAI/onepoint/main/assets/screenshot/video.png" />
-    </a>
-     <br/>
+    </a>     
 </div>
+
+<br/>
 
 ## 03 Getting Started
 
