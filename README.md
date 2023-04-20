@@ -18,12 +18,12 @@
     <a href="https://github.com/onepointAI/onepoint/releases/latest">
       <img alt="macOS" src="https://img.shields.io/badge/-macOS-black?style=flat-square&logo=apple&logoColor=white" />
     </a>
-    <a href="https://github.com/onepointAI/onepoint/releases/latest">
+    <!-- <a href="https://github.com/onepointAI/onepoint/releases/latest">
       <img alt="Windows" src="https://img.shields.io/badge/-Windows-blue?style=flat-square&logo=windows&logoColor=white" />
     </a>
     <a href="https://github.com/onepointAI/onepointreleases/latest">
       <img alt="Linux" src="https://img.shields.io/badge/-Linux-yellow?style=flat-square&logo=linux&logoColor=white" />
-    </a>
+    </a> -->
   </div>
   <div>
     <img alt="GitHub Actions" src="https://github.com/onepointAI/onepoint/actions/workflows/ci.yaml/badge.svg?branch=main" />
