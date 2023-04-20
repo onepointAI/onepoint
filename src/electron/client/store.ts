@@ -23,7 +23,9 @@ import {
   Analyst,
   StoreKey,
 } from '../../app/constants'
-import * as prompts from '../prompt/prompts-zh.json'
+import { Languages } from '../../i18n'
+import * as prompts from '../prompt/prompts.json'
+import * as zh_prompts from '../prompt/prompts-zh.json'
 
 const store = new Store()
 
@@ -33,8 +35,14 @@ export function init() {
   const pluginPrompts = store.get(StoreKey.Map_Pluginprompt) as
     | string
     | undefined
+  let lng = store.get(StoreKey.Set_Lng) as Languages | undefined
+  if (typeof lng === 'undefined') {
+    store.set(StoreKey.Set_Lng, 'English')
+    lng = 'English'
+  }
   if (typeof promptTemplates === 'undefined') {
-    const _prompts = prompts.map(item => {
+    const p = lng === 'English' ? prompts : zh_prompts
+    const _prompts = p.map(item => {
       return {
         character: item.act,
         prompt: item.prompt,

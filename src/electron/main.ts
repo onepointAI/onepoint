@@ -61,7 +61,7 @@ function initWindow() {
     })
   })
   app.dock?.hide()
-  initI18n('中文' || (store.get(StoreKey.Set_Lng) as Languages))
+  initI18n(store.get(StoreKey.Set_Lng) as Languages)
   initStore()
   registerListeners()
 }
