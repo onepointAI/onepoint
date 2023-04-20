@@ -12,7 +12,9 @@ export const setWindowVisile = (opt: {
   }
 
   // win?.setAlwaysOnTop(true)
-  win?.setVisibleOnAllWorkspaces(false)
+  win?.setVisibleOnAllWorkspaces(true, {
+    visibleOnFullScreen: true,
+  })
   win?.focus()
   win?.show()
 }
