@@ -9,7 +9,6 @@ export interface PluginType {
   monitorClipboard?: boolean
   monitorBrowser?: boolean
 }
-
 export interface PresetModule {
   listVisible: boolean
   builtInPlugins: PluginType[]

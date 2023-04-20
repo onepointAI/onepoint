@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 interface ClipboardModule {
   selectTxt: string
   selectApp: string
-  url: string // TODO: need to remove
+  url: string
 }
 
 interface Selection {

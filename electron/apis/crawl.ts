@@ -21,6 +21,7 @@ function generatePayload(contents: UserMsg[]) {
     messages: [
       {
         role: 'system',
+        // TODO: i18n, change to English
         content:
           '请帮总结文章内容，最好条理清晰地用序号标注提炼出核心的观点，我会先发几段文字给你，你不需要马上回复，但在我说“请总结”的时候，你再将之前的内容拼接在一起进行总结，懂了吗',
       },
@@ -32,7 +33,7 @@ function generatePayload(contents: UserMsg[]) {
 export default async (req: any, res: any) => {
   // const { url } = req.body
   // const apiHost = `https://PhantomJScloud.com/api/browser/v2`
-  // console.log('url ==>', `https://www.textise.net/showText.aspx?strURL=${encodeURIComponent(url)}`)
+  // Logger.log('url ==>', `https://www.textise.net/showText.aspx?strURL=${encodeURIComponent(url)}`)
   try {
     // const response = await fetch(`${apiHost}/${apiKey}/`, {
     //   method: 'POST',

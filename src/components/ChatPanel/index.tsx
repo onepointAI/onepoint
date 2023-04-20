@@ -27,7 +27,7 @@ export function ChatPanel() {
   const [minimal, setMinimal] = useState<boolean>(true)
   const [chatList, setChatList] = useState<ChatContent[]>([])
   const [showSelection, setShowSelection] = useState<boolean>(false)
-  // const [showUrl, setShowUrl] = useState<string>('')
+  const [showUrl, setShowUrl] = useState<string>('')
   const [usePlugin, setUsePlugin] = useState<PluginType>()
   const bottomLineRef = useRef<HTMLDivElement>(null)
   const dispatch = useAppDispatch()
@@ -84,6 +84,10 @@ export function ChatPanel() {
     clipboardState.selectApp,
     usePlugin?.inputDisable,
   ])
+
+  useEffect(() => {
+    setShowUrl(clipboardState.url)
+  }, [clipboardState.url, usePlugin?.inputDisable])
 
   const speakRsp = (resp: string) => {
     window.Main.speakText(resp)
@@ -149,63 +153,44 @@ export function ChatPanel() {
 
   const showCopyFromEditor = () => {
     return showSelection ? (
-      <ConfigProvider
-        theme={{
-          token: {
-            colorPrimary: 'rgb(23, 10, 89)',
-          },
-        }}
-      >
-        <div style={styles.selectWrap}>
-          <span style={styles.selection}>
-            Sure operate the selection in{' '}
-            <span
-              style={styles.selectApp}
-            >{`${clipboardState.selectApp}`}</span>
-            ?
-          </span>
-          <Button
-            type="primary"
-            style={{ marginRight: 5 }}
-            onClick={() => doRequest(clipboardState.selectTxt)}
-          >
-            Yes
-          </Button>
-          <Button type="text" onClick={() => cancelRequest()}>
-            No
-          </Button>
-        </div>
-      </ConfigProvider>
+      <div style={styles.selectWrap}>
+        <span style={styles.selection}>
+          Sure operate the selection in{' '}
+          <span style={styles.selectApp}>{`${clipboardState.selectApp}`}</span>?
+        </span>
+        <Button
+          type="primary"
+          style={{ marginRight: 5 }}
+          onClick={() => doRequest(clipboardState.selectTxt)}
+        >
+          Yes
+        </Button>
+        <Button type="text" onClick={() => cancelRequest()}>
+          No
+        </Button>
+      </div>
     ) : null
   }
 
   const showSelectUrl = () => {
     return clipboardState.url && usePlugin?.monitorBrowser ? (
-      <ConfigProvider
-        theme={{
-          token: {
-            colorPrimary: 'rgb(23, 10, 89)',
-          },
-        }}
-      >
-        <div style={styles.selectWrap}>
-          <span style={styles.selection}>
-            <span>Summarize this page? </span>
-            {/* <span style={styles.url}>{clipboardState.url}</span>*/}
-          </span>
-          <Button
-            // type="text"
-            type="primary"
-            style={{ marginRight: 5 }}
-            onClick={() => doSummaryWebsite(clipboardState.url)}
-          >
-            Yes
-          </Button>
-          <Button type="text" onClick={() => cancelRequest()}>
-            No
-          </Button>
-        </div>
-      </ConfigProvider>
+      <div style={styles.selectWrap}>
+        <span style={styles.selection}>
+          <span>Summarize this page? </span>
+          {/* <span style={styles.url}>{clipboardState.url}</span>*/}
+        </span>
+        <Button
+          // type="text"
+          type="primary"
+          style={{ marginRight: 5 }}
+          onClick={() => doSummaryWebsite(clipboardState.url)}
+        >
+          Yes
+        </Button>
+        <Button type="text" onClick={() => cancelRequest()}>
+          No
+        </Button>
+      </div>
     ) : null
   }
 
@@ -242,19 +227,6 @@ export function ChatPanel() {
               },
             }}
           />
-          {/* {response && (minimal || usePlugin?.nostore)  ? (
-            <>
-              <Divider style={{ margin: '24px 0' }} />
-              <Button
-                type="text"
-                block
-                onClick={() => atemptChange(response)}
-                style={{ fontSize: 12, fontWeight: 'bold' }}
-              >
-                Attempt Change
-              </Button>
-            </>
-          ) : null} */}
         </div>
         {response ? (
           <>
@@ -288,14 +260,21 @@ export function ChatPanel() {
   }
 
   const respContent = chatState.resp[presetState.currentPreset]
-  const showContent = showSelection || respContent || chatState.respErr
+  const showContent =
+    showSelection || showUrl || respContent || chatState.respErr
   const showChat =
     ((chatState.visible && showContent) || !minimal) &&
     !settingState.visible &&
     !presetState.listVisible
 
   return showChat ? (
-    <>
+    <ConfigProvider
+      theme={{
+        token: {
+          colorPrimary: 'rgb(23, 10, 89)',
+        },
+      }}
+    >
       <Divider style={{ margin: 0 }} />
       {chatState.respErr ? (
         <Alert message={chatState.respErrMsg} type="warning" showIcon />
@@ -317,7 +296,7 @@ export function ChatPanel() {
         {chatState.webCrawlResp ? showReply(chatState.webCrawlResp) : null}
         <div ref={bottomLineRef}></div>
       </div>
-    </>
+    </ConfigProvider>
   ) : null
 }
 

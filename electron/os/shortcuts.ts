@@ -47,7 +47,6 @@ export function listen(win: BrowserWindow | null) {
             clipboard.writeText(clipboardContent)
           } else if (usePlugin.monitorBrowser) {
             const url = await getBrowserUrl(app)
-            Logger.log('current url =>', url)
             win?.webContents.send(url_change, {
               url,
             })

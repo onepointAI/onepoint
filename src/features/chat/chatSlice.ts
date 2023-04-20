@@ -22,7 +22,7 @@ export const initialState: ChatModule = {
   respErrMsg: '',
   curPrompt: '',
   isGenerating: false,
-  webCrawlResp: '', // 区分err、errmsp等等
+  webCrawlResp: '', // Distinguishing proprietary err & errmsg
 }
 
 interface Resp {
@@ -198,6 +198,7 @@ export const fetchWebCrawlResp = createAsyncThunk(
       .then(resp => {
         const { result, code } = resp
         if (code === 0) {
+          dispatch(setVisible(true))
           dispatch(saveWebCrawlResp(result))
         }
       })
