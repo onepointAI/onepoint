@@ -10,6 +10,7 @@ export const setWindowVisile = (opt: {
     win?.blur()
     return
   }
+
   // win?.setAlwaysOnTop(true)
   win?.setVisibleOnAllWorkspaces(false)
   win?.focus()

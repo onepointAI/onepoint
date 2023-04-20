@@ -58,6 +58,7 @@ export default (win: BrowserWindow) => {
       },
     },
   ])
+  // TODO: did not show Tray after package
   tray.setToolTip('onepoint | more than just chat')
   tray.setContextMenu(contextMenu)
 }

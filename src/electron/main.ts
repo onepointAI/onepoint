@@ -25,6 +25,7 @@ function initWindow() {
   win = new BrowserWindow({
     resizable: false,
     width: 800,
+    // TODO: autosize height
     height: 600,
     frame: false,
     show: true,
