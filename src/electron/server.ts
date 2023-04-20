@@ -69,12 +69,13 @@ export function getAiInstance() {
   const basePath = store.get(StoreKey.Set_BasePath) as string
   const apiKey = store.get(StoreKey.Set_ApiKey) as string
   Logger.log('store apikey', apiKey)
+  Logger.log('basePath', basePath)
 
   if (apiKey) {
     openai = new OpenAIApi(
       new Configuration({
         apiKey,
-        basePath: basePath || 'https://closeai.deno.dev/v1',
+        basePath: (basePath || 'https://closeai.deno.dev') + '/v1',
       })
     )
     return openai

@@ -59,6 +59,7 @@ export function App() {
   )
   const presetIcon = preset.length > 0 ? preset[0].logo : null
 
+  // TODO: need to perf
   const getSettings = async () => {
     const getter = window.Main.getSettings
     const lng = await getter(StoreKey.Set_Lng)
@@ -107,7 +108,6 @@ export function App() {
     PubSub.subscribe('showPanel', (name: string, data: PanelVisible) => {
       showPanel(data)
     })
-    window.Main.setUsePreset('Chat')
   }, [])
 
   const showPanel = (options: PanelVisible) => {

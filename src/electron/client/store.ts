@@ -25,7 +25,6 @@ import {
 } from '../../app/constants'
 import { Languages } from '../../i18n'
 import * as prompts from '../prompt/prompts.json'
-import * as zh_prompts from '../prompt/prompts-zh.json'
 
 const store = new Store()
 
@@ -41,8 +40,7 @@ export function init() {
     lng = 'English'
   }
   if (typeof promptTemplates === 'undefined') {
-    const p = lng === 'English' ? prompts : zh_prompts
-    const _prompts = p.map(item => {
+    const _prompts = prompts.map(item => {
       return {
         character: item.act,
         prompt: item.prompt,
@@ -53,9 +51,9 @@ export function init() {
   if (typeof pluginPrompts === 'undefined') {
     setPluginPrompt({ plugin: Casual, character: t('Casual') })
     setPluginPrompt({ plugin: Programmer, character: t('Programmer') })
-    setPluginPrompt({ plugin: Summarizer, character: 'Summarizer' })
-    setPluginPrompt({ plugin: Analyst, character: 'Analyst' })
-    setPluginPrompt({ plugin: Translator, character: 'Translator' })
+    setPluginPrompt({ plugin: Summarizer, character: t('Summarizer') })
+    setPluginPrompt({ plugin: Analyst, character: t('Analyst') })
+    setPluginPrompt({ plugin: Translator, character: t('Translator') })
   }
 }
 
@@ -66,6 +64,7 @@ export function setupStoreHandlers() {
       event: IpcMainInvokeEvent,
       { key, blob }: { key: string; blob: any }
     ) => {
+      console.log('== store ==>', key, blob)
       store.set(key, blob)
     }
   )
