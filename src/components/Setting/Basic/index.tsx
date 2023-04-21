@@ -1,4 +1,5 @@
 import { Select, Spin, Switch, Space } from 'antd'
+import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from '../../../app/hooks'
 import { StoreKey } from '../../../app/constants'
 import {
@@ -10,6 +11,7 @@ import {
 } from '../../../features/setting/settingSlice'
 
 export default function () {
+  const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const settingState = useAppSelector(state => state.setting)
   const setStore = (key: string, value: string | boolean | number) => {
@@ -18,14 +20,14 @@ export default function () {
 
   return (
     <div style={styles.wrap}>
-      <Spin tip="Loading..." spinning={false}>
+      <Spin tip={t('Loading...')} spinning={false}>
         <div style={styles.inner}>
           <Space size={25}>
             <div style={{ width: 240 }}>
-              <div style={styles.title}>Language</div>
+              <div style={styles.title}>{t('Language')}</div>
               <Select
                 style={{ width: '100%' }}
-                placeholder="Select A Language"
+                placeholder={t('Select A Language')}
                 onChange={val => {
                   dispatch(setLng(val))
                   setStore(StoreKey.Set_Lng, val)
@@ -46,10 +48,10 @@ export default function () {
             </div>
 
             <div style={{ width: 240 }}>
-              <div style={styles.title}>Store Chat History</div>
+              <div style={styles.title}>{t('Save Chat History')}</div>
               <Select
                 style={{ width: '100%' }}
-                placeholder="Store Chat History"
+                placeholder={t('Save Chat History')}
                 onChange={val => {
                   dispatch(setStoreSet(val))
                   setStore(StoreKey.Set_StoreChat, val)
@@ -69,10 +71,10 @@ export default function () {
             </div>
 
             <div style={{ width: 240 }}>
-              <div style={styles.title}>Contextual Num</div>
+              <div style={styles.title}>{t('Quantity Of Context')}</div>
               <Select
                 style={{ width: 200 }}
-                placeholder="Save Chat"
+                placeholder={t('Save Chat')}
                 onChange={val => {
                   dispatch(setContexual(val))
                   setStore(StoreKey.Set_Contexual, val)
@@ -100,7 +102,7 @@ export default function () {
             </div>
           </Space>
           <div style={styles.simpleMode}>
-            <div style={styles.title}>Simple Mode(collapse panel)</div>
+            <div style={styles.title}>{t('Minimalist Mode(shrink panel)')}</div>
             <Switch
               defaultChecked
               checked={settingState.minimal}

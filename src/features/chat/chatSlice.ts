@@ -146,7 +146,7 @@ export const fetchChatResp = createAsyncThunk(
     Promise.race([
       timeoutPromise(
         20000,
-        'Network congestion, check whether you have set up a proxy'
+        'High network latency. Check whether you have set up a proxy'
       ),
       request(),
     ])
@@ -194,7 +194,7 @@ export const fetchWebCrawlResp = createAsyncThunk(
     Promise.race([
       timeoutPromise(
         20000,
-        'Network congestion, check whether you have set up a proxy'
+        'High network latency. Check whether you have set up a proxy'
       ),
       request(),
     ])

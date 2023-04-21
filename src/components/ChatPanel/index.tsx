@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from 'react'
 import { Divider, Button, Alert, ConfigProvider } from 'antd'
+import { useTranslation } from 'react-i18next'
 import PubSub from 'pubsub-js'
 
 import ReactMarkdown from 'react-markdown'
@@ -20,6 +21,8 @@ import { PluginType } from '../../@types'
 import { ChatContent } from '../../electron/types'
 
 export function ChatPanel() {
+  const { t } = useTranslation()
+  const dispatch = useAppDispatch()
   const chatState = useAppSelector(state => state.chat)
   const presetState = useAppSelector(state => state.preset)
   const settingState = useAppSelector(state => state.setting)
@@ -30,7 +33,6 @@ export function ChatPanel() {
   const [showUrl, setShowUrl] = useState<string>('')
   const [usePlugin, setUsePlugin] = useState<PluginType>()
   const bottomLineRef = useRef<HTMLDivElement>(null)
-  const dispatch = useAppDispatch()
 
   const fetchChatList = async () => {
     const list = await window.Main.getChatList(presetState.currentPreset)
@@ -278,7 +280,7 @@ export function ChatPanel() {
     >
       <Divider style={{ margin: 0 }} />
       {chatState.respErr ? (
-        <Alert message={chatState.respErrMsg} type="warning" showIcon />
+        <Alert message={t(chatState.respErrMsg)} type="warning" showIcon />
       ) : null}
       <div style={styles.history}>
         {showCopyFromEditor()}

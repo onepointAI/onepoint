@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Button, Space, Table, Modal, Form, Input } from 'antd'
 import PubSub from 'pubsub-js'
 import type { ColumnsType } from 'antd/es/table'
@@ -6,6 +7,7 @@ import { Prompts_ZH_Link } from '../../../app/constants'
 import { DataType } from '../../../@types'
 
 export default function () {
+  const { t } = useTranslation()
   const [form] = Form.useForm()
   const [promptList, setPromptList] = useState<DataType[]>([])
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -52,7 +54,7 @@ export default function () {
     }
     PubSub.publish('tips', {
       type: list ? 'success' : 'error',
-      message: list ? 'Saved successfully' : 'Duplicated Character',
+      message: list ? t('Saved successfully') : t('Duplicated Character'),
     })
     if (list) {
       setPromptList(list)
@@ -65,7 +67,7 @@ export default function () {
     const list = await window.Main.removePrompt(character)
     PubSub.publish('tips', {
       type: list ? 'success' : 'error',
-      message: list ? 'Removed successfully' : 'Remove Error',
+      message: list ? t('Removed successfully') : t('Remove Error'),
     })
     if (list) {
       setPromptList(list)
@@ -84,17 +86,17 @@ export default function () {
 
   const columns: ColumnsType<DataType> = [
     {
-      title: 'Character',
+      title: t('Character'),
       dataIndex: 'character',
       key: 'character',
     },
     {
-      title: 'Prompt',
+      title: t('Prompt'),
       dataIndex: 'prompt',
       key: 'prompt',
     },
     {
-      title: 'Action',
+      title: t('Action'),
       key: 'action',
       render: (_, record) => (
         <Space size="middle">
@@ -137,18 +139,18 @@ export default function () {
           initialValues={formValues}
         >
           <Form.Item
-            label="Character"
+            label={t('Character')}
             name="character"
             style={{ marginBottom: 12 }}
           >
-            <Input placeholder="Please input your act." />
+            <Input placeholder={t('Please enter the role.')} />
           </Form.Item>
-          <Form.Item label="Prompt" name="prompt">
-            <Input placeholder="Please input your prompt." />
+          <Form.Item label={t('Prompt')} name="prompt">
+            <Input placeholder={t('Please input your prompt.')} />
           </Form.Item>
           {/* <Form.Item label="Reference" name="reference"> */}
           <a href="javascript:void(0);" onClick={() => jumpReference()}>
-            Prompt Reference
+            {t('Prompt Reference')}
           </a>
           {/* </Form.Item> */}
         </Form>

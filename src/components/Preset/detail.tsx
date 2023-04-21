@@ -29,7 +29,6 @@ export function PresetDetail(props: Props) {
                   key="list-loadmore-edit"
                   style={{ marginRight: padding, color: '#a6a6a6' }}
                   onClick={() => {
-                    console.log('设置页面')
                     return
                   }}
                 >

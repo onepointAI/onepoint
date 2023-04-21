@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Progress, Button, Form, Input, Select, Alert, Spin } from 'antd'
+import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from '../../../app/hooks'
 import { Models, StoreKey } from '../../../app/constants'
 import { fetchAccountDetail } from '../../../features/setting/settingSlice'
@@ -7,6 +8,7 @@ import { fetchAccountDetail } from '../../../features/setting/settingSlice'
 const { Option } = Select
 
 export default function () {
+  const { t } = useTranslation()
   const [form] = Form.useForm()
   const [, forceUpdate] = useState({})
   const dispatch = useAppDispatch()
@@ -56,7 +58,7 @@ export default function () {
     <div style={styles.wrap}>
       <Spin tip="Loading..." spinning={settingState.loadAccount}>
         <div style={styles.inner}>
-          <div style={styles.title}>Token Usage</div>
+          <div style={styles.title}>{t('Account Balance')}</div>
           <Progress
             style={{ marginBottom: 20 }}
             percent={settingState.billUsage}
@@ -80,7 +82,9 @@ export default function () {
               <Input placeholder="Like https://api.openai.com/v1" />
             </Form.Item>
             <Form.Item label="ApiKey" name="apikey">
-              <Input.Password placeholder="Please input your apikey!" />
+              <Input.Password
+                placeholder={t('Please enter your API key first.')}
+              />
             </Form.Item>
             <Form.Item label="Model" name="model" style={{ marginBottom: 12 }}>
               <Select>
@@ -93,11 +97,11 @@ export default function () {
             </Form.Item>
             <Form.Item>
               <Button htmlType="submit" type="primary">
-                Submit
+                {t('Submit')}
               </Button>
 
               <Button style={{ marginLeft: 10 }} onClick={refreshPage}>
-                Refresh
+                {t('Refresh')}
               </Button>
             </Form.Item>
           </Form>

@@ -1,4 +1,5 @@
 import { Tabs, Divider, ConfigProvider } from 'antd'
+import { useTranslation } from 'react-i18next'
 import {
   SettingFilled,
   UserOutlined,
@@ -12,6 +13,7 @@ import { useAppSelector } from '../../app/hooks'
 
 export function Setting() {
   const settingState = useAppSelector(state => state.setting)
+  const { t } = useTranslation()
 
   return settingState.visible ? (
     <ConfigProvider
@@ -30,7 +32,7 @@ export function Setting() {
               label: (
                 <span>
                   <SettingFilled />
-                  Setting
+                  {t('Setting')}
                 </span>
               ),
               key: '1',
@@ -40,7 +42,7 @@ export function Setting() {
               label: (
                 <span>
                   <UserOutlined />
-                  Account
+                  {t('Account')}
                 </span>
               ),
               key: '2',
@@ -50,7 +52,7 @@ export function Setting() {
               label: (
                 <span>
                   <MacCommandOutlined />
-                  Prompts
+                  {t('Prompts')}
                 </span>
               ),
               key: '3',
@@ -61,7 +63,7 @@ export function Setting() {
               label: (
                 <span>
                   <UserOutlined />
-                  Advanced
+                  {t('Advanced')}
                 </span>
               ),
               key: '4',
@@ -72,7 +74,7 @@ export function Setting() {
               label: (
                 <span>
                   <UsbOutlined />
-                  Plugins
+                  {t('Plugins')}
                 </span>
               ),
               key: '5',

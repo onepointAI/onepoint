@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Input, Image, message } from 'antd'
 import PubSub from 'pubsub-js'
+import { useTranslation } from 'react-i18next'
 import { MoreOutlined } from '@ant-design/icons'
 import { GlobalStyle } from './styles/GlobalStyle'
 import { ChatPanel } from './components/ChatPanel'
@@ -9,6 +10,7 @@ import { Preset } from './components/Preset'
 import { Logo } from './components/Logo'
 import { Prompt as PromptModal } from './components/Modal/prompt'
 
+import { init as initI18n } from './i18n'
 import { useAppDispatch, useAppSelector } from './app/hooks'
 import { StoreKey } from './app/constants'
 import { draggableStyle } from './utils'
@@ -46,7 +48,9 @@ interface Tips {
   message: string
 }
 
+initI18n('中文')
 export function App() {
+  const { t } = useTranslation()
   const [prompt, setPrompt] = useState<string>('')
   const chatState = useAppSelector(state => state.chat)
   const presetState = useAppSelector(state => state.preset)
@@ -181,7 +185,9 @@ export function App() {
             />
           ) : null}
           <Input
-            placeholder="Enter '/' to process the selection, or directly enter the box to ask questions"
+            placeholder={t(
+              "Type '/' to bring up the plugin list, or enter your question directly in the input box."
+            )}
             allowClear
             onChange={onInputChange}
             bordered={false}

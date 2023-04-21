@@ -123,7 +123,7 @@ export const fetchAccountDetail = createAsyncThunk(
     Promise.race([
       timeoutPromise(
         5000,
-        'Network congestion, check whether you have set up a proxy'
+        'High network latency. Check whether you have set up a proxy'
       ),
       request(),
     ])

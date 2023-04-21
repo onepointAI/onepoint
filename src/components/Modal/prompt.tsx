@@ -1,16 +1,20 @@
 import { useEffect, useState } from 'react'
 import { Modal, Select, ConfigProvider } from 'antd'
+import { useTranslation } from 'react-i18next'
 import PubSub from 'pubsub-js'
 import { useAppSelector } from '../../app/hooks'
 interface SelectOption {
   value: string
   label: string
 }
+
 export function Prompt() {
+  const { t } = useTranslation()
   const presetState = useAppSelector(state => state.preset)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [selectOptions, setSelectOptions] = useState<SelectOption[]>([])
   const [curval, setCurval] = useState<string>('')
+
   const getPromptList = async () => {
     const list = await window.Main.getPromptList()
     const options = list.map((item: { character: string }) => {
@@ -25,7 +29,6 @@ export function Prompt() {
   const getUseCharacter = async () => {
     const prompt = await window.Main.getPluginPrompt(presetState.currentPreset)
     setCurval(prompt.character)
-    // 设置当前的character
   }
 
   useEffect(() => {
@@ -75,8 +78,8 @@ export function Prompt() {
         <Select
           value={curval}
           showSearch
-          defaultValue={'代码大神'}
-          placeholder="Select a character"
+          defaultValue={''}
+          placeholder={t('Select a character')}
           optionFilterProp="children"
           onChange={onChange}
           onSearch={onSearch}
