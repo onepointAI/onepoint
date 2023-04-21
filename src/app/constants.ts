@@ -3,7 +3,7 @@ import { PluginType } from '../@types'
 
 export const Casual = 'Casual'
 export const Translator = 'Translator'
-export const Summarizer = 'Summarize'
+export const Summarizer = 'Summarizer'
 export const Programmer = 'Programmer'
 export const Analyst = 'Analyst'
 export const BuiltInPlugins = [

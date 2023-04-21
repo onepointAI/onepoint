@@ -1,6 +1,6 @@
 {
   "Casual": "随便侃侃",
-  "Programmer": "编程大师",
+  "Programmer": "编程模式",
   "Translator": "翻译专家",
   "Summarizer": "网页大纲",
   "Analyst": "文本分析",
@@ -41,5 +41,10 @@
   "Advanced": "高级",
   "Plugins": "插件",
   "please set your apikey first.": "请先设置你的apikey",
-  "High network latency. Check whether you have set up a proxy": "网络拥堵，请检查是否设置了代理。"
+  "High network latency. Check whether you have set up a proxy": "网络拥堵，请检查是否设置了代理。",
+  "Prompt Setting": "Prompt设置",
+  "Chat mode, feel free to ask any questions you want.": "聊天模式，随意提出任何你想问的问题。",
+  "Code Master, generate or refactor the code you want.": "编程模式，生成或重构你想要的代码。",
+  "Content analysis summary assistant, helps you read and browse web pages more effectively.": "内容分析摘要助手，帮助您更有效地阅读和浏览网页。",
+  "Language expert, proficient in various languages from different countries.": "语言专家，精通来自不同国家的各种语言。"
 }

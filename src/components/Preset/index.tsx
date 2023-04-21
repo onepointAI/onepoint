@@ -1,4 +1,5 @@
 import { Avatar, List, Skeleton, Divider } from 'antd'
+import { useTranslation } from 'react-i18next'
 import PubSub from 'pubsub-js'
 import { useAppSelector } from '../../app/hooks'
 import { PresetType } from '../../@types'
@@ -9,6 +10,7 @@ interface Props {
 
 const padding = 15
 export function Preset(props: Props) {
+  const { t } = useTranslation()
   const { onPresetChange } = props
   const presetState = useAppSelector(state => state.preset)
   return presetState.listVisible ? (
@@ -46,8 +48,8 @@ export function Preset(props: Props) {
                 <List.Item.Meta
                   style={{ paddingLeft: padding }}
                   avatar={<Avatar src={item.logo} />}
-                  title={item.title}
-                  description={item.desc}
+                  title={t(item.title)}
+                  description={t(item.desc)}
                 />
               </Skeleton>
             </List.Item>

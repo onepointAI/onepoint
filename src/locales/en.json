@@ -41,5 +41,10 @@
   "Advanced": "Advanced",
   "Plugins": "Plugins",
   "please set your apikey first.": "please set your apikey first.",
-  "High network latency. Check whether you have set up a proxy": "High network latency. Check whether you have set up a proxy"
+  "High network latency. Check whether you have set up a proxy": "High network latency. Check whether you have set up a proxy",
+  "Prompt Setting": "Prompt Setting",
+  "Chat mode, feel free to ask any questions you want.": "Chat mode, feel free to ask any questions you want.",
+  "Code Master, generate or refactor the code you want.": "Code Master, generate or refactor the code you want.",
+  "Content analysis summary assistant, helps you read and browse web pages more effectively.": "Content analysis summary assistant, helps you read and browse web pages more effectively.",
+  "Language expert, proficient in various languages from different countries.": "Language expert, proficient in various languages from different countries."
 }

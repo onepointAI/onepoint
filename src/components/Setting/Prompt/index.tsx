@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { Button, Space, Table, Modal, Form, Input } from 'antd'
 import PubSub from 'pubsub-js'
 import type { ColumnsType } from 'antd/es/table'
-import { Prompts_ZH_Link } from '../../../app/constants'
+import { Prompts_Link } from '../../../app/constants'
 import { DataType } from '../../../@types'
 
 export default function () {
@@ -21,7 +21,6 @@ export default function () {
 
   const getPromptList = async () => {
     const list = await window.Main.getPromptList()
-    console.log('--- list --->', list)
     setPromptList(list)
   }
 
@@ -81,7 +80,7 @@ export default function () {
   const jumpReference = () => {
     // TODO: language
     // Prompts_Link
-    window.Main.jumpLink(Prompts_ZH_Link)
+    window.Main.jumpLink(Prompts_Link)
   }
 
   const columns: ColumnsType<DataType> = [

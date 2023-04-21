@@ -70,7 +70,7 @@ export function Prompt() {
       }}
     >
       <Modal
-        title="Prompt Setting"
+        title={t('Prompt Setting')}
         open={isModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}
