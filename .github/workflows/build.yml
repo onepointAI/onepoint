@@ -30,6 +30,7 @@ jobs:
           path: release_url.txt
 
   build:
+    permissions: write-all
     runs-on: ${{ matrix.os }}
 
     strategy:
