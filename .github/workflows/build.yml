@@ -103,14 +103,14 @@ jobs:
           asset_name: onepoint-${{ matrix.PLATFORM }}-${{ matrix.TYPE }}-${{ env.RELEASE_VERSION }}.zip
           asset_content_type: ${{ matrix.ASSET_MIME}}
 
-      - name: Upload Release Asset win
-        if: runner.os == 'windows'
-        id: upload-release-asset-win
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.get_release_info.outputs.upload_url }}
-          asset_path: ./out/make/${{ matrix.PLATFORM }}/${{ matrix.TYPE }}/onepoint-${{ env.RELEASE_VERSION }} Setup.exe
-          asset_name: onepoint-${{ env.RELEASE_VERSION }} Setup.exe
-          asset_content_type: ${{ matrix.ASSET_MIME}}
+      # - name: Upload Release Asset win
+      #   if: runner.os == 'windows'
+      #   id: upload-release-asset-win
+      #   uses: actions/upload-release-asset@v1
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   with:
+      #     upload_url: ${{ steps.get_release_info.outputs.upload_url }}
+      #     asset_path: ./out/make/${{ matrix.PLATFORM }}/${{ matrix.TYPE }}/onepoint-${{ env.RELEASE_VERSION }} Setup.exe
+      #     asset_name: onepoint-${{ env.RELEASE_VERSION }} Setup.exe
+      #     asset_content_type: ${{ matrix.ASSET_MIME}}
