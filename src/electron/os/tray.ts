@@ -18,7 +18,7 @@ export default (win: BrowserWindow, app: Electron.App) => {
   const getMenuTemplate = () => {
     return Menu.buildFromTemplate([
       {
-        label: t('Feedback'),
+        label: t('Feedback & Help'),
         click: () => {
           process.nextTick(() => {
             shell.openExternal('https://github.com/onepointAI/onepoint/issues')
