@@ -58,7 +58,7 @@ export default function () {
     <div style={styles.wrap}>
       <Spin tip="Loading..." spinning={settingState.loadAccount}>
         <div style={styles.inner}>
-          <div style={styles.title}>{t('Account Balance')}</div>
+          <div style={styles.title}>{t('Token Usage')}</div>
           <Progress
             style={{ marginBottom: 20 }}
             percent={settingState.billUsage}
@@ -78,7 +78,7 @@ export default function () {
               apikey: settingState.apikey,
             }}
           >
-            <Form.Item label="BasePath" name="basePath">
+            <Form.Item label={t('Base Path')} name="basePath">
               <Input placeholder="Like https://api.openai.com/v1" />
             </Form.Item>
             <Form.Item label="ApiKey" name="apikey">
@@ -86,7 +86,11 @@ export default function () {
                 placeholder={t('Please enter your API key first.')}
               />
             </Form.Item>
-            <Form.Item label="Model" name="model" style={{ marginBottom: 12 }}>
+            <Form.Item
+              label={t('Model')}
+              name="Model"
+              style={{ marginBottom: 12 }}
+            >
               <Select>
                 {Models.map(model => (
                   <Option key={model} value={model}>

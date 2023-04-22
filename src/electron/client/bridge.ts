@@ -1,5 +1,6 @@
 import { contextBridge, ipcRenderer } from 'electron'
 import { PresetType, PosType } from '../../@types'
+import { Languages } from '../../i18n'
 import {
   winIgnoreMouse,
   winMouseMove,
@@ -18,6 +19,7 @@ import {
   editPrompt,
   setPluginPrompt,
   getPluginPrompt,
+  changeLanguage,
 } from '../constants/event'
 
 export const api = {
@@ -28,6 +30,7 @@ export const api = {
   moveWindowPos: (pos: PosType) => ipcRenderer.send(winMouseMove, pos),
   setUsePreset: (preset: PresetType) => ipcRenderer.send(usePreset, preset),
   jumpLink: (link: string) => ipcRenderer.send(jumpLink, link),
+  changeLanguage: (lng: Languages) => ipcRenderer.send(changeLanguage, lng),
   setStore: (key: string, blob: any) =>
     ipcRenderer.invoke(setStore, { key, blob }),
   getSettings: (key: string) => ipcRenderer.invoke(getStore, key),

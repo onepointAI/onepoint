@@ -14,7 +14,7 @@
   "exit": "退出",
   "Type '/' to bring up the plugin list, or enter your question directly in the input box.": "输入“/”呼出插件列表，或直接输入框中提出问题。",
   "Select a character": "选择一位角色",
-  "Account Balance": "账户余额",
+  "Token Usage": "Token 使用量",
   "Please enter your API key first.": "请先输入你的apikey",
   "Submit": "提交",
   "Refresh": "刷新",
@@ -31,7 +31,7 @@
   "Remove Error": "删除失败",
   "Character": "角色",
   "Prompt": "Prompt",
-  "Action": "动作",
+  "Action": "操作",
   "Please enter the role.": "请输入角色",
   "Please input your prompt.": "请输入相关Prompt",
   "Prompt Reference": "Prompt 参考",
@@ -46,5 +46,7 @@
   "Chat mode, feel free to ask any questions you want.": "聊天模式，随意提出任何你想问的问题。",
   "Code Master, generate or refactor the code you want.": "编程模式，生成或重构你想要的代码。",
   "Content analysis summary assistant, helps you read and browse web pages more effectively.": "内容分析摘要助手，帮助您更有效地阅读和浏览网页。",
-  "Language expert, proficient in various languages from different countries.": "语言专家，精通来自不同国家的各种语言。"
+  "Language expert, proficient in various languages from different countries.": "语言专家，精通来自不同国家的各种语言。",
+  "Base Path": "API 请求域名",
+  "Model": "模型"
 }

@@ -9,9 +9,10 @@ import {
   setStore as setStoreSet,
   // defaultVals,
 } from '../../../features/setting/settingSlice'
+import { Languages, localeOptions } from '../../../i18n'
 
 export default function () {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const dispatch = useAppDispatch()
   const settingState = useAppSelector(state => state.setting)
   const setStore = (key: string, value: string | boolean | number) => {
@@ -28,12 +29,13 @@ export default function () {
               <Select
                 style={{ width: '100%' }}
                 placeholder={t('Select A Language')}
-                onChange={val => {
+                onChange={(val: Languages) => {
                   dispatch(setLng(val))
                   setStore(StoreKey.Set_Lng, val)
+                  i18n.changeLanguage(localeOptions[val])
+                  window.Main.changeLanguage(val)
                 }}
                 value={settingState.lng}
-                // defaultValue={{ value: lng, label: lng }}
                 options={[
                   {
                     value: 'English',

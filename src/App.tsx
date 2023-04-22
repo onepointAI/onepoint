@@ -1,26 +1,20 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { Input, Image, message } from 'antd'
+import React, { useEffect, useRef, useState, useLayoutEffect } from 'react'
+import { Image, message } from 'antd'
 import PubSub from 'pubsub-js'
-import { useTranslation } from 'react-i18next'
 import { MoreOutlined } from '@ant-design/icons'
 import { GlobalStyle } from './styles/GlobalStyle'
 import { ChatPanel } from './components/ChatPanel'
 import { Setting } from './components/Setting'
 import { Preset } from './components/Preset'
 import { Logo } from './components/Logo'
+import Search from './components/Search'
 import { Prompt as PromptModal } from './components/Modal/prompt'
 
 import { init as initI18n } from './i18n'
 import { useAppDispatch, useAppSelector } from './app/hooks'
 import { StoreKey } from './app/constants'
 import { draggableStyle } from './utils'
-import {
-  setVisible as setChatVisible,
-  setInputDisabled,
-  fetchChatResp,
-  setCurPrompt,
-  saveResp,
-} from './features/chat/chatSlice'
+import { setVisible as setChatVisible } from './features/chat/chatSlice'
 import {
   setListVisible as setPresetListVisible,
   setPreset,
@@ -36,7 +30,6 @@ import {
 import { setUrl, setSelection } from './features/clipboard/clipboardSlice'
 
 import {
-  clipboard_change,
   selection_change,
   url_change,
   setting_show,
@@ -48,11 +41,8 @@ interface Tips {
   message: string
 }
 
-initI18n('中文')
 export function App() {
-  const { t } = useTranslation()
-  const [prompt, setPrompt] = useState<string>('')
-  const chatState = useAppSelector(state => state.chat)
+  const [show, setShow] = useState<boolean>(false)
   const presetState = useAppSelector(state => state.preset)
   const [messageApi, contextHolder] = message.useMessage()
   const dispatch = useAppDispatch()
@@ -68,6 +58,8 @@ export function App() {
     const getter = window.Main.getSettings
     const lng = await getter(StoreKey.Set_Lng)
     dispatch(setLng(lng || defaultVals.lng))
+    initI18n(lng)
+    setShow(true)
     const storeSet = await getter(StoreKey.Set_StoreChat)
     dispatch(setStoreSet(storeSet || defaultVals.store))
     const contextual = await getter(StoreKey.Set_Contexual)
@@ -76,14 +68,11 @@ export function App() {
     dispatch(setMinimal(simpleMode || false))
   }
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     getSettings()
   }, [])
 
   useEffect(() => {
-    window.Main.on(clipboard_change, (text: string) => {
-      setPrompt(text)
-    })
     window.Main.on(
       selection_change,
       (selection: { txt: string; app: string }) => {
@@ -121,51 +110,12 @@ export function App() {
     dispatch(setChatVisible(!plugin && !setting && !!chatPanel))
   }
 
-  const onInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const val = e.target.value
-    switch (val) {
-      case '/':
-        showPanel({
-          plugin: true,
-        })
-        break
-      case '/s':
-        showPanel({
-          setting: true,
-        })
-        break
-      default:
-        showPanel({})
-    }
-    setPrompt(val)
-  }
-
   const onPresetChange = (preset: PresetType) => {
     dispatch(setPreset(preset))
     window.Main.setUsePreset(preset)
   }
 
-  const search = async () => {
-    if (!prompt) return
-    dispatch(setInputDisabled(true))
-    dispatch(setCurPrompt(prompt))
-    dispatch(
-      saveResp({
-        preset: presetState.currentPreset,
-        content: '',
-      })
-    )
-    dispatch(
-      fetchChatResp({
-        prompt: `${prompt}`,
-        preset: presetState.currentPreset,
-      })
-    )
-  }
-
-  return (
+  return show ? (
     <>
       <GlobalStyle />
       {contextHolder}
@@ -184,24 +134,7 @@ export function App() {
               }
             />
           ) : null}
-          <Input
-            placeholder={t(
-              "Type '/' to bring up the plugin list, or enter your question directly in the input box."
-            )}
-            allowClear
-            onChange={onInputChange}
-            bordered={false}
-            style={styles.search}
-            value={prompt}
-            size="large"
-            onPressEnter={() => search()}
-            disabled={chatState.inputDiabled}
-            onFocus={() =>
-              showPanel({
-                chatPanel: true,
-              })
-            }
-          />
+          <Search />
           <MoreOutlined
             style={styles.moreIcon}
             onClick={() => {
@@ -216,7 +149,7 @@ export function App() {
         <PromptModal />
       </div>
     </>
-  )
+  ) : null
 }
 
 const padding = 15
@@ -242,11 +175,6 @@ const styles = {
     ...draggableStyle(true),
   } as React.CSSProperties,
   nonDragable: {
-    ...draggableStyle(false),
-  } as React.CSSProperties,
-  search: {
-    height: 40,
-    resize: 'none',
     ...draggableStyle(false),
   } as React.CSSProperties,
   moreIcon: {

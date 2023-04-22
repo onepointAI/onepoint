@@ -2,6 +2,7 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
 import { timeoutPromise } from '../../utils/fetch'
 import { baseApiHost } from '../../app/api'
+import { Languages } from '../../i18n'
 interface SettingModule {
   visible: boolean
   billUsage: number
@@ -12,7 +13,7 @@ interface SettingModule {
   minimal: boolean
   contextual: number
   store: number
-  lng: string
+  lng: Languages
 }
 
 export const defaultVals = {
@@ -75,7 +76,7 @@ export const settingSlice = createSlice({
       const { payload } = action
       state.store = payload
     },
-    setLng: (state, action: PayloadAction<string>) => {
+    setLng: (state, action: PayloadAction<Languages>) => {
       const { payload } = action
       state.lng = payload
     },
@@ -94,6 +95,14 @@ export const {
   setStore,
   setLng,
 } = settingSlice.actions
+
+export const initState = createAsyncThunk(
+  'setting/initState',
+  async (args: null, { dispatch }) => {
+    // const config = await connector.getProject()
+    // connector.refreshTokens()
+  }
+)
 
 export const fetchAccountDetail = createAsyncThunk(
   'setting/fetchAccountDetail',

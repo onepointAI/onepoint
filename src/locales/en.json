@@ -14,7 +14,7 @@
   "exit": "exit",
   "Type '/' to bring up the plugin list, or enter your question directly in the input box.": "Type '/' to bring up the plugin list, or enter your question directly in the input box.",
   "Select a character": "Select a character",
-  "Account Balance": "Account Balance",
+  "Token Usage": "Token Usage",
   "Please enter your API key first.": "Please enter your API key first.",
   "Submit": "Submit",
   "Refresh": "Refresh",
@@ -46,5 +46,7 @@
   "Chat mode, feel free to ask any questions you want.": "Chat mode, feel free to ask any questions you want.",
   "Code Master, generate or refactor the code you want.": "Code Master, generate or refactor the code you want.",
   "Content analysis summary assistant, helps you read and browse web pages more effectively.": "Content analysis summary assistant, helps you read and browse web pages more effectively.",
-  "Language expert, proficient in various languages from different countries.": "Language expert, proficient in various languages from different countries."
+  "Language expert, proficient in various languages from different countries.": "Language expert, proficient in various languages from different countries.",
+  "Base Path": "Base Path",
+  "Model": "Model"
 }
