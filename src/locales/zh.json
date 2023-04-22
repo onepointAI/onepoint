@@ -48,5 +48,6 @@
   "Content analysis summary assistant, helps you read and browse web pages more effectively.": "内容分析摘要助手，帮助您更有效地阅读和浏览网页。",
   "Language expert, proficient in various languages from different countries.": "语言专家，精通来自不同国家的各种语言。",
   "Base Path": "API 请求域名",
-  "Model": "模型"
+  "Model": "模型",
+  "reload": "重启"
 }

@@ -48,5 +48,6 @@
   "Content analysis summary assistant, helps you read and browse web pages more effectively.": "Content analysis summary assistant, helps you read and browse web pages more effectively.",
   "Language expert, proficient in various languages from different countries.": "Language expert, proficient in various languages from different countries.",
   "Base Path": "Base Path",
-  "Model": "Model"
+  "Model": "Model",
+  "reload": "reload"
 }
