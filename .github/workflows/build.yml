@@ -21,8 +21,10 @@ jobs:
           release_name: Release ${{ github.ref }}
           draft: false
           prerelease: false
+
       - name: Output Release URL File
         run: echo "${{ steps.create_release.outputs.upload_url }}" > release_url.txt
+
       - name: Save Release URL File for publish
         uses: actions/upload-artifact@v1
         with:
@@ -67,6 +69,9 @@ jobs:
         run: yarn release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Show Build Output
+        run: ls -al output
 
       # - name: Upload Artifact
       #   uses: actions/upload-artifact@v3
