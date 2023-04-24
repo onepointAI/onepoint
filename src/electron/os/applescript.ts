@@ -15,6 +15,16 @@ function runAppleScript(script: string) {
   })
 }
 
+export function printer(words: string) {
+  return `
+  set textBuffer to "${words}"
+  repeat with i from 1 to count characters of textBuffer
+		set the clipboard to (character i of textBuffer)
+		delay 0.05
+		keystroke "v" using command down
+	end repeat
+  `
+}
 export function getSelection() {
   const script = `
     tell application "System Events" to keystroke "c" using {command down}
