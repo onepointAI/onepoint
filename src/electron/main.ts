@@ -6,14 +6,19 @@ import initLog from './utils/log'
 import { Singleton } from './utils/global'
 import { setWindowVisile } from './utils/window'
 
-import { listen as setupClipboardHandlers } from './client/clipboard'
-import { setupStoreHandlers, init as initStore } from './client/store'
-import { setupLinkHandlers } from './client/link'
-import { setupWindowHandlers } from './client/window'
 import { setupSoundHandlers } from './sound'
-import initTray from './os/tray'
-import { listen as setupShortcutHandlers } from './os/shortcuts'
-
+import {
+  listen as setupClipboardHandlers,
+  setupStoreHandlers,
+  init as initStore,
+  setupLinkHandlers,
+  setupWindowHandlers,
+} from './client'
+import {
+  setupScriptHandlers,
+  listen as setupShortcutHandlers,
+  initTray,
+} from './os'
 import { StoreKey } from '../app/constants'
 import { init as initI18n, Languages } from '../i18n'
 require('./server')
@@ -86,6 +91,7 @@ async function registerListeners() {
   setupSoundHandlers()
   setupStoreHandlers()
   setupLinkHandlers()
+  setupScriptHandlers()
 }
 
 app

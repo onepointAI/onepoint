@@ -15,7 +15,7 @@ function getTrayImagePath() {
   return 'assets/icon/icon24.png'
 }
 
-export default (win: BrowserWindow, app: Electron.App) => {
+export function initTray(win: BrowserWindow, app: Electron.App) {
   const getMenuTemplate = () => {
     return Menu.buildFromTemplate([
       {

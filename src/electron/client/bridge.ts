@@ -20,6 +20,7 @@ import {
   setPluginPrompt,
   getPluginPrompt,
   changeLanguage,
+  runScript,
 } from '../constants/event'
 
 export const api = {
@@ -52,6 +53,7 @@ export const api = {
     ipcRenderer.invoke(setPluginPrompt, { plugin, character }),
   getPluginPrompt: (plugin: string) =>
     ipcRenderer.invoke(getPluginPrompt, { plugin }),
+  runScript: (script: string) => ipcRenderer.invoke(runScript, script),
 
   /**
    * Provide an easier way to listen to events

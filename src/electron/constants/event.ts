@@ -17,6 +17,7 @@ export const getPromptList = 'getPromptList'
 export const setPluginPrompt = 'setPluginPrompt'
 export const getPluginPrompt = 'getPluginPrompt'
 export const changeLanguage = 'changeLanguage'
+export const runScript = 'runScript'
 
 // sender
 export const clipboard_change = 'clipboard_change'

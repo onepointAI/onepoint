@@ -1,5 +1,16 @@
+import { IpcMainInvokeEvent, ipcMain } from 'electron'
 import { Logger } from '../utils/util'
+import { runScript } from '../constants/event'
 const applescript = require('applescript')
+
+export function setupScriptHandlers() {
+  ipcMain.handle(
+    runScript,
+    async (event: IpcMainInvokeEvent, script: string) => {
+      runAppleScript(script)
+    }
+  )
+}
 
 function runAppleScript(script: string) {
   const date = Date.now()
