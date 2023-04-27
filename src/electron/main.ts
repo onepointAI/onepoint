@@ -45,6 +45,15 @@ function initWindow() {
     },
   })
 
+  // Plugin View
+  // const view = new BrowserView()
+  // win.setBrowserView(view)
+  // view.setBounds({ x: 0, y: 70, width: 800, height: 300 })
+  // view.webContents.loadURL('https://www.google.com')
+  // view.webContents.openDevTools({
+  //   mode:'bottom'
+  // })
+
   if (!app.isPackaged) {
     win?.webContents.openDevTools({
       mode: 'bottom',
@@ -61,6 +70,7 @@ function initWindow() {
     })
   })
   app.dock?.hide()
+
   initI18n(store.get(StoreKey.Set_Lng) as Languages)
   initStore()
   registerListeners()
