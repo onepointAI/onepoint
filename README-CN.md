@@ -21,7 +21,7 @@
     <a href="https://github.com/onepointAI/onepoint/releases/latest">
       <img alt="Windows" src="https://img.shields.io/badge/-Windows-blue?style=flat-square&logo=windows&logoColor=white" />
     </a>
-    <a href="https://github.com/onepointAI/onepointreleases/latest">
+    <a href="https://github.com/onepointAI/onepoint/releases/latest">
       <img alt="Linux" src="https://img.shields.io/badge/-Linux-yellow?style=flat-square&logo=linux&logoColor=white" />
     </a>
   </div>
