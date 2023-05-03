@@ -6,9 +6,10 @@ import {
   UsbOutlined,
   MacCommandOutlined,
 } from '@ant-design/icons'
-import Account from './Account'
 import Basic from './Basic'
+import Account from './Account'
 import Prompt from './Prompt'
+import Advanced from './Advanced'
 import { useAppSelector } from '../../app/hooks'
 
 export function Setting() {
@@ -57,7 +58,6 @@ export function Setting() {
               ),
               key: '3',
               children: <Prompt />,
-              // disabled: true,
             },
             {
               label: (
@@ -67,7 +67,7 @@ export function Setting() {
                 </span>
               ),
               key: '4',
-              children: <Account />,
+              children: <Advanced />,
               disabled: true,
             },
             {
