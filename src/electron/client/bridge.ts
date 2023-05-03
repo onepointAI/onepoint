@@ -63,4 +63,4 @@ export const api = {
   },
 }
 
-contextBridge.exposeInMainWorld('Main', api)
+contextBridge?.exposeInMainWorld('Main', api)
