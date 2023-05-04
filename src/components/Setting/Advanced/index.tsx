@@ -2,10 +2,12 @@ import { useEffect, useState } from 'react'
 import { Button, Form, Input, Alert } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from '../../../app/hooks'
-// import { StoreKey } from '../../../app/constants'
 import { fetchAccountDetail } from '../../../features/setting/settingSlice'
 
-// const { Option } = Select
+/* TODO
+ * Fine-Tuning
+ * langchain
+ */
 
 export default function () {
   const { t } = useTranslation()
