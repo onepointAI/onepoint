@@ -14,6 +14,8 @@ import { getChatList, getPluginPrompt } from './client/store'
 const { Configuration, OpenAIApi } = require('openai')
 const store = new Store()
 let openai = null as any
+let prevBasePath: string
+let prevApiKey: string
 
 function getContextual(prompt: PresetType) {
   const num = (store.get(StoreKey.Set_Contexual) as number) || 0
@@ -62,22 +64,23 @@ export function generatePayload(content: string, prompt: PresetType) {
 }
 
 export function getAiInstance() {
-  if (openai) {
+  const basePath = store.get(StoreKey.Set_BasePath) as string
+  const apiKey = store.get(StoreKey.Set_ApiKey) as string
+
+  if (openai && prevApiKey === apiKey && prevBasePath === basePath) {
     return openai
   }
 
-  const basePath = store.get(StoreKey.Set_BasePath) as string
-  const apiKey = store.get(StoreKey.Set_ApiKey) as string
-  Logger.log('store apikey', apiKey)
-  Logger.log('basePath', basePath)
-
   if (apiKey) {
+    const _basePath = basePath || 'https://closeai.deno.dev'
     openai = new OpenAIApi(
       new Configuration({
         apiKey,
-        basePath: (basePath || 'https://closeai.deno.dev') + '/v1',
+        basePath: _basePath + '/v1',
       })
     )
+    prevApiKey = apiKey
+    prevBasePath = _basePath
     return openai
   }
   return null

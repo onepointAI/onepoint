@@ -88,7 +88,7 @@ export default function () {
             </Form.Item>
             <Form.Item
               label={t('Model')}
-              name="Model"
+              name="model"
               style={{ marginBottom: 12 }}
             >
               <Select>

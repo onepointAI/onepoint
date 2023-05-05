@@ -64,6 +64,12 @@ export default async (req: any, res: any) => {
       res.end()
     })
   } catch (e) {
-    res.write(e)
+    if (e instanceof Error) {
+      res.write(e.message)
+      res.end()
+    } else {
+      res.write(JSON.stringify(e))
+      res.end()
+    }
   }
 }
