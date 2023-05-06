@@ -71,7 +71,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Show Build Output
-        run: ls -al output
+        run: ls -al out
 
       # - name: Upload Artifact
       #   uses: actions/upload-artifact@v3
