@@ -138,7 +138,7 @@ In the long term, we hope to develop onepoint into a personalized intelligent as
 - 🔧 Efficient output, not to replace certain tools but to complement and enhance the capabilities of existing editors.
 - 📖 Reading assistance, summarizing and organizing reading scenarios to improve the speed of information acquisition.
 - 🎈 Creative play, providing plugin mechanisms as an entry point to meet various scenarios and providing an NFT ecosystem with a harmonious technical community atmosphere.
-- 🤖 Model Training, providing ability to train models with custom datasets.
+- 🤖 Model Training, providing ability to train models with custom datasets(LLMs).
 
 ## 06 QA
 
