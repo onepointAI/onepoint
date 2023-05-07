@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState, useLayoutEffect } from 'react'
 import { Image, message } from 'antd'
+import common from './electron/constants/common'
 import PubSub from 'pubsub-js'
 import { MoreOutlined } from '@ant-design/icons'
 import { GlobalStyle } from './styles/GlobalStyle'
@@ -73,6 +74,12 @@ export function App() {
   }, [])
 
   useEffect(() => {
+    if (common.production()) {
+      window.addEventListener('mousemove', event => {
+        const flag = event.target === document.documentElement
+        window.Main.ignoreWinMouse(flag)
+      })
+    }
     window.Main.on(
       selection_change,
       (selection: { txt: string; app: string }) => {
