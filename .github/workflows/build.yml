@@ -70,8 +70,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Show Build Output
-        run: ls -al out/make/zip/darwin/x64
+      # - name: Show Build Output
+      #   run: ls -al out/make/zip/darwin/x64
 
       # - name: Upload Artifact
       #   uses: actions/upload-artifact@v3
