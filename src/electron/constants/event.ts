@@ -18,6 +18,7 @@ export const setPluginPrompt = 'setPluginPrompt'
 export const getPluginPrompt = 'getPluginPrompt'
 export const changeLanguage = 'changeLanguage'
 export const runScript = 'runScript'
+export const setWinSize = 'setWinSize'
 
 // sender
 export const clipboard_change = 'clipboard_change'

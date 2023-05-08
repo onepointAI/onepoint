@@ -21,6 +21,7 @@ import {
   getPluginPrompt,
   changeLanguage,
   runScript,
+  setWinSize,
 } from '../constants/event'
 
 export const api = {
@@ -29,6 +30,7 @@ export const api = {
    */
   ignoreWinMouse: (ignore: boolean) => ipcRenderer.send(winIgnoreMouse, ignore),
   moveWindowPos: (pos: PosType) => ipcRenderer.send(winMouseMove, pos),
+  setWinSize: (w: number, h: number) => ipcRenderer.send(setWinSize, { w, h }),
   setUsePreset: (preset: PresetType) => ipcRenderer.send(usePreset, preset),
   jumpLink: (link: string) => ipcRenderer.send(jumpLink, link),
   changeLanguage: (lng: Languages) => ipcRenderer.send(changeLanguage, lng),

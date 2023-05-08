@@ -33,7 +33,6 @@ function initWindow() {
   win = new BrowserWindow({
     resizable: false,
     width: 800,
-    // TODO: autosize height
     height: 600,
     frame: false,
     show: true,
@@ -49,15 +48,6 @@ function initWindow() {
       preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
     },
   })
-
-  // Plugin View
-  // const view = new BrowserView()
-  // win.setBrowserView(view)
-  // view.setBounds({ x: 0, y: 70, width: 800, height: 300 })
-  // view.webContents.loadURL('https://www.google.com')
-  // view.webContents.openDevTools({
-  //   mode:'bottom'
-  // })
 
   if (!app.isPackaged) {
     win?.webContents.openDevTools({

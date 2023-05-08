@@ -36,7 +36,6 @@ import {
   setting_show,
 } from './electron/constants/event'
 import { PresetType, PanelVisible } from './@types'
-
 interface Tips {
   type: 'success' | 'error' | 'warning'
   message: string
