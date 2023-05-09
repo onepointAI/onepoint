@@ -1,8 +1,8 @@
 {
   "name": "onepoint",
   "author": "Edwiin Tsang <boxizen@gmail.com>",
-  "version": "0.1.5",
-  "homepage": "https://onepoint.so",
+  "version": "0.1.6",
+  "homepage": "https://www.1ptai.com/",
   "description": "An Electron boilerplate including TypeScript, React, Jest and ESLint.",
   "main": ".webpack/main",
   "scripts": {
