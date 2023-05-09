@@ -47,7 +47,6 @@ export function App() {
   const [messageApi, contextHolder] = message.useMessage()
   const dispatch = useAppDispatch()
   useRef<HTMLTextAreaElement>(null)
-
   const preset = presetState.builtInPlugins.filter(
     p => p.title === presetState.currentPreset
   )

@@ -17,8 +17,9 @@ import {
   saveResp,
 } from '../../features/chat/chatSlice'
 import { setSelection, setUrl } from '../../features/clipboard/clipboardSlice'
-import { PluginType } from '../../@types'
+import { PluginType, PresetType } from '../../@types'
 import { ChatContent } from '../../electron/types'
+import { OperatePanel } from './OperatePanel'
 
 export function ChatPanel() {
   const { t } = useTranslation()
@@ -50,7 +51,12 @@ export function ChatPanel() {
         bottomLineRef.current?.scrollIntoView({ behavior: 'smooth' })
       }, 100)
       if (!usePlugin?.nostore && !minimal && settingState.store) {
-        dispatch(setCurPrompt(''))
+        dispatch(
+          setCurPrompt({
+            preset: presetState.currentPreset,
+            content: '',
+          })
+        )
         dispatch(
           saveResp({
             preset: presetState.currentPreset,
@@ -73,7 +79,10 @@ export function ChatPanel() {
     )[0]
     setUsePlugin(plugin)
     fetchChatList()
-  }, [presetState.currentPreset, chatState.curPrompt])
+  }, [
+    presetState.currentPreset,
+    chatState.curPrompt[presetState.currentPreset],
+  ])
 
   useEffect(() => {
     setShowSelection(
@@ -110,7 +119,12 @@ export function ChatPanel() {
       type: 'success',
       message: 'Deleted successfully',
     })
-    dispatch(setCurPrompt(''))
+    dispatch(
+      setCurPrompt({
+        preset: presetState.currentPreset,
+        content: '',
+      })
+    )
     dispatch(
       saveResp({
         preset: presetState.currentPreset,
@@ -155,45 +169,24 @@ export function ChatPanel() {
   }
 
   const showCopyFromEditor = () => {
-    return showSelection ? (
-      <div style={styles.selectWrap}>
-        <span style={styles.selection}>
-          Sure operate the selection in{' '}
-          <span style={styles.selectApp}>{`${clipboardState.selectApp}`}</span>?
-        </span>
-        <Button
-          type="primary"
-          style={{ marginRight: 5 }}
-          onClick={() => doRequest(clipboardState.selectTxt)}
-        >
-          Yes
-        </Button>
-        <Button type="text" onClick={() => cancelRequest()}>
-          No
-        </Button>
-      </div>
+    return showSelection && usePlugin?.id === PresetType.Programmer ? (
+      <OperatePanel
+        tips={t('Sure operate the selection?')}
+        // app={clipboardState.selectApp}
+        confirmFn={() => doRequest(clipboardState.selectTxt)}
+        cancelFn={() => cancelRequest()}
+      />
     ) : null
   }
 
   const showSelectUrl = () => {
     return clipboardState.url && usePlugin?.monitorBrowser ? (
-      <div style={styles.selectWrap}>
-        <span style={styles.selection}>
-          <span>Summarize this page? </span>
-          {/* <span style={styles.url}>{clipboardState.url}</span>*/}
-        </span>
-        <Button
-          // type="text"
-          type="primary"
-          style={{ marginRight: 5 }}
-          onClick={() => doSummaryWebsite(clipboardState.url)}
-        >
-          Yes
-        </Button>
-        <Button type="text" onClick={() => cancelRequest()}>
-          No
-        </Button>
-      </div>
+      <OperatePanel
+        tips={t('Summarize this page?')}
+        app={clipboardState.selectApp}
+        confirmFn={() => doSummaryWebsite(clipboardState.url)}
+        cancelFn={() => cancelRequest()}
+      />
     ) : null
   }
 
@@ -231,6 +224,7 @@ export function ChatPanel() {
             }}
           />
         </div>
+        {/* TODO: ban in windows & linux */}
         {response ? (
           <>
             <Divider style={{ margin: '5px 0' }} />
@@ -241,7 +235,7 @@ export function ChatPanel() {
                 onClick={() => atemptChange(response)}
                 style={styles.attemptBtn}
               >
-                Attempt Change
+                {t('Attempt Change')}
               </Button>
               <SoundOutlined
                 style={styles.speakIcon as React.CSSProperties}
@@ -270,6 +264,7 @@ export function ChatPanel() {
     !settingState.visible &&
     !presetState.listVisible
 
+  const curPrompt = chatState.curPrompt[presetState.currentPreset]
   return showChat ? (
     <ConfigProvider
       theme={{
@@ -294,7 +289,7 @@ export function ChatPanel() {
             ))
           : null}
         {/* need to separate prompt and resp  */}
-        {chatState.curPrompt ? showPrompt(chatState.curPrompt, minimal) : null}
+        {curPrompt ? showPrompt(curPrompt, minimal) : null}
         {respContent ? showReply(respContent) : null}
         {chatState.webCrawlResp ? showReply(chatState.webCrawlResp) : null}
         <div ref={bottomLineRef}></div>
@@ -305,32 +300,6 @@ export function ChatPanel() {
 
 const padding = 15
 const styles = {
-  selectWrap: {
-    backgroundColor: 'rgb(240 240 240)',
-    fontSize: 13,
-    padding,
-  },
-  selection: {
-    color: 'rgb(74 74 74)',
-    marginRight: 20,
-  },
-  url: {
-    maxWidth: 400,
-    display: 'inline-block',
-    textOverflow: 'ellipsis',
-    overflow: 'hidden',
-    whiteSpace: 'nowrap',
-  },
-  selectApp: {
-    fontSize: 15,
-    fontWeight: 'bold',
-  },
-  selectTxt: {
-    fontStyle: 'italic',
-    marginLeft: 4,
-    marginRight: 4,
-    color: 'rgb(255, 90, 0)',
-  },
   requestWrap: {
     backgroundColor: 'rgb(241 241 241)',
     fontSize: 15,

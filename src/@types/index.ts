@@ -15,12 +15,13 @@ export interface PresetModule {
   currentPreset: PresetType
 }
 
-export type PresetType =
-  | 'Casual'
-  | 'Translator'
-  | 'Summarizer'
-  | 'Programmer'
-  | 'Analyst'
+export enum PresetType {
+  Casual = 'Casual',
+  Translator = 'Translator',
+  Summarizer = 'Summarizer',
+  Programmer = 'Programmer',
+  Analyst = 'Analyst',
+}
 
 export interface PanelVisible {
   plugin?: boolean

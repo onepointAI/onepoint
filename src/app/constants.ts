@@ -22,7 +22,6 @@ export const BuiltInPlugins = [
     inputDisable: true,
     desc: 'Code Master, generate or refactor the code you want.',
     nostore: true,
-    monitorClipboard: true,
   },
   {
     logo: post,
@@ -40,7 +39,6 @@ export const BuiltInPlugins = [
     title: Translator,
     loading: false,
     inputDisable: false,
-    monitorClipboard: true,
     desc: 'Language expert, proficient in various languages from different countries.',
     nostore: true,
   },

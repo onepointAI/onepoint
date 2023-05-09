@@ -166,7 +166,7 @@ export function setupStoreHandlers() {
 
   ipcMain.handle(
     getPluginPromptEvt,
-    async (event: IpcMainInvokeEvent, { plugin }: { plugin: string }) => {
+    async (event: IpcMainInvokeEvent, { plugin }: { plugin: PresetType }) => {
       return getPluginPrompt(plugin)
     }
   )
@@ -265,7 +265,7 @@ export function setPluginPrompt({
   }
 }
 
-export function getPluginPrompt(plugin: string): PromptSet {
+export function getPluginPrompt(plugin: PresetType): PromptSet {
   const mapStr = store.get(StoreKey.Map_Pluginprompt) as string | undefined
   if (typeof mapStr !== 'undefined') {
     const map = JSON.parse(mapStr)

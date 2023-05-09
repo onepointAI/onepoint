@@ -10,7 +10,7 @@ interface ChatModule {
   inputDiabled: boolean
   respErr: boolean
   respErrMsg: string
-  curPrompt: string
+  curPrompt: Record<string, string>
   isGenerating: boolean
   webCrawlResp: string
 }
@@ -21,13 +21,13 @@ export const initialState: ChatModule = {
   inputDiabled: false,
   respErr: false,
   respErrMsg: '',
-  curPrompt: '',
+  curPrompt: {},
   isGenerating: false,
   webCrawlResp: '', // Distinguishing proprietary err & errmsg
 }
 
-interface Resp {
-  preset: string
+interface PresetContent {
+  preset: PresetType
   content: string
 }
 
@@ -35,7 +35,7 @@ export const chatSlice = createSlice({
   name: 'chat',
   initialState,
   reducers: {
-    saveResp: (state, action: PayloadAction<Resp>) => {
+    saveResp: (state, action: PayloadAction<PresetContent>) => {
       const {
         payload: { preset, content },
       } = action
@@ -59,9 +59,13 @@ export const chatSlice = createSlice({
       const { payload } = action
       state.respErrMsg = payload
     },
-    setCurPrompt: (state, action: PayloadAction<string>) => {
-      const { payload } = action
-      state.curPrompt = payload
+    setCurPrompt: (state, action: PayloadAction<PresetContent>) => {
+      const {
+        payload: { preset, content },
+      } = action
+      const curPrompt = state.curPrompt
+      curPrompt[preset] = content
+      state.curPrompt = curPrompt
     },
     setGenerating: (state, action: PayloadAction<boolean>) => {
       const { payload } = action
@@ -199,10 +203,13 @@ export const fetchWebCrawlResp = createAsyncThunk(
       request(),
     ])
       .then(resp => {
-        const { result, code } = resp
+        const { result, code, message } = resp
         if (code === 0) {
           dispatch(setVisible(true))
           dispatch(saveWebCrawlResp(result))
+        } else {
+          dispatch(setRespErr(true))
+          dispatch(setRespErrMsg(message))
         }
       })
       .catch(e => {

@@ -49,5 +49,9 @@
   "Language expert, proficient in various languages from different countries.": "语言专家，精通来自不同国家的各种语言。",
   "Base Path": "API 请求域名",
   "Model": "模型",
-  "reload": "重启"
+  "reload": "重启",
+  "Sure operate the selection in ": "确定在以下应用中格式化代码吗：",
+  "Summarize this page?": "确定要总结当前的网页内容吗？",
+  "Attempt Change": "应用修改",
+  "The webpage content is too long(Exceeds 4000 characters.), which will affect the speed and experience of summarizing(Long article summary support is coming soon, please stay tuned)": "所选网页内容太长（超出4000字），将影响总结的速度与体验（PS: 长文内容支持中，敬请期待）"
 }

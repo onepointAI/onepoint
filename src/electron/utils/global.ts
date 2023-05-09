@@ -1,5 +1,4 @@
 import { PresetType } from '../../@types'
-import { Casual } from '../../app/constants'
 export class Singleton {
   private static instance: Singleton
 
@@ -7,7 +6,7 @@ export class Singleton {
 
   private static recentApp: string
 
-  private static preset: PresetType = Casual
+  private static preset: PresetType = PresetType.Casual
 
   public static getInstance(): Singleton {
     if (!Singleton.instance) {

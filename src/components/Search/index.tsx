@@ -24,7 +24,12 @@ export default function () {
   const search = async () => {
     if (!prompt) return
     dispatch(setInputDisabled(true))
-    dispatch(setCurPrompt(prompt))
+    dispatch(
+      setCurPrompt({
+        preset: presetState.currentPreset,
+        content: prompt,
+      })
+    )
     dispatch(
       saveResp({
         preset: presetState.currentPreset,

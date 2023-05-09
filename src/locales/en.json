@@ -49,5 +49,9 @@
   "Language expert, proficient in various languages from different countries.": "Language expert, proficient in various languages from different countries.",
   "Base Path": "Base Path",
   "Model": "Model",
-  "reload": "reload"
+  "reload": "reload",
+  "Sure operate the selection in ": "Sure operate the selection in ",
+  "Summarize this page?": "Summarize this page?",
+  "Attempt Change": "Attempt Change",
+  "The webpage content is too long(Exceeds 4000 characters.), which will affect the speed and experience of summarizing(Long article summary support is coming soon, please stay tuned)": "The webpage content is too long(Exceeds 4000 characters.), which will affect the speed and experience of summarizing(Long article summary support is coming soon, please stay tuned)"
 }

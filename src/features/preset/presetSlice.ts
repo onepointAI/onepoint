@@ -1,11 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { BuiltInPlugins, Casual } from '../../app/constants'
+import { BuiltInPlugins } from '../../app/constants'
 import { PresetModule, PresetType } from '../../@types'
 
 export const initialState: PresetModule = {
   listVisible: false,
   builtInPlugins: BuiltInPlugins,
-  currentPreset: Casual,
+  currentPreset: PresetType.Casual,
 }
 
 export const presetSlice = createSlice({

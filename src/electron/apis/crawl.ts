@@ -39,6 +39,8 @@ export default async (req: any, res: any) => {
       res.send({
         code: ERR_CODES.TOKEN_TOO_LONG,
         result: null,
+        message:
+          'The webpage content is too long(Exceeds 4000 characters.), which will affect the speed and experience of summarizing(Long article summary support is coming soon, please stay tuned)',
       })
       return
     }
