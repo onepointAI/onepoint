@@ -42,6 +42,7 @@
   "Plugins": "插件",
   "please set your apikey first.": "请先设置你的apikey",
   "High network latency. Check whether you have set up a proxy": "网络拥堵，请检查是否设置了代理。",
+  "Network error. Check whether you have set up a proxy": "网络错误，请检查是否设置了代理。",
   "Prompt Setting": "Prompt设置",
   "Chat mode, feel free to ask any questions you want.": "聊天模式，随意提出任何你想问的问题。",
   "Code Master, generate or refactor the code you want.": "编程模式，生成或重构你想要的代码。",

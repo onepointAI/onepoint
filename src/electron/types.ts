@@ -17,3 +17,5 @@ export enum ERR_CODES {
   NOT_SET_APIKEY = -998,
   TOKEN_TOO_LONG = -997,
 }
+
+export const CODE_SPLIT = '&^.>'

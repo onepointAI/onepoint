@@ -64,8 +64,9 @@ export default async (req: any, res: any) => {
       res.end()
     })
   } catch (e) {
+    Logger.error(e)
     if (e instanceof Error) {
-      res.write(e.message)
+      res.write(String(ERR_CODES.NETWORK_CONGESTION))
       res.end()
     } else {
       res.write(JSON.stringify(e))

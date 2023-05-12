@@ -135,6 +135,13 @@ export const fetchChatResp = createAsyncThunk(
             reject(new Error('please set your apikey first.'))
             break
           }
+
+          if (Number(value) === ERR_CODES.NETWORK_CONGESTION) {
+            reject(
+              new Error('Network error. Check whether you have set up a proxy')
+            )
+            break
+          }
           str += value
           dispatch(
             saveResp({

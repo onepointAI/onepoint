@@ -42,6 +42,7 @@
   "Plugins": "Plugins",
   "please set your apikey first.": "please set your apikey first.",
   "High network latency. Check whether you have set up a proxy": "High network latency. Check whether you have set up a proxy",
+  "Network error. Check whether you have set up a proxy": "Network error. Check whether you have set up a proxy",
   "Prompt Setting": "Prompt Setting",
   "Chat mode, feel free to ask any questions you want.": "Chat mode, feel free to ask any questions you want.",
   "Code Master, generate or refactor the code you want.": "Code Master, generate or refactor the code you want.",

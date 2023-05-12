@@ -79,7 +79,7 @@ export default function () {
             }}
           >
             <Form.Item label={t('Base Path')} name="basePath">
-              <Input placeholder="Like https://api.openai.com/v1" />
+              <Input placeholder="Like https://api.openai.com" />
             </Form.Item>
             <Form.Item label="ApiKey" name="apikey">
               <Input.Password
